@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Afya — Digital Admission | Alpar</title>
+<meta name="description" content="Alpar + Afya, Digital Admission with AI. 21.002h saved per year, R$ 388.737 net gain in year 1, 53% ROI, payback in 8 months." />
+<meta name="theme-color" content="#0A1530" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070E1F;
+    --bg-2:#0A1530;
+    --bg-3:#0F1C3D;
+    --ink:#E8EEFA;
+    --ink-2:#A9B6CF;
+    --muted:#6B7A99;
+    --line:rgba(255,255,255,0.08);
+    --line-2:rgba(255,255,255,0.14);
+    --accent:#3FB8FF;       /* ServiceNow cyan */
+    --accent-2:#62E0A1;     /* mint */
+    --gold:#E8C26B;
+    --danger:#FF7A7A;
+    --max:1180px;
+    --r:14px;
+    --t-fast:.35s cubic-bezier(.2,.7,.2,1);
+    --t:.7s cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#001022}
+
+  /* Ambient backdrop */
+  .ambient{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(63,184,255,.14), transparent 60%),
+      radial-gradient(900px 600px at -10% 30%, rgba(98,224,161,.08), transparent 60%),
+      radial-gradient(800px 500px at 50% 110%, rgba(232,194,107,.07), transparent 60%),
+      linear-gradient(180deg, #060B1A 0%, #070E1F 50%, #050913 100%);
+  }
+  .grid-overlay{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+
+  /* Top bar */
+  header.bar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:saturate(140%) blur(14px);
+    background:linear-gradient(180deg, rgba(7,14,31,.78), rgba(7,14,31,.35));
+    border-bottom:1px solid var(--line);
+  }
+  .bar-inner{
+    max-width:var(--max);margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;font-family:"Manrope";font-weight:700;letter-spacing:.02em}
+  .brand .brand-logo{
+    display:block;
+    width:120px;height:38px;
+    background:url('../alpar-logo.png') center/130% no-repeat;
+  }
+  .brand b{font-size:14px}
+  .brand span{font-size:12px;color:var(--ink-2);font-weight:500}
+  nav.top{display:flex;gap:22px;font-size:13px}
+  nav.top a{color:var(--ink-2);text-decoration:none;transition:color var(--t-fast)}
+  nav.top a:hover{color:var(--ink)}
+  .pill{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    padding:6px 12px;border:1px solid var(--line-2);border-radius:999px;color:var(--ink-2);
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+  }
+  @media (max-width:760px){ nav.top{display:none} }
+
+  /* Side dots */
+  aside.dots{
+    position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:40;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  aside.dots a{
+    width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18);
+    transition:all var(--t-fast);position:relative;display:block;
+  }
+  aside.dots a:hover{background:var(--accent);transform:scale(1.2)}
+  aside.dots a.active{background:var(--accent);box-shadow:0 0 0 4px rgba(63,184,255,.18)}
+  aside.dots a::after{
+    content:attr(data-label);
+    position:absolute;right:18px;top:50%;transform:translateY(-50%);
+    font-size:11px;color:var(--ink-2);white-space:nowrap;opacity:0;transition:opacity var(--t-fast);
+    background:var(--bg-2);padding:4px 8px;border-radius:6px;border:1px solid var(--line);
+  }
+  aside.dots a:hover::after{opacity:1}
+  @media (max-width:900px){ aside.dots{display:none} }
+
+  /* Sections */
+  section{
+    min-height:100vh;padding:140px 28px 100px;
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .wrap{max-width:var(--max);width:100%;margin:0 auto}
+
+  /* Reveal animations */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity var(--t), transform var(--t)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.05s}
+  .reveal.d2{transition-delay:.15s}
+  .reveal.d3{transition-delay:.25s}
+  .reveal.d4{transition-delay:.35s}
+  .reveal.d5{transition-delay:.45s}
+  .reveal.d6{transition-delay:.55s}
+  .reveal.d7{transition-delay:.65s}
+
+  /* Section eyebrow */
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Manrope";font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--accent));
+  }
+  h1.kicker, h2.kicker{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.02em;
+    margin:0 0 18px;line-height:1.04;
+  }
+  h1.kicker{font-size:clamp(40px,6.4vw,86px)}
+  h2.kicker{font-size:clamp(30px,4.2vw,56px)}
+  .lead{font-size:clamp(15px,1.4vw,18px);color:var(--ink-2);max-width:62ch;line-height:1.65}
+
+  .section-no{
+    position:absolute;top:96px;right:32px;
+    font-family:"Manrope";font-weight:800;font-size:140px;line-height:1;
+    color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.06);
+    pointer-events:none;user-select:none;
+  }
+  @media (max-width:760px){ .section-no{font-size:80px;top:70px;right:16px} }
+
+  /* ============ Hero ============ */
+  #hero{padding-top:170px;padding-bottom:140px}
+  .hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:end}
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr} }
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:8px 14px;border-radius:999px;
+    border:1px solid var(--line-2);background:rgba(255,255,255,.03);
+    font-size:12px;color:var(--ink-2);letter-spacing:.16em;text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .hero-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 10px var(--accent-2)}
+  h1.hero{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.035em;line-height:.98;
+    font-size:clamp(46px,8vw,118px);margin:0 0 22px;
+  }
+  h1.hero .grad{
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 40%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1.hero .ital{font-style:italic;font-weight:500;color:var(--ink-2)}
+  .hero-sub{color:var(--ink-2);max-width:48ch;font-size:17px;line-height:1.6;margin:0 0 36px}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:9px 14px;border:1px solid var(--line-2);border-radius:999px;
+    font-size:12.5px;color:var(--ink);background:rgba(255,255,255,.03);
+  }
+  .chip svg{width:14px;height:14px;color:var(--accent)}
+  .hero-side{position:relative}
+  .hero-card{
+    border:1px solid var(--line-2);border-radius:18px;padding:26px;
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    backdrop-filter:blur(10px);
+  }
+  .hero-card h4{margin:0 0 4px;font-size:11px;color:var(--ink-2);letter-spacing:.24em;text-transform:uppercase;font-weight:600}
+  .hero-card p{margin:0 0 18px;font-family:"Manrope";font-weight:700;font-size:24px;letter-spacing:-.01em}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .hero-stat{padding:14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02)}
+  .hero-stat b{display:block;font-family:"Manrope";font-weight:800;font-size:26px;letter-spacing:-.02em;color:var(--accent)}
+  .hero-stat span{display:block;font-size:11px;color:var(--ink-2);letter-spacing:.08em;margin-top:4px}
+
+  .scroll-hint{
+    position:absolute;left:50%;bottom:28px;transform:translateX(-50%);
+    font-size:10.5px;letter-spacing:.32em;color:var(--ink-2);text-transform:uppercase;
+    display:flex;flex-direction:column;align-items:center;gap:10px;opacity:.8;
+  }
+  .scroll-hint .bar2{
+    width:1px;height:42px;background:linear-gradient(180deg,var(--accent),transparent);
+    animation:slide 2.2s ease-in-out infinite;
+  }
+  @keyframes slide{0%{transform:scaleY(.2);transform-origin:top}50%{transform:scaleY(1)}100%{transform:scaleY(.2);transform-origin:bottom}}
+
+  /* ============ Challenge / Diagnosis ============ */
+  .challenges{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  @media (max-width:900px){ .challenges{grid-template-columns:1fr} }
+  .c-card{
+    position:relative;padding:28px;border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(180deg, rgba(255,122,122,.06), rgba(255,255,255,.01));
+    transition:transform var(--t-fast), border-color var(--t-fast);
+    overflow:hidden;
+  }
+  .c-card:hover{transform:translateY(-4px);border-color:rgba(255,122,122,.35)}
+  .c-card .num{
+    font-family:"Manrope";font-weight:800;font-size:34px;color:#FF9C9C;
+    letter-spacing:-.02em;line-height:1;margin-bottom:18px;
+  }
+  .c-card h3{margin:0 0 10px;font-family:"Manrope";font-size:19px;font-weight:700;letter-spacing:-.01em;color:#FFD6D6}
+  .c-card p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.6}
+
+  /* ============ AI Differentiator ============ */
+  .ai-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:36px}
+  @media (max-width:760px){ .ai-grid{grid-template-columns:1fr} }
+  .ai-card{
+    padding:28px;border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(180deg, rgba(63,184,255,.06), rgba(255,255,255,.01));
+    transition:transform var(--t-fast), border-color var(--t-fast);
+    position:relative;overflow:hidden;
+  }
+  .ai-card:hover{transform:translateY(-4px);border-color:rgba(63,184,255,.4)}
+  .ai-card .ico{
+    width:42px;height:42px;border-radius:10px;display:grid;place-items:center;
+    background:rgba(63,184,255,.12);border:1px solid rgba(63,184,255,.3);
+    color:var(--accent);margin-bottom:18px;
+  }
+  .ai-card .ico svg{width:22px;height:22px}
+  .ai-card h3{margin:0 0 10px;font-family:"Manrope";font-size:19px;font-weight:700;letter-spacing:-.01em}
+  .ai-card p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.6}
+
+  /* ============ Stats / KPIs ============ */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+  @media (max-width:1100px){ .kpis{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .kpis{grid-template-columns:1fr} }
+  .kpi{
+    padding:42px 18px;min-height:230px;
+    display:grid;grid-template-rows:1fr 1fr;
+    text-align:center;
+    border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.005));
+    position:relative;overflow:hidden;
+  }
+  .kpi b{
+    align-self:end;padding-bottom:12px;
+    display:block;
+    font-family:"Manrope";font-weight:800;
+    font-size:clamp(30px,2.8vw,40px);letter-spacing:-.02em;line-height:1;
+    color:var(--ink);white-space:nowrap;text-align:center;
+  }
+  .kpi b .unit{color:var(--accent);font-weight:700;font-size:.55em;margin-left:8px}
+  .kpi > span{
+    align-self:start;padding-top:12px;
+    display:block;font-size:13px;color:var(--ink-2);line-height:1.55;text-align:center;
+  }
+
+  /* BVA Investment / Return panels */
+  .bva{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+  @media (max-width:900px){ .bva{grid-template-columns:1fr} }
+  .bva-panel{
+    padding:30px;border:1px solid var(--line-2);border-radius:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.005));
+    position:relative;
+  }
+  .bva-panel .tag{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px}
+  .bva-panel h3{margin:0 0 22px;font-family:"Manrope";font-size:22px;letter-spacing:-.01em}
+  .bva-panel .lines{display:flex;flex-direction:column;gap:12px}
+  .bva-panel .line{
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+    padding-bottom:12px;border-bottom:1px dashed var(--line);
+    font-size:14px;color:var(--ink-2);
+  }
+  .bva-panel .line:last-child{border-bottom:none}
+  .bva-panel .line span:last-child{font-family:"Manrope";font-weight:700;color:var(--ink);font-size:15px}
+  .bva-panel .total{
+    margin-top:18px;padding:16px 18px;border-radius:12px;
+    background:rgba(63,184,255,.1);border:1px solid rgba(63,184,255,.3);
+    display:flex;justify-content:space-between;align-items:baseline;
+  }
+  .bva-panel .total span:first-child{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2)}
+  .bva-panel .total span:last-child{font-family:"Manrope";font-weight:800;font-size:24px;color:var(--accent)}
+  .bva-panel.returns .total{background:rgba(98,224,161,.1);border-color:rgba(98,224,161,.3)}
+  .bva-panel.returns .total span:last-child{color:var(--accent-2)}
+
+  /* ROI */
+  .roi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+  @media (max-width:900px){ .roi{grid-template-columns:1fr} }
+  .roi-card{
+    padding:36px;border-radius:18px;border:1px solid var(--line-2);
+    background:linear-gradient(160deg, rgba(63,184,255,.10) 0%, rgba(255,255,255,.02) 60%);
+    position:relative;overflow:hidden;
+  }
+  .roi-card::after{
+    content:"";position:absolute;inset:-2px;border-radius:18px;pointer-events:none;
+    background:linear-gradient(135deg, rgba(63,184,255,.4), transparent 50%);
+    mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:.6;
+  }
+  .roi-card .tag{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2)}
+  .roi-card b{display:block;font-family:"Manrope";font-weight:800;font-size:clamp(36px,4.4vw,56px);letter-spacing:-.025em;margin:14px 0 8px}
+  .roi-card.roi-1 b{color:#fff}
+  .roi-card.roi-2 b{color:var(--accent)}
+  .roi-card.roi-3 b{color:var(--gold)}
+  .roi-card span.desc{color:var(--ink-2);font-size:14px;line-height:1.55;display:block}
+
+  /* ============ Phases (solution) ============ */
+  .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px;position:relative}
+  @media (max-width:900px){ .phases{grid-template-columns:1fr} }
+  .phase{
+    padding:28px;border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.005));
+    position:relative;transition:transform var(--t-fast),border-color var(--t-fast);
+  }
+  .phase:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .phase .step{
+    display:inline-grid;place-items:center;width:48px;height:48px;border-radius:50%;
+    border:1px solid var(--accent);color:var(--accent);
+    font-family:"Manrope";font-weight:700;font-size:20px;margin-bottom:18px;
+    background:radial-gradient(circle, rgba(63,184,255,.18), transparent 70%);
+  }
+  .phase h4{margin:0 0 8px;font-family:"Manrope";font-size:20px;letter-spacing:-.01em}
+  .phase .ph-tag{font-size:11px;color:var(--accent);letter-spacing:.22em;text-transform:uppercase;display:block;margin-bottom:12px}
+  .phase p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.6}
+
+  /* ============ Final / CTA ============ */
+  #final{padding-top:120px}
+  .final-wrap{text-align:center;max-width:920px;margin:0 auto}
+  .final-wrap h2{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.035em;line-height:1;
+    font-size:clamp(44px,7vw,96px);margin:0 0 24px;
+  }
+  .final-wrap h2 .grad{
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 45%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .final-wrap .ready{
+    font-family:"Manrope";font-style:italic;font-weight:500;color:var(--ink-2);
+    font-size:clamp(24px,3vw,36px);margin:0 0 36px;
+  }
+  .next{
+    margin-top:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left;
+  }
+  @media (max-width:900px){ .next{grid-template-columns:1fr} }
+  .next-step{
+    padding:22px;border:1px solid var(--line);border-radius:12px;
+    background:rgba(255,255,255,.025);font-size:14px;color:var(--ink);line-height:1.55;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .next-step b{font-family:"Manrope";color:var(--accent);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 28px;text-align:center;color:var(--muted);font-size:12.5px;
+    display:flex;flex-direction:column;gap:6px;align-items:center;
+  }
+  footer .row2{display:flex;gap:18px;color:var(--ink-2)}
+  footer a{color:var(--ink-2);text-decoration:none}
+  footer a:hover{color:var(--accent)}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grid-overlay"></div>
+
+<header class="bar">
+  <div class="bar-inner">
+    <div class="brand">
+      <span class="brand-logo" role="img" aria-label="Alpar"></span>
+      <div>
+        <b>Alpar + Afya</b><br/>
+        <span>Digital Admission</span>
+      </div>
+    </div>
+    <nav class="top">
+      <a href="#challenge">Challenge</a>
+      <a href="#ai">AI Edge</a>
+      <a href="#impact">Impact</a>
+      <a href="#bva">BVA</a>
+      <a href="#roi">ROI</a>
+      <a href="#solution">Solution</a>
+    </nav>
+    <span class="pill">ServiceNow · Global Partner</span>
+  </div>
+</header>
+
+<aside class="dots" aria-label="Section navigation">
+  <a href="#hero" data-label="Cover" class="active"></a>
+  <a href="#challenge" data-label="Current Challenge"></a>
+  <a href="#ai" data-label="AI Differentiator"></a>
+  <a href="#impact" data-label="Operational Impact"></a>
+  <a href="#bva" data-label="Business Value"></a>
+  <a href="#roi" data-label="ROI & Payback"></a>
+  <a href="#solution" data-label="Alpar Solution"></a>
+  <a href="#final" data-label="Next Steps"></a>
+</aside>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag reveal d1">
+          <span class="dot"></span> Afya · Digital Admission · Business Value Assessment
+        </div>
+        <h1 class="hero reveal d2">
+          <span class="grad">Admission</span><br/>
+          <span class="grad">is where AI does</span><br/>
+          <span class="ital">what automation cannot.</span>
+        </h1>
+        <p class="hero-sub reveal d3">
+          How Alpar transformed the hiring process with AI, and what that is worth in real numbers.
+          Delivered in production at Alpar, ready to scale at Afya.
+        </p>
+        <div class="hero-meta reveal d4">
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            21.002h saved / year
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+            R$ 388.737 net gain in year 1
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>
+            Payback in 8 months
+          </span>
+        </div>
+      </div>
+      <div class="hero-side reveal d5">
+        <div class="hero-card">
+          <h4>Prepared for</h4>
+          <p>Afya</p>
+          <h4>Authored by</h4>
+          <p>Alpar</p>
+          <div class="hero-stats">
+            <div class="hero-stat"><b data-count="21002" data-format="thousands">0</b><span>Hours saved / year</span></div>
+            <div class="hero-stat"><b data-count="10" data-suffix=" FTE">0</b><span>Freed</span></div>
+            <div class="hero-stat"><b data-count="100" data-suffix="%">0</b><span>Digital onboarding</span></div>
+            <div class="hero-stat"><b data-count="53" data-suffix="%">0</b><span>Year 1 ROI</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <span class="bar2"></span>
+  </div>
+</section>
+
+<!-- ============ CHALLENGE ============ -->
+<section id="challenge">
+  <div class="wrap">
+    <div class="section-no">02</div>
+    <div class="eyebrow reveal">The Current Challenge</div>
+    <h2 class="kicker reveal d1">The manual admission process<br/>costs more than it seems.</h2>
+    <p class="lead reveal d2">Three structural failures turn every new hire into a friction point across HR, IT and the candidate experience.</p>
+
+    <div class="challenges">
+      <article class="c-card reveal d1">
+        <div class="num">01</div>
+        <h3>Data copied manually across systems</h3>
+        <p>Physical forms, emails and duplication across Gupy, RM and ServiceNow. Errors and delays in every single hire.</p>
+      </article>
+      <article class="c-card reveal d2">
+        <div class="num">02</div>
+        <h3>No traceability, no governance</h3>
+        <p>Approvals and internal transfers with no system record. No manager knows where each candidate stands in the funnel.</p>
+      </article>
+      <article class="c-card reveal d3">
+        <div class="num">03</div>
+        <h3>Bureaucratic onboarding, zero digital experience</h3>
+        <p>Occupational health exams by phone, physical documents, paper signatures. No unified portal for candidates or managers.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AI DIFFERENTIATOR ============ -->
+<section id="ai">
+  <div class="wrap">
+    <div class="section-no">03</div>
+    <div class="eyebrow reveal">AI Differentiator</div>
+    <h2 class="kicker reveal d1">What AI does that<br/>automation alone cannot solve.</h2>
+    <p class="lead reveal d2">Four capabilities that move admission from rule-based RPA into autonomous, context-aware workflows.</p>
+
+    <div class="ai-grid">
+      <article class="ai-card reveal d1">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6M7 17h4"/></svg>
+        </div>
+        <h3>OCR + Intelligent Document Reading</h3>
+        <p>AI reads, interprets and validates IDs and documents submitted by candidates. Automation just moves files, AI understands the content.</p>
+      </article>
+      <article class="ai-card reveal d2">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l9 4v6c0 5-3.5 9-9 10-5.5-1-9-5-9-10V6l9-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3>Autonomous Validation and Smart Blocking</h3>
+        <p>AI detects document inconsistencies and blocks workflows automatically. No static rules: it learns from the history of past admissions.</p>
+      </article>
+      <article class="ai-card reveal d3">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M8 8l4 8M16 8l-4 8"/></svg>
+        </div>
+        <h3>Semantic Integration: Gupy + ServiceNow + RM</h3>
+        <p>Connects all three systems with intelligent field mapping, not just sync. Eliminates copy-paste that no RPA fully solves end-to-end.</p>
+      </article>
+      <article class="ai-card reveal d4">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l3-3 3 3 3-3 3 3 3-3 3 3"/><path d="M3 18h18"/></svg>
+        </div>
+        <h3>AI-Guided Onboarding and Digital Signature</h3>
+        <p>Candidates receive personalized guidance in the portal, with next steps generated dynamically. Contract signed electronically in the same workflow.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPERATIONAL IMPACT ============ -->
+<section id="impact">
+  <div class="wrap">
+    <div class="section-no">04</div>
+    <div class="eyebrow reveal">Operational Impact</div>
+    <h2 class="kicker reveal d1">Measurable results.<br/>Delivered in production at Alpar.</h2>
+    <p class="lead reveal d2">Not a proof of concept: a live workflow processing every Alpar hire today, with hours, FTEs and digital coverage already booked.</p>
+
+    <div class="kpis">
+      <div class="kpi reveal d1">
+        <b><span data-count="6.08" data-decimals="2">0</span><span class="unit">h</span></b>
+        <span>Operational reduction per admission processed</span>
+      </div>
+      <div class="kpi reveal d2">
+        <b><span data-count="21002" data-format="thousands">0</span><span class="unit">h</span></b>
+        <span>Saved per year in the admission process</span>
+      </div>
+      <div class="kpi reveal d3">
+        <b><span data-count="10">0</span><span class="unit">FTEs</span></b>
+        <span>Equivalents freed up for strategic HR activities</span>
+      </div>
+      <div class="kpi reveal d4">
+        <b><span data-count="100">0</span><span class="unit">%</span></b>
+        <span>Fully digital onboarding, zero paper, e-signature</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BVA INVESTMENT ============ -->
+<section id="bva">
+  <div class="wrap">
+    <div class="section-no">05</div>
+    <div class="eyebrow reveal">Business Value Assessment</div>
+    <h2 class="kicker reveal d1">The financial return of the project.</h2>
+    <p class="lead reveal d2">Investment broken out against booked returns, with the year 1 net gain already on the table.</p>
+
+    <div class="bva">
+      <div class="bva-panel reveal d1">
+        <span class="tag">Investment</span>
+        <h3>What the project requires</h3>
+        <div class="lines">
+          <div class="line"><span>Annual licenses</span><span>R$ 131.263</span></div>
+          <div class="line"><span>Services (implementation)</span><span>R$ 600.000</span></div>
+        </div>
+        <div class="total"><span>Total invested</span><span>R$ 731.263</span></div>
+      </div>
+
+      <div class="bva-panel returns reveal d2">
+        <span class="tag">Return</span>
+        <h3>What the project delivers</h3>
+        <div class="lines">
+          <div class="line"><span>FTE reduction (per FTE / year)</span><span>R$ 112.000</span></div>
+          <div class="line"><span>Total FTE reduction (10 FTEs)</span><span>R$ 1.120.000</span></div>
+        </div>
+        <div class="total"><span>Net gain, year 1</span><span>R$ 388.737</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROI ============ -->
+<section id="roi">
+  <div class="wrap">
+    <div class="section-no">06</div>
+    <div class="eyebrow reveal">Return on Investment</div>
+    <h2 class="kicker reveal d1">Three numbers leadership cares about.</h2>
+    <p class="lead reveal d2">Year 1 ROI, time to payback, and the cumulative three-year picture.</p>
+
+    <div class="roi">
+      <div class="roi-card roi-1 reveal d1">
+        <span class="tag">Year 1 ROI</span>
+        <b><span data-count="53">0</span>%</b>
+        <span class="desc">Return on total investment in the first year.</span>
+      </div>
+      <div class="roi-card roi-2 reveal d2">
+        <span class="tag">Payback</span>
+        <b><span data-count="8">0</span> <small style="font-size:.4em;font-weight:600;letter-spacing:.04em">months</small></b>
+        <span class="desc">Time to fully recover the total investment.</span>
+      </div>
+      <div class="roi-card roi-3 reveal d3">
+        <span class="tag">3-Year ROI</span>
+        <b><span data-count="238">0</span>%</b>
+        <span class="desc">Considering annual licenses and cumulative 3-year return.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOLUTION / PHASES ============ -->
+<section id="solution">
+  <div class="wrap">
+    <div class="section-no">07</div>
+    <div class="eyebrow reveal">The Alpar Solution</div>
+    <h2 class="kicker reveal d1">3 phases. Value delivered every sprint.</h2>
+    <p class="lead reveal d2">An incremental rollout that wires governance first, then integration, then the AI-driven onboarding layer.</p>
+
+    <div class="phases">
+      <article class="phase reveal d1">
+        <div class="step">1</div>
+        <span class="ph-tag">Phase 1</span>
+        <h4>Workflow Restructuring and Governance</h4>
+        <p>Separate flows by admission type, simplified forms, dependent benefits in RM, candidate decline management, and salary adjustment autonomy for managers.</p>
+      </article>
+      <article class="phase reveal d2">
+        <div class="step">2</div>
+        <span class="ph-tag">Phase 2</span>
+        <h4>Recruitment Improvement with Gupy Integration</h4>
+        <p>Native ServiceNow + Gupy connection. Automatic job requisitions, internal transfer tracking, end of copy-paste between systems.</p>
+      </article>
+      <article class="phase reveal d3">
+        <div class="step">3</div>
+        <span class="ph-tag">Phase 3</span>
+        <h4>Digital Onboarding with AI and OCR</h4>
+        <p>Onboarding portal, OCR for document reading, electronic contract signing, and Salu integration for automated occupational health scheduling.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<section id="final">
+  <div class="wrap">
+    <div class="section-no">08</div>
+    <div class="final-wrap">
+      <div class="eyebrow reveal" style="justify-content:center">Next Steps with Alpar</div>
+      <h2 class="reveal d1">
+        <span class="grad">R$ 388.737 in net gains</span><br/>
+        <span class="grad">in the first year.</span>
+      </h2>
+      <p class="ready reveal d2">Ready to start?</p>
+
+      <div class="next">
+        <div class="next-step reveal d1"><b>Step 01</b>Discovery workshop (1h) to map the current state of your admission process.</div>
+        <div class="next-step reveal d2"><b>Step 02</b>Live demo of the solution running at Alpar, real results, not a proof of concept.</div>
+        <div class="next-step reveal d3"><b>Step 03</b>Implementation proposal with timeline, phases and projected ROI for your reality.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Alpar — ServiceNow Global Partner</div>
+  <div class="row2">
+    <span>Digital Admission — May 2026</span>
+  </div>
+</footer>
+
+<script>
+  // ---------- Reveal on scroll ----------
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ---------- Number counters ----------
+  function formatNumber(value, decimals, format){
+    let v = decimals ? value.toFixed(decimals).replace('.', ',') : Math.round(value).toString();
+    if (format === 'thousands') {
+      const n = Math.round(value);
+      v = n.toLocaleString('pt-BR');
+    }
+    return v;
+  }
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      const format = el.dataset.format || '';
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now){
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const cur = target * eased;
+        el.textContent = formatNumber(cur, decimals, format) + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = formatNumber(target, decimals, format) + suffix;
+      }
+      requestAnimationFrame(tick);
+      countObs.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+  // ---------- Side dots active ----------
+  const dots = document.querySelectorAll('aside.dots a');
+  const sections = Array.from(dots).map(a => document.querySelector(a.getAttribute('href')));
+  const activeObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        const id = '#' + e.target.id;
+        dots.forEach(d => d.classList.toggle('active', d.getAttribute('href') === id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => s && activeObs.observe(s));
+</script>
+</body>
+</html>
