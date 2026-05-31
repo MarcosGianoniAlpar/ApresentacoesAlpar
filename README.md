@@ -2,13 +2,13 @@
 
 Apresentações HTML one-page da Alpar, publicadas via GitHub Pages.
 
-🔗 **Live:** https://marcosgianonialpar.github.io/ApresentacoesAlpar/
+🔗 **Portal:** https://marcosgianonialpar.github.io/ApresentacoesAlpar/
 
 ## Apresentações
 
-| Cliente / Projeto | URL |
+| Cliente / Projeto | URL direta |
 |---|---|
-| **FIEP** — Backoffice Process Optimization & Automation | [Visualizar](https://marcosgianonialpar.github.io/ApresentacoesAlpar/) |
+| **FIEP** — Backoffice Process Optimization & Automation | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/bva-fiep/) |
 
 ## Estrutura
 
@@ -16,11 +16,13 @@ Apresentações HTML one-page da Alpar, publicadas via GitHub Pages.
 ApresentacoesAlpar/
 ├── CLAUDE.md            # Instruções para Claude (IA)
 ├── README.md            # Este arquivo
+├── index.html           # Portal raiz (lista as apresentações)
 ├── alpar-logo.png       # Logo oficial Alpar (asset compartilhado)
 ├── _template/
 │   └── index.html       # Template base (cópia funcional da bvA FIEP)
 └── <slug>/
-    └── index.html       # Uma pasta por apresentação
+    ├── index.html       # Uma pasta por apresentação
+    └── README.md
 ```
 
 ## Criar nova apresentação
