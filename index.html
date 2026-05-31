@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Apresentações Alpar</title>
+<meta name="description" content="Portal de apresentações Alpar." />
+<meta name="theme-color" content="#0A1530" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070E1F;
+    --ink:#E8EEFA;
+    --ink-2:#A9B6CF;
+    --muted:#6B7A99;
+    --line:rgba(255,255,255,0.08);
+    --line-2:rgba(255,255,255,0.14);
+    --accent:#3FB8FF;
+    --max:980px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Inter",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    display:flex;flex-direction:column;
+  }
+  .ambient{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(63,184,255,.14), transparent 60%),
+      radial-gradient(900px 600px at -10% 30%, rgba(98,224,161,.06), transparent 60%),
+      linear-gradient(180deg, #060B1A 0%, #070E1F 50%, #050913 100%);
+  }
+  header{
+    padding:36px 28px;border-bottom:1px solid var(--line);
+  }
+  header .wrap{
+    max-width:var(--max);margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:14px;
+    font-family:"Manrope";font-weight:700;
+  }
+  .brand .logo{
+    width:120px;height:38px;
+    background:url('alpar-logo.png') center/130% no-repeat;
+  }
+  .brand b{font-size:14px;letter-spacing:.02em}
+  .brand span{display:block;font-size:12px;color:var(--ink-2);font-weight:500;margin-top:2px}
+  .pill{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    padding:6px 12px;border:1px solid var(--line-2);border-radius:999px;color:var(--ink-2);
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+  }
+  main{
+    flex:1;padding:80px 28px;
+  }
+  .wrap{max-width:var(--max);margin:0 auto}
+  .hero{margin-bottom:60px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Manrope";font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--accent));
+  }
+  h1{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.02em;
+    font-size:clamp(40px,5vw,64px);line-height:1.05;margin-bottom:18px;
+  }
+  h1 .grad{
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 50%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lead{color:var(--ink-2);font-size:17px;line-height:1.65;max-width:60ch}
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:18px;margin-top:36px;
+  }
+  .card{
+    display:block;text-decoration:none;color:inherit;
+    padding:26px;border:1px solid var(--line);border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.005));
+    transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s, background .35s;
+    position:relative;overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;left:0;top:0;width:2px;height:0;background:var(--accent);
+    transition:height .7s cubic-bezier(.2,.7,.2,1);
+  }
+  .card:hover{transform:translateY(-4px);border-color:var(--line-2);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.01))}
+  .card:hover::before{height:100%}
+  .card .client{
+    font-family:"Manrope";font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:12px;
+  }
+  .card h3{font-family:"Manrope";font-size:20px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+  .card p{color:var(--ink-2);font-size:14px;line-height:1.6;margin-bottom:18px}
+  .card .arrow{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;
+  }
+  footer{
+    padding:32px 28px;border-top:1px solid var(--line);
+    text-align:center;color:var(--muted);font-size:12.5px;
+  }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <span class="logo" role="img" aria-label="Alpar"></span>
+      <div>
+        <b>Apresentações</b>
+        <span>Portal Alpar</span>
+      </div>
+    </div>
+    <span class="pill">ServiceNow · Global Partner</span>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">Portal</div>
+      <h1><span class="grad">Apresentações Alpar.</span></h1>
+      <p class="lead">Business cases e propostas executivas. Cada apresentação é uma página dedicada, otimizada para revisão executiva.</p>
+    </section>
+
+    <div class="grid">
+      <a class="card" href="bva-fiep/">
+        <div class="client">FIEP · Maio 2025</div>
+        <h3>Backoffice Process Optimization & Automation</h3>
+        <p>Business case para automação do Backoffice da FIEP em ServiceNow. 19 automações mapeadas, ROI de R$ 2,84 M em 3 anos, payback em 7 meses.</p>
+        <span class="arrow">Abrir →</span>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Alpar — ServiceNow Global Partner
+</footer>
+</body>
+</html>
