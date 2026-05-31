@@ -10,6 +10,7 @@ Apresentações HTML one-page da Alpar, publicadas via GitHub Pages.
 |---|---|
 | **FIEP** — Backoffice Process Optimization & Automation | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/bva-fiep/) |
 | **Afya** — Digital Admission | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/afya-digital-admission/) |
+| **Afya** — Access Management (BVA · 3 meses pós Go-Live) | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/afya-access-management/) |
 
 ## Estrutura
 
