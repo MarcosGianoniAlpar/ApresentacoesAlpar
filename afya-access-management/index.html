@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Afya — Access Management | Alpar</title>
+<meta name="description" content="Alpar + Afya, Access Management with proven ROI. 4.892 requests processed, 85% of grants automated, 13-month payback, 183% 3-year ROI." />
+<meta name="theme-color" content="#0A1530" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070E1F;
+    --bg-2:#0A1530;
+    --bg-3:#0F1C3D;
+    --ink:#E8EEFA;
+    --ink-2:#A9B6CF;
+    --muted:#6B7A99;
+    --line:rgba(255,255,255,0.08);
+    --line-2:rgba(255,255,255,0.14);
+    --accent:#3FB8FF;
+    --accent-2:#62E0A1;
+    --gold:#E8C26B;
+    --danger:#FF7A7A;
+    --max:1180px;
+    --r:14px;
+    --t-fast:.35s cubic-bezier(.2,.7,.2,1);
+    --t:.7s cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#001022}
+
+  .ambient{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(63,184,255,.14), transparent 60%),
+      radial-gradient(900px 600px at -10% 30%, rgba(98,224,161,.08), transparent 60%),
+      radial-gradient(800px 500px at 50% 110%, rgba(232,194,107,.07), transparent 60%),
+      linear-gradient(180deg, #060B1A 0%, #070E1F 50%, #050913 100%);
+  }
+  .grid-overlay{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+
+  header.bar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:saturate(140%) blur(14px);
+    background:linear-gradient(180deg, rgba(7,14,31,.78), rgba(7,14,31,.35));
+    border-bottom:1px solid var(--line);
+  }
+  .bar-inner{
+    max-width:var(--max);margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;font-family:"Manrope";font-weight:700;letter-spacing:.02em}
+  .brand .brand-logo{
+    display:block;
+    width:120px;height:38px;
+    background:url('../alpar-logo.png') center/130% no-repeat;
+  }
+  .brand b{font-size:14px}
+  .brand span{font-size:12px;color:var(--ink-2);font-weight:500}
+  nav.top{display:flex;gap:22px;font-size:13px}
+  nav.top a{color:var(--ink-2);text-decoration:none;transition:color var(--t-fast)}
+  nav.top a:hover{color:var(--ink)}
+  .pill{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    padding:6px 12px;border:1px solid var(--line-2);border-radius:999px;color:var(--ink-2);
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+  }
+  @media (max-width:760px){ nav.top{display:none} }
+
+  aside.dots{
+    position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:40;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  aside.dots a{
+    width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18);
+    transition:all var(--t-fast);position:relative;display:block;
+  }
+  aside.dots a:hover{background:var(--accent);transform:scale(1.2)}
+  aside.dots a.active{background:var(--accent);box-shadow:0 0 0 4px rgba(63,184,255,.18)}
+  aside.dots a::after{
+    content:attr(data-label);
+    position:absolute;right:18px;top:50%;transform:translateY(-50%);
+    font-size:11px;color:var(--ink-2);white-space:nowrap;opacity:0;transition:opacity var(--t-fast);
+    background:var(--bg-2);padding:4px 8px;border-radius:6px;border:1px solid var(--line);
+  }
+  aside.dots a:hover::after{opacity:1}
+  @media (max-width:900px){ aside.dots{display:none} }
+
+  section{
+    min-height:100vh;padding:140px 28px 100px;
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .wrap{max-width:var(--max);width:100%;margin:0 auto}
+
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity var(--t), transform var(--t)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.05s}
+  .reveal.d2{transition-delay:.15s}
+  .reveal.d3{transition-delay:.25s}
+  .reveal.d4{transition-delay:.35s}
+  .reveal.d5{transition-delay:.45s}
+  .reveal.d6{transition-delay:.55s}
+  .reveal.d7{transition-delay:.65s}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Manrope";font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--accent));
+  }
+  h1.kicker, h2.kicker{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.02em;
+    margin:0 0 18px;line-height:1.04;
+  }
+  h1.kicker{font-size:clamp(40px,6.4vw,86px)}
+  h2.kicker{font-size:clamp(30px,4.2vw,56px)}
+  .lead{font-size:clamp(15px,1.4vw,18px);color:var(--ink-2);max-width:62ch;line-height:1.65}
+
+  .section-no{
+    position:absolute;top:96px;right:32px;
+    font-family:"Manrope";font-weight:800;font-size:140px;line-height:1;
+    color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.06);
+    pointer-events:none;user-select:none;
+  }
+  @media (max-width:760px){ .section-no{font-size:80px;top:70px;right:16px} }
+
+  /* ============ Hero ============ */
+  #hero{padding-top:170px;padding-bottom:140px}
+  .hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:end}
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr} }
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:8px 14px;border-radius:999px;
+    border:1px solid var(--line-2);background:rgba(255,255,255,.03);
+    font-size:12px;color:var(--ink-2);letter-spacing:.16em;text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .hero-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 10px var(--accent-2)}
+  h1.hero{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.035em;line-height:.98;
+    font-size:clamp(46px,8vw,118px);margin:0 0 22px;
+  }
+  h1.hero .grad{
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 40%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1.hero .ital{font-style:italic;font-weight:500;color:var(--ink-2)}
+  .hero-sub{color:var(--ink-2);max-width:48ch;font-size:17px;line-height:1.6;margin:0 0 36px}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:9px 14px;border:1px solid var(--line-2);border-radius:999px;
+    font-size:12.5px;color:var(--ink);background:rgba(255,255,255,.03);
+  }
+  .chip svg{width:14px;height:14px;color:var(--accent)}
+  .hero-side{position:relative}
+  .hero-card{
+    border:1px solid var(--line-2);border-radius:18px;padding:26px;
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    backdrop-filter:blur(10px);
+  }
+  .hero-card h4{margin:0 0 4px;font-size:11px;color:var(--ink-2);letter-spacing:.24em;text-transform:uppercase;font-weight:600}
+  .hero-card p{margin:0 0 18px;font-family:"Manrope";font-weight:700;font-size:24px;letter-spacing:-.01em}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .hero-stat{padding:14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02)}
+  .hero-stat b{display:block;font-family:"Manrope";font-weight:800;font-size:26px;letter-spacing:-.02em;color:var(--accent)}
+  .hero-stat span{display:block;font-size:11px;color:var(--ink-2);letter-spacing:.08em;margin-top:4px}
+
+  .scroll-hint{
+    position:absolute;left:50%;bottom:28px;transform:translateX(-50%);
+    font-size:10.5px;letter-spacing:.32em;color:var(--ink-2);text-transform:uppercase;
+    display:flex;flex-direction:column;align-items:center;gap:10px;opacity:.8;
+  }
+  .scroll-hint .bar2{
+    width:1px;height:42px;background:linear-gradient(180deg,var(--accent),transparent);
+    animation:slide 2.2s ease-in-out infinite;
+  }
+  @keyframes slide{0%{transform:scaleY(.2);transform-origin:top}50%{transform:scaleY(1)}100%{transform:scaleY(.2);transform-origin:bottom}}
+
+  /* ============ Problem ============ */
+  .challenges{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  @media (max-width:900px){ .challenges{grid-template-columns:1fr} }
+  .c-card{
+    position:relative;padding:28px;border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(180deg, rgba(255,122,122,.06), rgba(255,255,255,.01));
+    transition:transform var(--t-fast), border-color var(--t-fast);
+    overflow:hidden;
+  }
+  .c-card:hover{transform:translateY(-4px);border-color:rgba(255,122,122,.35)}
+  .c-card .num{
+    font-family:"Manrope";font-weight:800;font-size:34px;color:#FF9C9C;
+    letter-spacing:-.02em;line-height:1;margin-bottom:18px;
+  }
+  .c-card h3{margin:0 0 10px;font-family:"Manrope";font-size:19px;font-weight:700;letter-spacing:-.01em;color:#FFD6D6}
+  .c-card p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.6}
+
+  /* ============ Approach ============ */
+  .ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  @media (max-width:900px){ .ai-grid{grid-template-columns:1fr} }
+  .ai-card{
+    padding:28px;border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(180deg, rgba(63,184,255,.06), rgba(255,255,255,.01));
+    transition:transform var(--t-fast), border-color var(--t-fast);
+    position:relative;overflow:hidden;
+  }
+  .ai-card:hover{transform:translateY(-4px);border-color:rgba(63,184,255,.4)}
+  .ai-card .ico{
+    width:42px;height:42px;border-radius:10px;display:grid;place-items:center;
+    background:rgba(63,184,255,.12);border:1px solid rgba(63,184,255,.3);
+    color:var(--accent);margin-bottom:18px;
+  }
+  .ai-card .ico svg{width:22px;height:22px}
+  .ai-card h3{margin:0 0 10px;font-family:"Manrope";font-size:19px;font-weight:700;letter-spacing:-.01em}
+  .ai-card p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.6}
+
+  /* ============ KPIs ============ */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+  @media (max-width:1100px){ .kpis{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .kpis{grid-template-columns:1fr} }
+  .kpis.three{grid-template-columns:repeat(3,1fr)}
+  @media (max-width:900px){ .kpis.three{grid-template-columns:1fr} }
+  .kpi{
+    padding:42px 18px;min-height:230px;
+    display:grid;grid-template-rows:1fr 1fr;
+    text-align:center;
+    border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.005));
+    position:relative;overflow:hidden;
+  }
+  .kpi b{
+    align-self:end;padding-bottom:12px;
+    display:block;
+    font-family:"Manrope";font-weight:800;
+    font-size:clamp(30px,2.8vw,40px);letter-spacing:-.02em;line-height:1;
+    color:var(--ink);white-space:nowrap;text-align:center;
+  }
+  .kpi b .unit{color:var(--accent);font-weight:700;font-size:.55em;margin-left:8px}
+  .kpi > span{
+    align-self:start;padding-top:12px;
+    display:block;font-size:13px;color:var(--ink-2);line-height:1.55;text-align:center;
+  }
+
+  /* BVA panels */
+  .bva{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+  @media (max-width:900px){ .bva{grid-template-columns:1fr} }
+  .bva-panel{
+    padding:30px;border:1px solid var(--line-2);border-radius:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.005));
+    position:relative;
+  }
+  .bva-panel .tag{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px}
+  .bva-panel h3{margin:0 0 22px;font-family:"Manrope";font-size:22px;letter-spacing:-.01em}
+  .bva-panel .lines{display:flex;flex-direction:column;gap:12px}
+  .bva-panel .line{
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+    padding-bottom:12px;border-bottom:1px dashed var(--line);
+    font-size:14px;color:var(--ink-2);
+  }
+  .bva-panel .line:last-child{border-bottom:none}
+  .bva-panel .line span:last-child{font-family:"Manrope";font-weight:700;color:var(--ink);font-size:15px}
+  .bva-panel .total{
+    margin-top:18px;padding:16px 18px;border-radius:12px;
+    background:rgba(63,184,255,.1);border:1px solid rgba(63,184,255,.3);
+    display:flex;justify-content:space-between;align-items:baseline;
+  }
+  .bva-panel .total span:first-child{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2)}
+  .bva-panel .total span:last-child{font-family:"Manrope";font-weight:800;font-size:24px;color:var(--accent)}
+  .bva-panel.returns .total{background:rgba(98,224,161,.1);border-color:rgba(98,224,161,.3)}
+  .bva-panel.returns .total span:last-child{color:var(--accent-2)}
+
+  /* Year breakdown table */
+  .years{
+    margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  }
+  @media (max-width:760px){ .years{grid-template-columns:1fr} }
+  .year{
+    padding:20px;border:1px solid var(--line);border-radius:14px;
+    background:rgba(255,255,255,.025);
+  }
+  .year .yr{font-family:"Manrope";font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:14px}
+  .year .row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;color:var(--ink-2);border-bottom:1px dashed var(--line)}
+  .year .row:last-child{border-bottom:none}
+  .year .row b{font-family:"Manrope";font-weight:700;color:var(--ink);font-size:13.5px}
+  .year .row.pos b{color:var(--accent-2)}
+  .year .row.neg b{color:#FF9C9C}
+
+  /* ROI */
+  .roi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+  @media (max-width:900px){ .roi{grid-template-columns:1fr} }
+  .roi-card{
+    padding:36px;border-radius:18px;border:1px solid var(--line-2);
+    background:linear-gradient(160deg, rgba(63,184,255,.10) 0%, rgba(255,255,255,.02) 60%);
+    position:relative;overflow:hidden;
+  }
+  .roi-card::after{
+    content:"";position:absolute;inset:-2px;border-radius:18px;pointer-events:none;
+    background:linear-gradient(135deg, rgba(63,184,255,.4), transparent 50%);
+    mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:.6;
+  }
+  .roi-card .tag{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2)}
+  .roi-card b{display:block;font-family:"Manrope";font-weight:800;font-size:clamp(36px,4.4vw,56px);letter-spacing:-.025em;margin:14px 0 8px}
+  .roi-card.roi-1 b{color:#fff}
+  .roi-card.roi-2 b{color:var(--accent)}
+  .roi-card.roi-3 b{color:var(--gold)}
+  .roi-card span.desc{color:var(--ink-2);font-size:14px;line-height:1.55;display:block}
+
+  /* Phases */
+  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px;position:relative}
+  @media (max-width:1100px){ .phases{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:560px){ .phases{grid-template-columns:1fr} }
+  .phase{
+    padding:26px;border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.005));
+    position:relative;transition:transform var(--t-fast),border-color var(--t-fast);
+  }
+  .phase:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .phase .step{
+    display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--accent);color:var(--accent);
+    font-family:"Manrope";font-weight:700;font-size:18px;margin-bottom:16px;
+    background:radial-gradient(circle, rgba(63,184,255,.18), transparent 70%);
+  }
+  .phase h4{margin:0 0 8px;font-family:"Manrope";font-size:18px;letter-spacing:-.01em}
+  .phase .ph-tag{font-size:10.5px;color:var(--accent);letter-spacing:.22em;text-transform:uppercase;display:block;margin-bottom:10px}
+  .phase p{margin:0;color:var(--ink-2);font-size:13.5px;line-height:1.6}
+
+  /* Final / CTA */
+  #final{padding-top:120px}
+  .final-wrap{text-align:center;max-width:920px;margin:0 auto}
+  .final-wrap h2{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.035em;line-height:1;
+    font-size:clamp(40px,6.4vw,84px);margin:0 0 24px;
+  }
+  .final-wrap h2 .grad{
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 45%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .final-wrap .final-sub{
+    color:var(--ink-2);font-size:17px;line-height:1.6;max-width:64ch;margin:0 auto 28px;
+  }
+  .final-bench{
+    display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:14px;
+  }
+  .final-bench .chip{font-size:12px}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 28px;text-align:center;color:var(--muted);font-size:12.5px;
+    display:flex;flex-direction:column;gap:6px;align-items:center;
+  }
+  footer .row2{display:flex;gap:18px;color:var(--ink-2)}
+  footer a{color:var(--ink-2);text-decoration:none}
+  footer a:hover{color:var(--accent)}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grid-overlay"></div>
+
+<header class="bar">
+  <div class="bar-inner">
+    <div class="brand">
+      <span class="brand-logo" role="img" aria-label="Alpar"></span>
+      <div>
+        <b>Alpar + Afya</b><br/>
+        <span>Access Management</span>
+      </div>
+    </div>
+    <nav class="top">
+      <a href="#problem">Problem</a>
+      <a href="#approach">Approach</a>
+      <a href="#impact">Impact</a>
+      <a href="#experience">Experience</a>
+      <a href="#bva">BVA</a>
+      <a href="#roi">ROI</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+    <span class="pill">ServiceNow · Global Partner</span>
+  </div>
+</header>
+
+<aside class="dots" aria-label="Section navigation">
+  <a href="#hero" data-label="Cover" class="active"></a>
+  <a href="#problem" data-label="The Problem"></a>
+  <a href="#approach" data-label="How We Solved"></a>
+  <a href="#impact" data-label="3-Month Impact"></a>
+  <a href="#experience" data-label="User Experience"></a>
+  <a href="#bva" data-label="Business Value"></a>
+  <a href="#roi" data-label="ROI & Payback"></a>
+  <a href="#roadmap" data-label="Roadmap"></a>
+  <a href="#final" data-label="CTA"></a>
+</aside>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag reveal d1">
+          <span class="dot"></span> Afya · Access Management · 3 Months After Go-Live
+        </div>
+        <h1 class="hero reveal d2">
+          <span class="grad">Access Management,</span><br/>
+          <span class="grad">proven ROI.</span><br/>
+          <span class="ital">Live results, not slides.</span>
+        </h1>
+        <p class="hero-sub reveal d3">
+          Business Value Assessment built on real production data. Three months after Go-Live at Afya,
+          with grants, revocations and the support journey already automated end to end.
+        </p>
+        <div class="hero-meta reveal d4">
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>
+            4.892 requests processed
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+            85% of grants automated
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            13-month payback
+          </span>
+        </div>
+      </div>
+      <div class="hero-side reveal d5">
+        <div class="hero-card">
+          <h4>Prepared for</h4>
+          <p>Afya</p>
+          <h4>Authored by</h4>
+          <p>Alpar</p>
+          <div class="hero-stats">
+            <div class="hero-stat"><b data-count="4892" data-format="thousands">0</b><span>Requests in 3 months</span></div>
+            <div class="hero-stat"><b data-count="85" data-suffix="%">0</b><span>Grants auto-resolved</span></div>
+            <div class="hero-stat"><b data-count="13" data-suffix=" mo">0</b><span>Payback</span></div>
+            <div class="hero-stat"><b data-count="183" data-suffix="%">0</b><span>3-year ROI</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <span class="bar2"></span>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section id="problem">
+  <div class="wrap">
+    <div class="section-no">02</div>
+    <div class="eyebrow reveal">The Problem We Solved</div>
+    <h2 class="kicker reveal d1">The chaos in access management<br/>was costing too much.</h2>
+    <p class="lead reveal d2">Three structural failures turned every grant, revocation and review into operational risk, audit debt and lost time across IT.</p>
+
+    <div class="challenges">
+      <article class="c-card reveal d1">
+        <div class="num">01</div>
+        <h3>Manual and fragmented processes</h3>
+        <p>Requests scattered across multiple channels, with no traceability and high operational risk.</p>
+      </article>
+      <article class="c-card reveal d2">
+        <div class="num">02</div>
+        <h3>High error rate and rework</h3>
+        <p>Duplicate or incorrect requests consumed the IT team and generated continuous reprocessing.</p>
+      </article>
+      <article class="c-card reveal d3">
+        <div class="num">03</div>
+        <h3>Zero visibility over active access rights</h3>
+        <p>Without centralized auditing, every grant or revocation required direct human intervention.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APPROACH ============ -->
+<section id="approach">
+  <div class="wrap">
+    <div class="section-no">03</div>
+    <div class="eyebrow reveal">How We Solved It</div>
+    <h2 class="kicker reveal d1">Smart forms + end-to-end<br/>automation.</h2>
+    <p class="lead reveal d2">Full refactoring of the Access Management module in ServiceNow, with modular architecture and a guided user journey from request to resolution.</p>
+
+    <div class="ai-grid">
+      <article class="ai-card reveal d1">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        <h3>Modular Architecture</h3>
+        <p>Separation of requests by type (grant, revocation, maintenance) with independent, scalable workflows for each motion.</p>
+      </article>
+      <article class="ai-card reveal d2">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        <h3>Automated Approvals</h3>
+        <p>Automatic routing eliminates analyst intervention on standard cases: 85% of access grants flow through with zero human touch.</p>
+      </article>
+      <article class="ai-card reveal d3">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12c0 4.97-4.03 9-9 9-1.5 0-2.91-.37-4.15-1.02L3 21l1.02-4.85A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"/><circle cx="8.5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="15.5" cy="12" r="1"/></svg>
+        </div>
+        <h3>Virtual Agent via NIC</h3>
+        <p>Virtual assistant cuts average wait time to 41 seconds and lifts satisfaction NPS to 4,42 across the support journey.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ IMPACT ============ -->
+<section id="impact">
+  <div class="wrap">
+    <div class="section-no">04</div>
+    <div class="eyebrow reveal">Results in 3 Months · Go-Live Feb/2026</div>
+    <h2 class="kicker reveal d1">4.892 requests processed,<br/>operations never stopped.</h2>
+    <p class="lead reveal d2">Live production numbers from the first quarter post Go-Live: scale, automation depth and submission quality, measured against the previous baseline.</p>
+
+    <div class="kpis">
+      <div class="kpi reveal d1">
+        <b><span data-count="4892" data-format="thousands">0</span></b>
+        <span>Total requests processed through the new form</span>
+      </div>
+      <div class="kpi reveal d2">
+        <b><span data-count="85">0</span><span class="unit">%</span></b>
+        <span>Of access grants fully automated, zero human intervention</span>
+      </div>
+      <div class="kpi reveal d3">
+        <b><span data-count="71">0</span><span class="unit">%</span></b>
+        <span>Of access revocations resolved end to end by the system</span>
+      </div>
+      <div class="kpi reveal d4">
+        <b><span data-count="88">0</span><span class="unit">%</span></b>
+        <span>Successful submission rate, 4.316 out of 4.892</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience">
+  <div class="wrap">
+    <div class="section-no">05</div>
+    <div class="eyebrow reveal">User Experience</div>
+    <h2 class="kicker reveal d1">Less waiting, higher satisfaction.<br/>NIC as the new standard.</h2>
+    <p class="lead reveal d2">The virtual agent became the front door of access support, with measurable NPS, resolution time, and ticket volume already booked since launch.</p>
+
+    <div class="kpis three">
+      <div class="kpi reveal d1">
+        <b><span data-count="4.42" data-decimals="2">0</span></b>
+        <span>NPS satisfaction score, above the corporate average</span>
+      </div>
+      <div class="kpi reveal d2">
+        <b><span data-count="41">0</span><span class="unit">s</span></b>
+        <span>Average wait time for support via NIC virtual agent</span>
+      </div>
+      <div class="kpi reveal d3">
+        <b><span data-count="1083" data-format="thousands">0</span></b>
+        <span>Tickets resolved via NIC since Go-Live, Mar/2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BVA ============ -->
+<section id="bva">
+  <div class="wrap">
+    <div class="section-no">06</div>
+    <div class="eyebrow reveal">Business Value Assessment</div>
+    <h2 class="kicker reveal d1">The financial return of the project.</h2>
+    <p class="lead reveal d2">One-time investment versus annual savings, with the three-year P&amp;L broken out year by year.</p>
+
+    <div class="bva">
+      <div class="bva-panel reveal d1">
+        <span class="tag">Investment</span>
+        <h3>What the project required</h3>
+        <div class="lines">
+          <div class="line"><span>Project services and implementation</span><span>R$ 450.000</span></div>
+          <div class="line"><span>One-time engagement, no recurring cost</span><span>Year 1</span></div>
+        </div>
+        <div class="total"><span>Total invested</span><span>R$ 450.000</span></div>
+      </div>
+
+      <div class="bva-panel returns reveal d2">
+        <span class="tag">Return</span>
+        <h3>What the project delivers</h3>
+        <div class="lines">
+          <div class="line"><span>Annual savings (operational + 3 eliminated licenses)</span><span>R$ 425.000</span></div>
+          <div class="line"><span>Cumulative savings by year 3</span><span>R$ 1,275 M</span></div>
+        </div>
+        <div class="total"><span>Net gain by year 3</span><span>R$ 825.000</span></div>
+      </div>
+    </div>
+
+    <div class="years">
+      <div class="year reveal d3">
+        <span class="yr">Year 1</span>
+        <div class="row"><span>Cumulative savings</span><b>R$ 425.000</b></div>
+        <div class="row neg"><span>Net P&amp;L</span><b>−R$ 25.000</b></div>
+        <div class="row neg"><span>ROI</span><b>−6%</b></div>
+      </div>
+      <div class="year reveal d4">
+        <span class="yr">Year 2</span>
+        <div class="row"><span>Cumulative savings</span><b>R$ 850.000</b></div>
+        <div class="row pos"><span>Net P&amp;L</span><b>+R$ 400.000</b></div>
+        <div class="row pos"><span>ROI</span><b>89%</b></div>
+      </div>
+      <div class="year reveal d5">
+        <span class="yr">Year 3</span>
+        <div class="row"><span>Cumulative savings</span><b>R$ 1,275 M</b></div>
+        <div class="row pos"><span>Net P&amp;L</span><b>+R$ 825.000</b></div>
+        <div class="row pos"><span>ROI</span><b>183%</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROI ============ -->
+<section id="roi">
+  <div class="wrap">
+    <div class="section-no">07</div>
+    <div class="eyebrow reveal">Return on Investment</div>
+    <h2 class="kicker reveal d1">Three numbers leadership cares about.</h2>
+    <p class="lead reveal d2">Time to break even, cumulative three-year return, and the annual savings that compound from year one onward.</p>
+
+    <div class="roi">
+      <div class="roi-card roi-1 reveal d1">
+        <span class="tag">Payback</span>
+        <b><span data-count="13">0</span> <small style="font-size:.4em;font-weight:600;letter-spacing:.04em">months</small></b>
+        <span class="desc">Project pays itself off within year 2, on annual savings alone.</span>
+      </div>
+      <div class="roi-card roi-2 reveal d2">
+        <span class="tag">3-Year ROI</span>
+        <b><span data-count="183">0</span>%</b>
+        <span class="desc">Cumulative return by year 3, after recovering the full investment.</span>
+      </div>
+      <div class="roi-card roi-3 reveal d3">
+        <span class="tag">Annual Savings</span>
+        <b>R$ <span data-count="425" data-format="thousands">0</span>K</b>
+        <span class="desc">Operational gains plus 3 eliminated licenses, every year.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-no">08</div>
+    <div class="eyebrow reveal">Project Expansion</div>
+    <h2 class="kicker reveal d1">What's next.</h2>
+    <p class="lead reveal d2">The Access Management foundation unlocks four follow-on waves, already on the rollout plan with Afya.</p>
+
+    <div class="phases">
+      <article class="phase reveal d1">
+        <div class="step">1</div>
+        <span class="ph-tag">May 2026</span>
+        <h4>Profile Maintenance</h4>
+        <p>Smart form for profile changes and reviews, eliminating manual tickets across the IT service desk.</p>
+      </article>
+      <article class="phase reveal d2">
+        <div class="step">2</div>
+        <span class="ph-tag">Jun 2026</span>
+        <h4>Employee Transfer</h4>
+        <p>Automated access management for role changes, transfers and offboarding: no more forgotten revocations.</p>
+      </article>
+      <article class="phase reveal d3">
+        <div class="step">3</div>
+        <span class="ph-tag">H2 2026</span>
+        <h4>Service Consolidation</h4>
+        <p>Bring all remaining Access Management requests into the unified ServiceNow widget, one journey for the end user.</p>
+      </article>
+      <article class="phase reveal d4">
+        <div class="step">4</div>
+        <span class="ph-tag">Ongoing</span>
+        <h4>Backlog &amp; Improvements</h4>
+        <p>Ongoing stabilization and platform evolution driven by real usage data and live operational telemetry.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<section id="final">
+  <div class="wrap">
+    <div class="section-no">09</div>
+    <div class="final-wrap">
+      <div class="eyebrow reveal" style="justify-content:center">Your Turn</div>
+      <h2 class="reveal d1">
+        <span class="grad">Your access management</span><br/>
+        <span class="grad">can get here too.</span>
+      </h2>
+      <p class="final-sub reveal d2">
+        Alpar delivers a Business Value Assessment in up to 2 weeks: we map your automation potential,
+        estimate real savings, and deliver an actionable plan. No commitment, with evidence like this.
+      </p>
+      <div class="final-bench reveal d3">
+        <span class="chip">Afya benchmark</span>
+        <span class="chip">22 min/ticket</span>
+        <span class="chip">R$ 23,27 per request</span>
+        <span class="chip">Go-Live Feb/2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Alpar — ServiceNow Global Partner</div>
+  <div class="row2">
+    <span>Access Management — May 2026</span>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  function formatNumber(value, decimals, format){
+    let v = decimals ? value.toFixed(decimals).replace('.', ',') : Math.round(value).toString();
+    if (format === 'thousands') {
+      const n = Math.round(value);
+      v = n.toLocaleString('pt-BR');
+    }
+    return v;
+  }
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      const format = el.dataset.format || '';
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now){
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const cur = target * eased;
+        el.textContent = formatNumber(cur, decimals, format) + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = formatNumber(target, decimals, format) + suffix;
+      }
+      requestAnimationFrame(tick);
+      countObs.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+  const dots = document.querySelectorAll('aside.dots a');
+  const sections = Array.from(dots).map(a => document.querySelector(a.getAttribute('href')));
+  const activeObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        const id = '#' + e.target.id;
+        dots.forEach(d => d.classList.toggle('active', d.getAttribute('href') === id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => s && activeObs.observe(s));
+</script>
+</body>
+</html>
