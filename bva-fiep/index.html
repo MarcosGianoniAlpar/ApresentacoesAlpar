@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FIEP — Backoffice Process Optimization & Automation | Alpar</title>
+<meta name="description" content="Alpar + FIEP, Backoffice Improvements & Automation with ServiceNow. ROI, payback, 19 mapped automations." />
+<meta name="theme-color" content="#0A1530" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070E1F;
+    --bg-2:#0A1530;
+    --bg-3:#0F1C3D;
+    --ink:#E8EEFA;
+    --ink-2:#A9B6CF;
+    --muted:#6B7A99;
+    --line:rgba(255,255,255,0.08);
+    --line-2:rgba(255,255,255,0.14);
+    --accent:#3FB8FF;       /* ServiceNow cyan */
+    --accent-2:#62E0A1;     /* mint */
+    --gold:#E8C26B;
+    --danger:#FF7A7A;
+    --max:1180px;
+    --r:14px;
+    --t-fast:.35s cubic-bezier(.2,.7,.2,1);
+    --t:.7s cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#001022}
+
+  /* Ambient backdrop */
+  .ambient{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(63,184,255,.14), transparent 60%),
+      radial-gradient(900px 600px at -10% 30%, rgba(98,224,161,.08), transparent 60%),
+      radial-gradient(800px 500px at 50% 110%, rgba(232,194,107,.07), transparent 60%),
+      linear-gradient(180deg, #060B1A 0%, #070E1F 50%, #050913 100%);
+  }
+  .grid-overlay{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+
+  /* Top bar */
+  header.bar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:saturate(140%) blur(14px);
+    background:linear-gradient(180deg, rgba(7,14,31,.78), rgba(7,14,31,.35));
+    border-bottom:1px solid var(--line);
+  }
+  .bar-inner{
+    max-width:var(--max);margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;font-family:"Manrope";font-weight:700;letter-spacing:.02em}
+  .brand .brand-logo{
+    display:block;
+    width:120px;height:38px;
+    background:url('../alpar-logo.png') center/130% no-repeat;
+  }
+  .brand b{font-size:14px}
+  .brand span{font-size:12px;color:var(--ink-2);font-weight:500}
+  nav.top{display:flex;gap:22px;font-size:13px}
+  nav.top a{color:var(--ink-2);text-decoration:none;transition:color var(--t-fast)}
+  nav.top a:hover{color:var(--ink)}
+  .pill{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    padding:6px 12px;border:1px solid var(--line-2);border-radius:999px;color:var(--ink-2);
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+  }
+  @media (max-width:760px){ nav.top{display:none} }
+
+  /* Side dots */
+  aside.dots{
+    position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:40;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  aside.dots a{
+    width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18);
+    transition:all var(--t-fast);position:relative;display:block;
+  }
+  aside.dots a:hover{background:var(--accent);transform:scale(1.2)}
+  aside.dots a.active{background:var(--accent);box-shadow:0 0 0 4px rgba(63,184,255,.18)}
+  aside.dots a::after{
+    content:attr(data-label);
+    position:absolute;right:18px;top:50%;transform:translateY(-50%);
+    font-size:11px;color:var(--ink-2);white-space:nowrap;opacity:0;transition:opacity var(--t-fast);
+    background:var(--bg-2);padding:4px 8px;border-radius:6px;border:1px solid var(--line);
+  }
+  aside.dots a:hover::after{opacity:1}
+  @media (max-width:900px){ aside.dots{display:none} }
+
+  /* Sections */
+  section{
+    min-height:100vh;padding:140px 28px 100px;
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .wrap{max-width:var(--max);width:100%;margin:0 auto}
+
+  /* Reveal animations */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity var(--t), transform var(--t)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.05s}
+  .reveal.d2{transition-delay:.15s}
+  .reveal.d3{transition-delay:.25s}
+  .reveal.d4{transition-delay:.35s}
+  .reveal.d5{transition-delay:.45s}
+  .reveal.d6{transition-delay:.55s}
+  .reveal.d7{transition-delay:.65s}
+
+  /* Section eyebrow */
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Manrope";font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--accent));
+  }
+  h1.kicker, h2.kicker{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.02em;
+    margin:0 0 18px;line-height:1.04;
+  }
+  h1.kicker{font-size:clamp(40px,6.4vw,86px)}
+  h2.kicker{font-size:clamp(30px,4.2vw,56px)}
+  .lead{font-size:clamp(15px,1.4vw,18px);color:var(--ink-2);max-width:62ch;line-height:1.65}
+
+  .section-no{
+    position:absolute;top:96px;right:32px;
+    font-family:"Manrope";font-weight:800;font-size:140px;line-height:1;
+    color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.06);
+    pointer-events:none;user-select:none;
+  }
+  @media (max-width:760px){ .section-no{font-size:80px;top:70px;right:16px} }
+
+  /* ============ Hero ============ */
+  #hero{padding-top:170px;padding-bottom:140px}
+  .hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:end}
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr} }
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:8px 14px;border-radius:999px;
+    border:1px solid var(--line-2);background:rgba(255,255,255,.03);
+    font-size:12px;color:var(--ink-2);letter-spacing:.16em;text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .hero-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 10px var(--accent-2)}
+  h1.hero{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.035em;line-height:.98;
+    font-size:clamp(46px,8vw,118px);margin:0 0 22px;
+  }
+  h1.hero .grad{
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 40%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1.hero .ital{font-style:italic;font-weight:500;color:var(--ink-2)}
+  .hero-sub{color:var(--ink-2);max-width:48ch;font-size:17px;line-height:1.6;margin:0 0 36px}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:9px 14px;border:1px solid var(--line-2);border-radius:999px;
+    font-size:12.5px;color:var(--ink);background:rgba(255,255,255,.03);
+  }
+  .chip svg{width:14px;height:14px;color:var(--accent)}
+  .hero-side{position:relative}
+  .hero-card{
+    border:1px solid var(--line-2);border-radius:18px;padding:26px;
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    backdrop-filter:blur(10px);
+  }
+  .hero-card h4{margin:0 0 4px;font-size:11px;color:var(--ink-2);letter-spacing:.24em;text-transform:uppercase;font-weight:600}
+  .hero-card p{margin:0 0 18px;font-family:"Manrope";font-weight:700;font-size:24px;letter-spacing:-.01em}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .hero-stat{padding:14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02)}
+  .hero-stat b{display:block;font-family:"Manrope";font-weight:800;font-size:26px;letter-spacing:-.02em;color:var(--accent)}
+  .hero-stat span{display:block;font-size:11px;color:var(--ink-2);letter-spacing:.08em;margin-top:4px}
+
+  .scroll-hint{
+    position:absolute;left:50%;bottom:28px;transform:translateX(-50%);
+    font-size:10.5px;letter-spacing:.32em;color:var(--ink-2);text-transform:uppercase;
+    display:flex;flex-direction:column;align-items:center;gap:10px;opacity:.8;
+  }
+  .scroll-hint .bar2{
+    width:1px;height:42px;background:linear-gradient(180deg,var(--accent),transparent);
+    animation:slide 2.2s ease-in-out infinite;
+  }
+  @keyframes slide{0%{transform:scaleY(.2);transform-origin:top}50%{transform:scaleY(1)}100%{transform:scaleY(.2);transform-origin:bottom}}
+
+  /* ============ Agenda ============ */
+  .agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:36px}
+  @media (max-width:900px){ .agenda{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:560px){ .agenda{grid-template-columns:1fr} }
+  .a-card{
+    position:relative;padding:24px;border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.01));
+    transition:transform var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+    overflow:hidden;
+  }
+  .a-card::before{
+    content:"";position:absolute;left:0;top:0;width:2px;height:0;background:var(--accent);
+    transition:height var(--t);
+  }
+  .a-card:hover{transform:translateY(-4px);border-color:var(--line-2)}
+  .a-card:hover::before{height:100%}
+  .a-card .num{font-family:"Manrope";font-weight:700;color:var(--accent);font-size:13px;letter-spacing:.18em;margin-bottom:18px}
+  .a-card h3{margin:0 0 10px;font-family:"Manrope";font-size:20px;font-weight:700;letter-spacing:-.01em}
+  .a-card p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.6}
+
+  /* ============ Diagnosis ============ */
+  .diag{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:36px}
+  @media (max-width:900px){ .diag{grid-template-columns:1fr} }
+  .panel{
+    border:1px solid var(--line);border-radius:18px;padding:30px;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.005));
+  }
+  .panel h3{margin:0 0 6px;font-family:"Manrope";font-size:20px}
+  .panel .tag{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2);margin-bottom:22px;display:block}
+  .panel.challenge h3{color:#FFD6D6}
+  .panel.solution h3{color:#D8F7E5}
+  .panel ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+  .panel li{
+    display:flex;gap:14px;align-items:flex-start;font-size:15px;color:var(--ink);line-height:1.55;
+    padding:14px;border-radius:10px;background:rgba(255,255,255,.025);border:1px solid var(--line);
+    transition:transform var(--t-fast), background var(--t-fast);
+  }
+  .panel li:hover{transform:translateX(4px);background:rgba(255,255,255,.05)}
+  .panel li i{
+    flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;
+    font-style:normal;font-size:12px;font-weight:700;font-family:"Manrope";
+  }
+  .panel.challenge li i{background:rgba(255,122,122,.15);color:#FF9C9C;border:1px solid rgba(255,122,122,.3)}
+  .panel.solution li i{background:rgba(98,224,161,.15);color:#62E0A1;border:1px solid rgba(98,224,161,.3)}
+
+  /* ============ Stats / KPIs ============ */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:40px}
+  @media (max-width:1100px){ .kpis{grid-template-columns:repeat(3,1fr)} }
+  @media (max-width:640px){ .kpis{grid-template-columns:repeat(2,1fr)} }
+  .kpi{
+    padding:42px 18px;min-height:230px;
+    display:grid;grid-template-rows:1fr 1fr;
+    text-align:center;
+    border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.005));
+    position:relative;overflow:hidden;
+  }
+  .kpi b{
+    align-self:end;padding-bottom:12px;
+    display:block;
+    font-family:"Manrope";font-weight:800;
+    font-size:clamp(30px,2.8vw,40px);letter-spacing:-.02em;line-height:1;
+    color:var(--ink);white-space:nowrap;text-align:center;
+  }
+  .kpi b .unit{color:var(--accent);font-weight:700;font-size:.55em;margin-left:8px}
+  .kpi > span{
+    align-self:start;padding-top:12px;
+    display:block;font-size:13px;color:var(--ink-2);line-height:1.55;text-align:center;
+  }
+
+  /* ROI */
+  .roi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+  @media (max-width:900px){ .roi{grid-template-columns:1fr} }
+  .roi-card{
+    padding:36px;border-radius:18px;border:1px solid var(--line-2);
+    background:linear-gradient(160deg, rgba(63,184,255,.10) 0%, rgba(255,255,255,.02) 60%);
+    position:relative;overflow:hidden;
+  }
+  .roi-card::after{
+    content:"";position:absolute;inset:-2px;border-radius:18px;pointer-events:none;
+    background:linear-gradient(135deg, rgba(63,184,255,.4), transparent 50%);
+    mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:.6;
+  }
+  .roi-card .tag{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2)}
+  .roi-card b{display:block;font-family:"Manrope";font-weight:800;font-size:clamp(36px,4.4vw,56px);letter-spacing:-.025em;margin:14px 0 8px}
+  .roi-card.roi-1 b{color:#fff}
+  .roi-card.roi-2 b{color:var(--accent)}
+  .roi-card.roi-3 b{color:var(--gold)}
+  .roi-card span.desc{color:var(--ink-2);font-size:14px}
+
+  /* ============ Methodology ============ */
+  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px;position:relative}
+  @media (max-width:900px){ .phases{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .phases{grid-template-columns:1fr} }
+  .phase{
+    padding:24px;border:1px solid var(--line);border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.005));
+    position:relative;transition:transform var(--t-fast),border-color var(--t-fast);
+  }
+  .phase:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .phase .step{
+    display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--accent);color:var(--accent);
+    font-family:"Manrope";font-weight:700;font-size:18px;margin-bottom:18px;
+    background:radial-gradient(circle, rgba(63,184,255,.18), transparent 70%);
+  }
+  .phase h4{margin:0 0 8px;font-family:"Manrope";font-size:18px}
+  .phase .ph-tag{font-size:11px;color:var(--accent);letter-spacing:.22em;text-transform:uppercase;display:block;margin-bottom:12px}
+  .phase p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.6}
+
+  /* ============ Scope ============ */
+  .scope{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
+  @media (max-width:900px){ .scope{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .scope{grid-template-columns:1fr} }
+  .scope-card{
+    padding:24px;border:1px solid var(--line);border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.005));
+    position:relative;overflow:hidden;
+  }
+  .scope-card b.num{
+    font-family:"Manrope";font-weight:800;font-size:42px;letter-spacing:-.02em;
+    color:var(--accent);display:block;line-height:1;
+  }
+  .scope-card h4{margin:12px 0 8px;font-family:"Manrope";font-size:17px}
+  .scope-card p{margin:0;color:var(--ink-2);font-size:13.5px;line-height:1.55}
+
+  /* ============ Workload chart ============ */
+  .chart{margin-top:40px}
+  .row{
+    display:grid;grid-template-columns:200px 1fr 110px;gap:18px;align-items:center;
+    padding:14px 0;border-top:1px solid var(--line);
+  }
+  .row:first-of-type{border-top:none}
+  .row .lbl{font-size:14px;color:var(--ink)}
+  .row .bar-wrap{height:10px;background:rgba(255,255,255,.05);border-radius:999px;overflow:hidden;position:relative}
+  .row .bar3{
+    height:100%;border-radius:999px;
+    background:linear-gradient(90deg,var(--accent),#8CD7FF);
+    width:0%;transition:width 1.6s cubic-bezier(.2,.7,.2,1);
+    box-shadow:0 0 18px rgba(63,184,255,.4);
+  }
+  .row.tot .bar3{background:linear-gradient(90deg,var(--gold),#F4D98A);box-shadow:0 0 18px rgba(232,194,107,.4)}
+  .row .val{text-align:right;font-family:"Manrope";font-weight:700;font-size:17px}
+  .row.tot .val{color:var(--gold);font-size:19px}
+  .row.tot .lbl{font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:12px;color:var(--gold)}
+  @media (max-width:680px){
+    .row{grid-template-columns:1fr 90px;grid-template-rows:auto auto}
+    .row .bar-wrap{grid-column:1 / -1}
+  }
+
+  /* ============ Process detail cards ============ */
+  .processes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:40px}
+  @media (max-width:900px){ .processes{grid-template-columns:1fr} }
+  .proc{
+    padding:30px;border:1px solid var(--line-2);border-radius:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.005));
+    position:relative;display:flex;flex-direction:column;gap:14px;
+  }
+  .proc .pid{
+    font-family:"Manrope";font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);
+  }
+  .proc h3{margin:0;font-family:"Manrope";font-size:26px;letter-spacing:-.01em}
+  .proc .obj{color:var(--ink-2);font-size:14.5px;line-height:1.6;margin:0}
+  .proc .sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .proc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+  .proc ul li{
+    display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink);line-height:1.55;
+  }
+  .proc ul li::before{
+    content:"";flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:var(--accent);
+    margin-top:8px;box-shadow:0 0 8px var(--accent);
+  }
+  .proc .time{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;
+    padding:14px 16px;border-radius:10px;border:1px solid var(--line);
+    background:rgba(63,184,255,.06);
+  }
+  .proc .time b{font-family:"Manrope";font-size:22px;color:#fff}
+  .proc .time .arrow{color:var(--accent);font-weight:700}
+  .proc .time .red{color:var(--accent-2);font-family:"Manrope";font-weight:700;font-size:16px}
+  .proc .note{font-size:13px;color:var(--ink-2);line-height:1.6;border-left:2px solid var(--gold);padding-left:14px}
+
+  /* ============ Final / CTA ============ */
+  #final{padding-top:120px}
+  .final-wrap{text-align:center;max-width:880px;margin:0 auto}
+  .final-wrap h2{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.035em;line-height:1;
+    font-size:clamp(48px,8vw,110px);margin:0 0 30px;
+  }
+  .final-wrap h2 .grad{
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 45%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .next{
+    margin-top:36px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:left;
+  }
+  @media (max-width:900px){ .next{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .next{grid-template-columns:1fr} }
+  .next-step{
+    padding:18px;border:1px solid var(--line);border-radius:12px;
+    background:rgba(255,255,255,.025);font-size:13.5px;color:var(--ink);line-height:1.55;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .next-step b{font-family:"Manrope";color:var(--accent);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+  .cta{
+    margin-top:46px;display:inline-flex;align-items:center;gap:14px;
+    padding:16px 26px;border-radius:999px;background:var(--accent);color:#001022;
+    font-family:"Manrope";font-weight:700;text-decoration:none;font-size:15px;letter-spacing:.02em;
+    box-shadow:0 14px 50px rgba(63,184,255,.4);
+    transition:transform var(--t-fast), box-shadow var(--t-fast);
+  }
+  .cta:hover{transform:translateY(-2px);box-shadow:0 18px 60px rgba(63,184,255,.55)}
+  .cta svg{width:18px;height:18px}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 28px;text-align:center;color:var(--muted);font-size:12.5px;
+    display:flex;flex-direction:column;gap:6px;align-items:center;
+  }
+  footer .row2{display:flex;gap:18px;color:var(--ink-2)}
+  footer a{color:var(--ink-2);text-decoration:none}
+  footer a:hover{color:var(--accent)}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grid-overlay"></div>
+
+<header class="bar">
+  <div class="bar-inner">
+    <div class="brand">
+      <span class="brand-logo" role="img" aria-label="Alpar"></span>
+      <div>
+        <b>Alpar + FIEP</b><br/>
+        <span>Backoffice Automation</span>
+      </div>
+    </div>
+    <nav class="top">
+      <a href="#agenda">Agenda</a>
+      <a href="#diagnosis">Diagnosis</a>
+      <a href="#impact">Impact</a>
+      <a href="#roi">ROI</a>
+      <a href="#scope">Scope</a>
+      <a href="#processes">Processes</a>
+    </nav>
+    <span class="pill">ServiceNow · Global Partner</span>
+  </div>
+</header>
+
+<aside class="dots" aria-label="Section navigation">
+  <a href="#hero" data-label="Cover" class="active"></a>
+  <a href="#agenda" data-label="Agenda"></a>
+  <a href="#diagnosis" data-label="Diagnosis"></a>
+  <a href="#impact" data-label="Executive Summary"></a>
+  <a href="#roi" data-label="ROI & Payback"></a>
+  <a href="#methodology" data-label="Methodology"></a>
+  <a href="#scope" data-label="Project Scope"></a>
+  <a href="#workload" data-label="Current Workload"></a>
+  <a href="#processes" data-label="Processes"></a>
+  <a href="#final" data-label="Next Steps"></a>
+</aside>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag reveal d1">
+          <span class="dot"></span> FIEP · Backoffice Improvements & Automation · May 2025
+        </div>
+        <h1 class="hero reveal d2">
+          <span class="grad">Process</span><br/>
+          <span class="grad">Optimization</span><br/>
+          <span class="ital">&amp; Automation.</span>
+        </h1>
+        <p class="hero-sub reveal d3">
+          A business case for FIEP's Backoffice, covering bottleneck identification, end-to-end
+          automation on ServiceNow, and a quantified path to operational efficiency.
+        </p>
+        <div class="hero-meta reveal d4">
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            13.200h saved / year
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+            R$ 2,84M ROI in 3 years
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>
+            Payback in 7 months
+          </span>
+        </div>
+      </div>
+      <div class="hero-side reveal d5">
+        <div class="hero-card">
+          <h4>Prepared for</h4>
+          <p>FIEP</p>
+          <h4>Authored by</h4>
+          <p>Alpar</p>
+          <div class="hero-stats">
+            <div class="hero-stat"><b data-count="19">0</b><span>Automations mapped</span></div>
+            <div class="hero-stat"><b data-count="86" data-suffix="%">0</b><span>Avg. automation</span></div>
+            <div class="hero-stat"><b data-count="6.6" data-suffix=" FTE" data-decimals="1">0</b><span>Freed</span></div>
+            <div class="hero-stat"><b data-count="100" data-suffix="%">0</b><span>Services covered</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <span class="bar2"></span>
+  </div>
+</section>
+
+<!-- ============ AGENDA ============ -->
+<section id="agenda">
+  <div class="wrap">
+    <div class="section-no">02</div>
+    <div class="eyebrow reveal">Presentation Structure</div>
+    <h2 class="kicker reveal d1">Agenda</h2>
+    <p class="lead reveal d2">Four chapters take you from the operational problem to a quantified plan of action.</p>
+
+    <div class="agenda">
+      <article class="a-card reveal d1">
+        <div class="num">01 · Objective</div>
+        <h3>Operational efficiency</h3>
+        <p>Increase Backoffice efficiency through bottleneck identification and automation.</p>
+      </article>
+      <article class="a-card reveal d2">
+        <div class="num">02 · Executive Summary</div>
+        <h3>Numbers that matter</h3>
+        <p>Hours saved, ROI, payback period and average automation level per service.</p>
+      </article>
+      <article class="a-card reveal d3">
+        <div class="num">03 · Methodology</div>
+        <h3>How we build it</h3>
+        <p>The disciplined approach Alpar uses to assemble FIEP's business case.</p>
+      </article>
+      <article class="a-card reveal d4">
+        <div class="num">04 · Improvements</div>
+        <h3>19 automations</h3>
+        <p>Mapped opportunities across the Backoffice processes, and what each one unlocks.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIAGNOSIS ============ -->
+<section id="diagnosis">
+  <div class="wrap">
+    <div class="section-no">03</div>
+    <div class="eyebrow reveal">Backoffice Diagnosis</div>
+    <h2 class="kicker reveal d1">Challenges &amp; Solutions</h2>
+    <p class="lead reveal d2">A side-by-side reading of where the Backoffice loses time today, and how ServiceNow turns it around.</p>
+
+    <div class="diag">
+      <div class="panel challenge reveal d1">
+        <span class="tag">Identified Challenges</span>
+        <h3>What we observed</h3>
+        <ul>
+          <li><i>!</i>Manual and repetitive processes consuming excessive time.</li>
+          <li><i>!</i>Lack of integration between CRM, Signature Portal and ERP.</li>
+          <li><i>!</i>Decentralized communication via ad-hoc emails and calls.</li>
+        </ul>
+      </div>
+      <div class="panel solution reveal d2">
+        <span class="tag">Solutions with ServiceNow</span>
+        <h3>What we will deliver</h3>
+        <ul>
+          <li><i>✓</i>End-to-end automation of operational services.</li>
+          <li><i>✓</i>Forms with automatic validation and structured data.</li>
+          <li><i>✓</i>Real-time dashboards for SLA and volume management.</li>
+          <li><i>✓</i>Digital orchestration of decisions with business rules.</li>
+          <li><i>✓</i>Reuse of integrations across similar services.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXECUTIVE SUMMARY ============ -->
+<section id="impact">
+  <div class="wrap">
+    <div class="section-no">04</div>
+    <div class="eyebrow reveal">Executive Summary</div>
+    <h2 class="kicker reveal d1">Estimated Operational Impact</h2>
+    <p class="lead reveal d2">A view of the operational gains FIEP unlocks once the 19 automations are in place.</p>
+
+    <div class="kpis">
+      <div class="kpi reveal d1">
+        <b><span data-count="13200" data-format="thousands">0</span><span class="unit">h</span></b>
+        <span>Saved per year across Backoffice services</span>
+      </div>
+      <div class="kpi reveal d2">
+        <b><span data-count="6.6" data-decimals="1">0</span><span class="unit">FTE</span></b>
+        <span>Freed for strategic activities</span>
+      </div>
+      <div class="kpi reveal d3">
+        <b><span data-count="86">0</span><span class="unit">%</span></b>
+        <span>Average automation per service</span>
+      </div>
+      <div class="kpi reveal d4">
+        <b><span data-count="100">0</span><span class="unit">%</span></b>
+        <span>Of services with automation in scope</span>
+      </div>
+      <div class="kpi reveal d5">
+        <b><span data-count="3745" data-format="thousands">0</span><span class="unit">h</span></b>
+        <span>Saved in risk mitigation per year</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROI ============ -->
+<section id="roi">
+  <div class="wrap">
+    <div class="section-no">05</div>
+    <div class="eyebrow reveal">Business Return</div>
+    <h2 class="kicker reveal d1">ROI &amp; Payback for FIEP</h2>
+    <p class="lead reveal d2">Three numbers leadership cares about: annual savings, three-year ROI, and time to break even.</p>
+
+    <div class="roi">
+      <div class="roi-card roi-1 reveal d1">
+        <span class="tag">Annual Operational Savings</span>
+        <b>R$ <span data-count="1.03" data-decimals="2">0</span> M</b>
+        <span class="desc">Estimated operational savings achieved each year of run.</span>
+      </div>
+      <div class="roi-card roi-2 reveal d2">
+        <span class="tag">3-Year ROI</span>
+        <b>R$ <span data-count="2.84" data-decimals="2">0</span> M</b>
+        <span class="desc">Estimated return on investment over a three-year horizon.</span>
+      </div>
+      <div class="roi-card roi-3 reveal d3">
+        <span class="tag">Payback Period</span>
+        <b><span data-count="7">0</span> <small style="font-size:.4em;font-weight:600;letter-spacing:.04em">months</small></b>
+        <span class="desc">Average time to recover the investment.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METHODOLOGY ============ -->
+<section id="methodology">
+  <div class="wrap">
+    <div class="section-no">06</div>
+    <div class="eyebrow reveal">Alpar Methodology</div>
+    <h2 class="kicker reveal d1">How we build the business case</h2>
+    <p class="lead reveal d2">A four-phase discipline that turns operational ambition into a defensible, validated plan.</p>
+
+    <div class="phases">
+      <article class="phase reveal d1">
+        <div class="step">1</div>
+        <span class="ph-tag">Phase 1</span>
+        <h4>Discovery</h4>
+        <p>Understand objectives, challenges, capabilities and the outcomes you want to achieve.</p>
+      </article>
+      <article class="phase reveal d2">
+        <div class="step">2</div>
+        <span class="ph-tag">Phase 2</span>
+        <h4>Data Collection</h4>
+        <p>Gather volume and cost data to quantify the value of those outcomes.</p>
+      </article>
+      <article class="phase reveal d3">
+        <div class="step">3</div>
+        <span class="ph-tag">Phase 3</span>
+        <h4>Validation</h4>
+        <p>Forrester and ServiceNow customer benchmarks prove the projected value.</p>
+      </article>
+      <article class="phase reveal d4">
+        <div class="step">4</div>
+        <span class="ph-tag">Phase 4</span>
+        <h4>Finalization</h4>
+        <p>Iterate to tell the story of what FIEP wants to achieve with ServiceNow.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCOPE ============ -->
+<section id="scope">
+  <div class="wrap">
+    <div class="section-no">07</div>
+    <div class="eyebrow reveal">Project Scope</div>
+    <h2 class="kicker reveal d1">19 Improvements Identified</h2>
+    <p class="lead reveal d2">Mapped opportunities across four process families, each one designed to remove a recurring operational bottleneck.</p>
+
+    <div class="scope">
+      <article class="scope-card reveal d1">
+        <b class="num">08</b>
+        <h4>Contract Issuance</h4>
+        <p>Eight automated flows: Standard, Production, Fixed no value, Pro Forma, Seller-issued, Subsidy.</p>
+      </article>
+      <article class="scope-card reveal d2">
+        <b class="num">02</b>
+        <h4>Proposal Issuance</h4>
+        <p>Standard flow and non-registered sales item flow.</p>
+      </article>
+      <article class="scope-card reveal d3">
+        <b class="num">02</b>
+        <h4>Contract Cancellation</h4>
+        <p>Standard cancellation flow and Sesi Card cancellation flow.</p>
+      </article>
+      <article class="scope-card reveal d4">
+        <b class="num">07</b>
+        <h4>Other Processes</h4>
+        <p>Proposal Review · Title Rescheduling · Credit Analysis · Billing Suspension · Reversal · Contract Adjustments · Document Request.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORKLOAD ============ -->
+<section id="workload">
+  <div class="wrap">
+    <div class="section-no">08</div>
+    <div class="eyebrow reveal">Current Workload</div>
+    <h2 class="kicker reveal d1">Monthly hours per process</h2>
+    <p class="lead reveal d2">Today's baseline, showing where the Backoffice spends its time before automation kicks in.</p>
+
+    <div class="chart reveal d3">
+      <div class="row" data-pct="60"><div class="lbl">Contract Issuance</div><div class="bar-wrap"><div class="bar3"></div></div><div class="val">732h</div></div>
+      <div class="row" data-pct="24"><div class="lbl">Document Request</div><div class="bar-wrap"><div class="bar3"></div></div><div class="val">288h</div></div>
+      <div class="row" data-pct="14"><div class="lbl">Proposal Issuance</div><div class="bar-wrap"><div class="bar3"></div></div><div class="val">168h</div></div>
+      <div class="row" data-pct="2"><div class="lbl">Contract Cancellation</div><div class="bar-wrap"><div class="bar3"></div></div><div class="val">18h</div></div>
+      <div class="row" data-pct="1"><div class="lbl">Proposal Review</div><div class="bar-wrap"><div class="bar3"></div></div><div class="val">9h</div></div>
+      <div class="row tot" data-pct="100"><div class="lbl">Total monthly</div><div class="bar-wrap"><div class="bar3"></div></div><div class="val">1.223h</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESSES DETAIL ============ -->
+<section id="processes">
+  <div class="wrap">
+    <div class="section-no">09</div>
+    <div class="eyebrow reveal">Process Detail</div>
+    <h2 class="kicker reveal d1">Four flagships, four playbooks</h2>
+    <p class="lead reveal d2">A focused look at the four highest-impact processes: objectives, deliverables, current execution time and strategic notes.</p>
+
+    <div class="processes">
+      <article class="proc reveal d1">
+        <div class="pid">Process 01</div>
+        <h3>Contract Issuance</h3>
+        <p class="obj">Automate eight contract issuance flows, from form submission to automatic delivery of signed contracts and payment slips to all parties.</p>
+        <div class="sub">Deliverables</div>
+        <ul>
+          <li>Standardized offer in ServiceNow with integrated checklist.</li>
+          <li>Automated delinquency check (SERASA / ERP integration).</li>
+          <li>Automatic approval triggers based on a risk matrix.</li>
+          <li>Automatic delivery of contracts and payment slips post-signature.</li>
+          <li>Automatic notifications at every step of the flow.</li>
+        </ul>
+        <div class="time"><b>732h/month</b> <span class="arrow">→</span> <span class="red">up to 90% reduction</span></div>
+        <p class="note">Automation eliminates manual CRM data entry and ad-hoc payment slip issuance, centralizing control and communication in ServiceNow.</p>
+      </article>
+
+      <article class="proc reveal d2">
+        <div class="pid">Process 02</div>
+        <h3>Document Request</h3>
+        <p class="obj">Enable self-service via chatbot or knowledge base, reducing the need to open tickets for simple document requests.</p>
+        <div class="sub">Deliverables</div>
+        <ul>
+          <li>Self-service via chatbot and knowledge base.</li>
+          <li>Structured offer for Backoffice to act when needed.</li>
+          <li>Direct document delivery to client and/or seller via ServiceNow.</li>
+          <li>Centralized and standardized request management.</li>
+        </ul>
+        <div class="time"><b>288h/month</b> <span class="arrow">→</span> <span class="red">up to 90% reduction</span></div>
+        <p class="note">Eliminates manual spreadsheet tracking and ad-hoc lookups in external systems (Google, Notary Offices, Nexxera, Power Apps).</p>
+      </article>
+
+      <article class="proc reveal d3">
+        <div class="pid">Process 03</div>
+        <h3>Proposal Issuance</h3>
+        <p class="obj">Standardize and automate proposal issuance, eliminating Word checklists and manual Business team engagement for pricing.</p>
+        <div class="sub">Deliverables</div>
+        <ul>
+          <li>Standardized form with mandatory fields and automatic validations.</li>
+          <li>Automatic Business team engagement for pricing.</li>
+          <li>Automatic proposal generation and delivery via CRM.</li>
+          <li>Visibility and governance in a single system.</li>
+        </ul>
+        <div class="time"><b>168h/month</b> <span class="arrow">→</span> <span class="red">up to 85% reduction</span></div>
+        <p class="note">The "Non-registered Sales Item" flow is also addressed: Business creates the item without interrupting the main process.</p>
+      </article>
+
+      <article class="proc reveal d4">
+        <div class="pid">Process 04</div>
+        <h3>Contract Cancellation</h3>
+        <p class="obj">Automate cancellation flows (Standard and Sesi Card) with automatic CRM status check and ERP / Signature Portal integration.</p>
+        <div class="sub">Deliverables</div>
+        <ul>
+          <li>Automatic contract status check in CRM.</li>
+          <li>Distinct automated actions based on contract status.</li>
+          <li>Automatic generation of Termination Agreement (Sesi Card).</li>
+          <li>Automatic Finance team engagement for reversals.</li>
+          <li>Automatic notifications at every step.</li>
+        </ul>
+        <div class="time"><b>18h/month</b> <span class="arrow">→</span> <span class="red">+ Sesi Card volume included</span></div>
+        <p class="note">Eliminates manual tracking of Finance tickets: all steps are tracked and triggered automatically in ServiceNow.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<section id="final">
+  <div class="wrap">
+    <div class="section-no">13</div>
+    <div class="final-wrap">
+      <div class="eyebrow reveal" style="justify-content:center">Next Steps with Alpar</div>
+      <h2 class="reveal d1">
+        <span class="grad">We turn processes</span><br/>
+        <span class="grad">into results.</span>
+      </h2>
+
+      <div class="next">
+        <div class="next-step reveal d1"><b>Step 01</b>Validate the scope of the 19 automations.</div>
+        <div class="next-step reveal d2"><b>Step 02</b>Define implementation phases.</div>
+        <div class="next-step reveal d3"><b>Step 03</b>Structure integrations with CRM, Signature Portal and ERP.</div>
+        <div class="next-step reveal d4"><b>Step 04</b>Kick off Phase 1 within 2 weeks.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Alpar — ServiceNow Global Partner</div>
+  <div class="row2">
+    <span>Backoffice Improvements &amp; Automation — May 2025</span>
+  </div>
+</footer>
+
+<script>
+  // ---------- Reveal on scroll ----------
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ---------- Number counters ----------
+  function formatNumber(value, decimals, format){
+    let v = decimals ? value.toFixed(decimals).replace('.', ',') : Math.round(value).toString();
+    if (format === 'thousands') {
+      const n = Math.round(value);
+      v = n.toLocaleString('pt-BR');
+    }
+    return v;
+  }
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      const format = el.dataset.format || '';
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now){
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const cur = target * eased;
+        el.textContent = formatNumber(cur, decimals, format) + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = formatNumber(target, decimals, format) + suffix;
+      }
+      requestAnimationFrame(tick);
+      countObs.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+  // ---------- Workload bars ----------
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const row = e.target;
+      const pct = row.dataset.pct;
+      const bar = row.querySelector('.bar3');
+      requestAnimationFrame(() => { bar.style.width = pct + '%'; });
+      barObs.unobserve(row);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.chart .row').forEach(r => barObs.observe(r));
+
+  // ---------- Side dots active ----------
+  const dots = document.querySelectorAll('aside.dots a');
+  const sections = Array.from(dots).map(a => document.querySelector(a.getAttribute('href')));
+  const activeObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        const id = '#' + e.target.id;
+        dots.forEach(d => d.classList.toggle('active', d.getAttribute('href') === id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => s && activeObs.observe(s));
+</script>
+</body>
+</html>
