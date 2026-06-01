@@ -8,6 +8,7 @@ Apresentações HTML one-page da Alpar, publicadas via GitHub Pages.
 
 | Cliente / Projeto | URL direta |
 |---|---|
+| **Assaí** — Alpar AI Framework (Phase 1 roadmap, Top Offenders, BVA) | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/assai-ai-framework/) |
 | **FIEP** — Backoffice Process Optimization & Automation | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/bva-fiep/) |
 | **Afya** — Digital Admission | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/afya-digital-admission/) |
 | **Afya** — Access Management (BVA · 3 meses pós Go-Live) | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/afya-access-management/) |

@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Assaí — Alpar AI Framework | ServiceNow</title>
+<meta name="description" content="Alpar + Assaí, AI Framework on ServiceNow. Phase 1 roadmap, top offenders deep dive, ROI and timeline." />
+<meta name="theme-color" content="#0A1530" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070E1F;
+    --bg-2:#0A1530;
+    --bg-3:#0F1C3D;
+    --ink:#E8EEFA;
+    --ink-2:#A9B6CF;
+    --muted:#6B7A99;
+    --line:rgba(255,255,255,0.08);
+    --line-2:rgba(255,255,255,0.14);
+    --accent:#3FB8FF;
+    --accent-2:#62E0A1;
+    --gold:#E8C26B;
+    --danger:#FF7A7A;
+    --max:1180px;
+    --r:14px;
+    --t-fast:.35s cubic-bezier(.2,.7,.2,1);
+    --t:.7s cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#001022}
+
+  .ambient{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(63,184,255,.14), transparent 60%),
+      radial-gradient(900px 600px at -10% 30%, rgba(98,224,161,.08), transparent 60%),
+      radial-gradient(800px 500px at 50% 110%, rgba(232,194,107,.07), transparent 60%),
+      linear-gradient(180deg, #060B1A 0%, #070E1F 50%, #050913 100%);
+  }
+  .grid-overlay{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+
+  header.bar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:saturate(140%) blur(14px);
+    background:linear-gradient(180deg, rgba(7,14,31,.78), rgba(7,14,31,.35));
+    border-bottom:1px solid var(--line);
+  }
+  .bar-inner{
+    max-width:var(--max);margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;font-family:"Manrope";font-weight:700;letter-spacing:.02em}
+  .brand .brand-logo{
+    display:block;
+    width:120px;height:38px;
+    background:url('../alpar-logo.png') center/130% no-repeat;
+  }
+  .brand b{font-size:14px}
+  .brand span{font-size:12px;color:var(--ink-2);font-weight:500}
+  nav.top{display:flex;gap:22px;font-size:13px}
+  nav.top a{color:var(--ink-2);text-decoration:none;transition:color var(--t-fast)}
+  nav.top a:hover{color:var(--ink)}
+  .pill{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    padding:6px 12px;border:1px solid var(--line-2);border-radius:999px;color:var(--ink-2);
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+  }
+  @media (max-width:760px){ nav.top{display:none} }
+
+  aside.dots{
+    position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:40;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  aside.dots a{
+    width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18);
+    transition:all var(--t-fast);position:relative;display:block;
+  }
+  aside.dots a:hover{background:var(--accent);transform:scale(1.2)}
+  aside.dots a.active{background:var(--accent);box-shadow:0 0 0 4px rgba(63,184,255,.18)}
+  aside.dots a::after{
+    content:attr(data-label);
+    position:absolute;right:18px;top:50%;transform:translateY(-50%);
+    font-size:11px;color:var(--ink-2);white-space:nowrap;opacity:0;transition:opacity var(--t-fast);
+    background:var(--bg-2);padding:4px 8px;border-radius:6px;border:1px solid var(--line);
+  }
+  aside.dots a:hover::after{opacity:1}
+  @media (max-width:900px){ aside.dots{display:none} }
+
+  section{
+    min-height:100vh;padding:140px 28px 100px;
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .wrap{max-width:var(--max);width:100%;margin:0 auto}
+
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity var(--t), transform var(--t)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.05s}
+  .reveal.d2{transition-delay:.15s}
+  .reveal.d3{transition-delay:.25s}
+  .reveal.d4{transition-delay:.35s}
+  .reveal.d5{transition-delay:.45s}
+  .reveal.d6{transition-delay:.55s}
+  .reveal.d7{transition-delay:.65s}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Manrope";font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--accent));
+  }
+  h1.kicker, h2.kicker{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.02em;
+    margin:0 0 18px;line-height:1.04;
+  }
+  h1.kicker{font-size:clamp(40px,6.4vw,86px)}
+  h2.kicker{font-size:clamp(30px,4.2vw,56px)}
+  .lead{font-size:clamp(15px,1.4vw,18px);color:var(--ink-2);max-width:62ch;line-height:1.65}
+
+  .section-no{
+    position:absolute;top:96px;right:32px;
+    font-family:"Manrope";font-weight:800;font-size:140px;line-height:1;
+    color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.06);
+    pointer-events:none;user-select:none;
+  }
+  @media (max-width:760px){ .section-no{font-size:80px;top:70px;right:16px} }
+
+  /* ============ Hero ============ */
+  #hero{padding-top:170px;padding-bottom:140px}
+  .hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:end}
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr} }
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:8px 14px;border-radius:999px;
+    border:1px solid var(--line-2);background:rgba(255,255,255,.03);
+    font-size:12px;color:var(--ink-2);letter-spacing:.16em;text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .hero-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 10px var(--accent-2)}
+  h1.hero{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.035em;line-height:.98;
+    font-size:clamp(46px,8vw,118px);margin:0 0 22px;
+  }
+  h1.hero .grad{
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 40%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1.hero .ital{font-style:italic;font-weight:500;color:var(--ink-2)}
+  .hero-sub{color:var(--ink-2);max-width:48ch;font-size:17px;line-height:1.6;margin:0 0 36px}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:9px 14px;border:1px solid var(--line-2);border-radius:999px;
+    font-size:12.5px;color:var(--ink);background:rgba(255,255,255,.03);
+  }
+  .chip svg{width:14px;height:14px;color:var(--accent)}
+  .hero-side{position:relative}
+  .hero-card{
+    border:1px solid var(--line-2);border-radius:18px;padding:26px;
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    backdrop-filter:blur(10px);
+  }
+  .hero-card h4{margin:0 0 4px;font-size:11px;color:var(--ink-2);letter-spacing:.24em;text-transform:uppercase;font-weight:600}
+  .hero-card p{margin:0 0 18px;font-family:"Manrope";font-weight:700;font-size:24px;letter-spacing:-.01em}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .hero-stat{padding:14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02)}
+  .hero-stat b{display:block;font-family:"Manrope";font-weight:800;font-size:26px;letter-spacing:-.02em;color:var(--accent)}
+  .hero-stat span{display:block;font-size:11px;color:var(--ink-2);letter-spacing:.08em;margin-top:4px}
+
+  .scroll-hint{
+    position:absolute;left:50%;bottom:28px;transform:translateX(-50%);
+    font-size:10.5px;letter-spacing:.32em;color:var(--ink-2);text-transform:uppercase;
+    display:flex;flex-direction:column;align-items:center;gap:10px;opacity:.8;
+  }
+  .scroll-hint .bar2{
+    width:1px;height:42px;background:linear-gradient(180deg,var(--accent),transparent);
+    animation:slide 2.2s ease-in-out infinite;
+  }
+  @keyframes slide{0%{transform:scaleY(.2);transform-origin:top}50%{transform:scaleY(1)}100%{transform:scaleY(.2);transform-origin:bottom}}
+
+  /* ============ Cards (agenda-like) ============ */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  @media (max-width:900px){ .grid3{grid-template-columns:1fr} }
+  .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:36px}
+  @media (max-width:1100px){ .grid5{grid-template-columns:repeat(3,1fr)} }
+  @media (max-width:640px){ .grid5{grid-template-columns:repeat(2,1fr)} }
+  .a-card{
+    position:relative;padding:24px;border:1px solid var(--line);border-radius:var(--r);
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.01));
+    transition:transform var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+    overflow:hidden;
+  }
+  .a-card::before{
+    content:"";position:absolute;left:0;top:0;width:2px;height:0;background:var(--accent);
+    transition:height var(--t);
+  }
+  .a-card:hover{transform:translateY(-4px);border-color:var(--line-2)}
+  .a-card:hover::before{height:100%}
+  .a-card .num{font-family:"Manrope";font-weight:700;color:var(--accent);font-size:13px;letter-spacing:.18em;margin-bottom:18px}
+  .a-card h3{margin:0 0 10px;font-family:"Manrope";font-size:20px;font-weight:700;letter-spacing:-.01em}
+  .a-card p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.6}
+
+  /* ============ KPIs ============ */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:40px}
+  @media (max-width:1100px){ .kpis{grid-template-columns:repeat(3,1fr)} }
+  @media (max-width:640px){ .kpis{grid-template-columns:repeat(2,1fr)} }
+  .kpis.k4{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:1100px){ .kpis.k4{grid-template-columns:repeat(2,1fr)} }
+  .kpi{
+    padding:42px 18px;min-height:230px;
+    display:grid;grid-template-rows:1fr 1fr;
+    text-align:center;
+    border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.005));
+    position:relative;overflow:hidden;
+  }
+  .kpi b{
+    align-self:end;padding-bottom:12px;
+    display:block;
+    font-family:"Manrope";font-weight:800;
+    font-size:clamp(30px,2.8vw,40px);letter-spacing:-.02em;line-height:1;
+    color:var(--ink);white-space:nowrap;text-align:center;
+  }
+  .kpi b .unit{color:var(--accent);font-weight:700;font-size:.55em;margin-left:8px}
+  .kpi > span{
+    align-self:start;padding-top:12px;
+    display:block;font-size:13px;color:var(--ink-2);line-height:1.55;text-align:center;
+  }
+  .kpi .src{font-size:10.5px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;display:block;margin-top:6px}
+
+  /* ============ Problem / Solution panels ============ */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  @media (max-width:900px){ .pillars{grid-template-columns:1fr} }
+  .pillar{
+    padding:28px;border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.005));
+    position:relative;overflow:hidden;
+    transition:transform var(--t-fast), border-color var(--t-fast);
+  }
+  .pillar:hover{transform:translateY(-4px);border-color:var(--line-2)}
+  .pillar .pnum{
+    font-family:"Manrope";font-weight:800;color:var(--accent);font-size:34px;letter-spacing:-.02em;line-height:1;
+    display:block;margin-bottom:18px;
+  }
+  .pillar h4{margin:0 0 10px;font-family:"Manrope";font-size:19px;letter-spacing:-.01em}
+  .pillar p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.6}
+
+  /* ============ Tables ============ */
+  .table-wrap{
+    margin-top:34px;border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;
+    background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.005));
+  }
+  .tbl{
+    width:100%;border-collapse:collapse;font-size:13.5px;
+  }
+  .tbl thead th{
+    text-align:left;font-family:"Manrope";font-weight:700;font-size:11.5px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+    padding:16px 14px;border-bottom:1px solid var(--line-2);
+    background:rgba(63,184,255,.06);
+    white-space:nowrap;
+  }
+  .tbl tbody td{
+    padding:13px 14px;border-bottom:1px solid var(--line);color:var(--ink);
+    vertical-align:top;line-height:1.5;
+  }
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl tbody tr:hover{background:rgba(255,255,255,.025)}
+  .tbl td.rk{
+    font-family:"Manrope";font-weight:700;color:var(--accent);
+    width:48px;text-align:center;
+  }
+  .tbl td.num, .tbl th.num{text-align:right;font-family:"Manrope";font-weight:600;white-space:nowrap}
+  .tbl td.tag{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap;
+  }
+  .tbl tr.total td{
+    background:rgba(232,194,107,.08);font-family:"Manrope";font-weight:700;
+    border-top:1px solid var(--gold);color:var(--gold);
+  }
+  .tbl tr.struct td.tag{color:#62E0A1}
+  .tbl tr.auto td.tag{color:var(--accent)}
+  .tbl tr.prod td.tag{color:var(--gold)}
+  .tbl .pill-sm{
+    display:inline-block;padding:3px 9px;border-radius:999px;font-size:10.5px;
+    letter-spacing:.12em;text-transform:uppercase;font-family:"Manrope";font-weight:700;
+    border:1px solid var(--line-2);
+  }
+  .pill-sm.struct{color:#62E0A1;border-color:rgba(98,224,161,.4);background:rgba(98,224,161,.08)}
+  .pill-sm.auto{color:var(--accent);border-color:rgba(63,184,255,.4);background:rgba(63,184,255,.08)}
+  .pill-sm.prod{color:var(--gold);border-color:rgba(232,194,107,.4);background:rgba(232,194,107,.08)}
+  .tbl-foot{
+    padding:14px 18px;font-size:12px;color:var(--ink-2);
+    background:rgba(255,255,255,.02);border-top:1px solid var(--line);
+    line-height:1.6;
+  }
+  @media (max-width:900px){
+    .table-wrap{overflow-x:auto}
+    .tbl{min-width:760px}
+  }
+
+  /* ============ ROI ============ */
+  .roi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+  @media (max-width:900px){ .roi{grid-template-columns:1fr} }
+  .roi-card{
+    padding:36px;border-radius:18px;border:1px solid var(--line-2);
+    background:linear-gradient(160deg, rgba(63,184,255,.10) 0%, rgba(255,255,255,.02) 60%);
+    position:relative;overflow:hidden;
+  }
+  .roi-card::after{
+    content:"";position:absolute;inset:-2px;border-radius:18px;pointer-events:none;
+    background:linear-gradient(135deg, rgba(63,184,255,.4), transparent 50%);
+    mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:.6;
+  }
+  .roi-card .tag{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2)}
+  .roi-card b{display:block;font-family:"Manrope";font-weight:800;font-size:clamp(32px,4vw,48px);letter-spacing:-.025em;margin:14px 0 8px}
+  .roi-card.roi-1 b{color:#fff}
+  .roi-card.roi-2 b{color:var(--accent)}
+  .roi-card.roi-3 b{color:var(--gold)}
+  .roi-card span.desc{color:var(--ink-2);font-size:14px;line-height:1.55;display:block}
+  .roi-card .mini{margin-top:18px;display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--ink-2)}
+  .roi-card .mini b{font-family:"Manrope";font-weight:700;font-size:14px;color:var(--ink);display:inline;margin:0}
+
+  /* Investment / Return blocks */
+  .invret{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px}
+  @media (max-width:900px){ .invret{grid-template-columns:1fr} }
+  .ir-card{
+    padding:30px;border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.005));
+  }
+  .ir-card .tag{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2);display:block;margin-bottom:6px}
+  .ir-card h3{margin:0 0 22px;font-family:"Manrope";font-size:22px;letter-spacing:-.01em}
+  .ir-card.invest h3{color:#FFD6D6}
+  .ir-card.return h3{color:#D8F7E5}
+  .ir-row{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    padding:12px 0;border-bottom:1px solid var(--line);
+  }
+  .ir-row:last-child{border-bottom:none}
+  .ir-row .lbl{font-size:14px;color:var(--ink)}
+  .ir-row .val{font-family:"Manrope";font-weight:700;font-size:16px;color:var(--ink);white-space:nowrap}
+  .ir-row.total{margin-top:6px;padding-top:18px;border-top:1px solid var(--line-2)}
+  .ir-row.total .lbl{font-family:"Manrope";font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12px;color:var(--accent)}
+  .ir-row.total .val{font-size:22px;color:var(--accent)}
+  .ir-card.return .ir-row.total .lbl{color:var(--accent-2)}
+  .ir-card.return .ir-row.total .val{color:var(--accent-2)}
+
+  /* ============ Timeline / Gantt ============ */
+  .timeline{margin-top:36px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.015)}
+  .tl-head{
+    display:grid;grid-template-columns:280px repeat(8,1fr);
+    padding:12px 16px;background:rgba(63,184,255,.06);
+    font-family:"Manrope";font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+    border-bottom:1px solid var(--line-2);
+  }
+  .tl-head .h{text-align:center}
+  .tl-head .h:first-child{text-align:left}
+  .tl-row{
+    display:grid;grid-template-columns:280px repeat(8,1fr);
+    padding:10px 16px;align-items:center;border-bottom:1px solid var(--line);
+    font-size:13.5px;
+  }
+  .tl-row:last-child{border-bottom:none}
+  .tl-row .lbl{padding-right:14px;color:var(--ink)}
+  .tl-cell{height:14px;margin:0 2px;border-radius:4px;position:relative}
+  .tl-cell.on{background:linear-gradient(90deg,var(--accent),#8CD7FF);box-shadow:0 0 12px rgba(63,184,255,.35)}
+  .tl-cell.gl{background:var(--gold);box-shadow:0 0 12px rgba(232,194,107,.5)}
+  .tl-cell.gl::after{
+    content:attr(data-date);position:absolute;left:50%;top:-22px;transform:translateX(-50%);
+    font-size:10.5px;color:var(--gold);font-family:"Manrope";font-weight:700;white-space:nowrap;
+  }
+  .tl-row.go .lbl{color:var(--gold);font-family:"Manrope";font-weight:700}
+  .tl-legend{
+    display:flex;gap:20px;padding:14px 16px;font-size:11.5px;color:var(--ink-2);
+    border-top:1px solid var(--line);
+  }
+  .tl-legend span{display:inline-flex;align-items:center;gap:8px}
+  .tl-legend i{width:14px;height:10px;border-radius:3px;display:inline-block}
+  .tl-legend i.on{background:linear-gradient(90deg,var(--accent),#8CD7FF)}
+  .tl-legend i.gl{background:var(--gold)}
+  @media (max-width:900px){
+    .timeline{overflow-x:auto}
+    .tl-head, .tl-row{min-width:820px}
+  }
+
+  /* ============ Phases (next phases / steps) ============ */
+  .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;position:relative}
+  @media (max-width:900px){ .phases{grid-template-columns:1fr} }
+  .phase{
+    padding:28px;border:1px solid var(--line);border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.005));
+    position:relative;transition:transform var(--t-fast),border-color var(--t-fast);
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .phase:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .phase .step{
+    display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--accent);color:var(--accent);
+    font-family:"Manrope";font-weight:700;font-size:18px;
+    background:radial-gradient(circle, rgba(63,184,255,.18), transparent 70%);
+  }
+  .phase h4{margin:0;font-family:"Manrope";font-size:20px;letter-spacing:-.01em}
+  .phase .ph-tag{font-size:11px;color:var(--accent);letter-spacing:.22em;text-transform:uppercase}
+  .phase ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+  .phase ul li{
+    display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink);line-height:1.5;
+  }
+  .phase ul li::before{
+    content:"";flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:var(--accent);
+    margin-top:8px;
+  }
+  .phase ul li small{color:var(--ink-2);font-size:11.5px;display:block;margin-top:2px;letter-spacing:.04em}
+
+  /* ============ AI Platform ============ */
+  .platform{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:36px}
+  @media (max-width:1100px){ .platform{grid-template-columns:repeat(3,1fr)} }
+  @media (max-width:700px){ .platform{grid-template-columns:1fr} }
+  .pf{
+    padding:24px;border:1px solid var(--line);border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.005));
+    transition:transform var(--t-fast), border-color var(--t-fast);
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .pf:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .pf .pf-ico{
+    width:42px;height:42px;border-radius:10px;display:grid;place-items:center;
+    background:rgba(63,184,255,.12);border:1px solid rgba(63,184,255,.3);color:var(--accent);
+  }
+  .pf .pf-ico svg{width:22px;height:22px}
+  .pf h4{margin:0;font-family:"Manrope";font-size:16px;letter-spacing:-.01em}
+  .pf p{margin:0;color:var(--ink-2);font-size:13px;line-height:1.55}
+
+  /* ============ Final / CTA ============ */
+  #final{padding-top:120px}
+  .final-wrap{text-align:center;max-width:920px;margin:0 auto}
+  .final-wrap h2{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.035em;line-height:1;
+    font-size:clamp(48px,8vw,110px);margin:0 0 30px;
+  }
+  .final-wrap h2 .grad{
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 45%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .next{
+    margin-top:36px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:left;
+  }
+  @media (max-width:900px){ .next{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .next{grid-template-columns:1fr} }
+  .next-step{
+    padding:18px;border:1px solid var(--line);border-radius:12px;
+    background:rgba(255,255,255,.025);font-size:13.5px;color:var(--ink);line-height:1.55;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .next-step b{font-family:"Manrope";color:var(--accent);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 28px;text-align:center;color:var(--muted);font-size:12.5px;
+    display:flex;flex-direction:column;gap:6px;align-items:center;
+  }
+  footer .row2{display:flex;gap:18px;color:var(--ink-2)}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grid-overlay"></div>
+
+<header class="bar">
+  <div class="bar-inner">
+    <div class="brand">
+      <span class="brand-logo" role="img" aria-label="Alpar"></span>
+      <div>
+        <b>Alpar + Assaí</b><br/>
+        <span>AI Framework</span>
+      </div>
+    </div>
+    <nav class="top">
+      <a href="#platform">Platform</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#offenders-cs">Offenders</a>
+      <a href="#bva">BVA</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#vision">Vision</a>
+    </nav>
+    <span class="pill">ServiceNow · Global Partner</span>
+  </div>
+</header>
+
+<aside class="dots" aria-label="Section navigation">
+  <a href="#hero" data-label="Cover" class="active"></a>
+  <a href="#market" data-label="ServiceNow by the Numbers"></a>
+  <a href="#problem" data-label="The Problem"></a>
+  <a href="#reality" data-label="The New Reality"></a>
+  <a href="#platform" data-label="AI Platform"></a>
+  <a href="#roadmap" data-label="Phase 1 Roadmap"></a>
+  <a href="#offenders-cs" data-label="Offenders · Customer Space"></a>
+  <a href="#offenders-it" data-label="Offenders · IT Incidents"></a>
+  <a href="#offenders-csa" data-label="Offenders · CSA Cases"></a>
+  <a href="#impact" data-label="Proven Impact"></a>
+  <a href="#bva" data-label="Business Value Assessment"></a>
+  <a href="#timeline" data-label="Timeline"></a>
+  <a href="#vision" data-label="Long-term Vision"></a>
+  <a href="#final" data-label="Next Steps"></a>
+</aside>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag reveal d1">
+          <span class="dot"></span> Assaí · Alpar AI Framework · 2026
+        </div>
+        <h1 class="hero reveal d2">
+          <span class="grad">AI at the heart</span><br/>
+          <span class="grad">of Assaí.</span><br/>
+          <span class="ital">Real value.</span>
+        </h1>
+        <p class="hero-sub reveal d3">
+          A Phase 1 AI implementation roadmap on ServiceNow, top offenders deep dive,
+          and a quantified business case for Assaí's operations.
+        </p>
+        <div class="hero-meta reveal d4">
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            15.763h saved / year
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+            R$ 1,1 M cumulative in Year 3
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>
+            Payback in Year 2
+          </span>
+        </div>
+      </div>
+      <div class="hero-side reveal d5">
+        <div class="hero-card">
+          <h4>Prepared for</h4>
+          <p>Assaí</p>
+          <h4>Authored by</h4>
+          <p>Alpar</p>
+          <div class="hero-stats">
+            <div class="hero-stat"><b data-count="802305" data-format="thousands">0</b><span>Projected assists / year</span></div>
+            <div class="hero-stat"><b data-count="668588" data-format="thousands">0</b><span>Assists in 2026</span></div>
+            <div class="hero-stat"><b data-count="15763" data-format="thousands">0</b><span>Hours saved</span></div>
+            <div class="hero-stat"><b data-count="5">0</b><span>Phase 1 features</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <span class="bar2"></span>
+  </div>
+</section>
+
+<!-- ============ MARKET ============ -->
+<section id="market">
+  <div class="wrap">
+    <div class="section-no">01</div>
+    <div class="eyebrow reveal">Global Market Leader</div>
+    <h2 class="kicker reveal d1">ServiceNow by the numbers</h2>
+    <p class="lead reveal d2">The platform Assaí is choosing is already the world's standard for enterprise workflows and AI.</p>
+
+    <div class="kpis">
+      <div class="kpi reveal d1">
+        <b><span data-count="85">0</span><span class="unit">%</span></b>
+        <span>of Fortune 500 companies use ServiceNow<small class="src">ServiceNow 2024</small></span>
+      </div>
+      <div class="kpi reveal d2">
+        <b><span data-count="7.7" data-decimals="1">0</span><span class="unit">K</span></b>
+        <span>customers in more than 85 countries<small class="src">ServiceNow 2024</small></span>
+      </div>
+      <div class="kpi reveal d3">
+        <b>#<span data-count="1">0</span></b>
+        <span>workflow platform in the world<small class="src">Gartner 2024</small></span>
+      </div>
+      <div class="kpi reveal d4">
+        <b><span data-count="97">0</span><span class="unit">%</span></b>
+        <span>renewal rate for 20+ consecutive quarters<small class="src">ServiceNow 2024</small></span>
+      </div>
+      <div class="kpi reveal d5">
+        <b><span data-count="80">0</span><span class="unit">B+</span></b>
+        <span>workflows executed annually<small class="src">ServiceNow 2024</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section id="problem">
+  <div class="wrap">
+    <div class="section-no">02</div>
+    <div class="eyebrow reveal">The Problem</div>
+    <h2 class="kicker reveal d1">Enterprise fragmentation.</h2>
+    <p class="lead reveal d2">SaaS promised freedom but multiplied systems. Each team runs its own tool with no cross-visibility or real integration.</p>
+
+    <div class="pillars">
+      <article class="pillar reveal d1">
+        <span class="pnum">01</span>
+        <h4>Data fragmented in silos</h4>
+        <p>SaaS promised freedom but multiplied systems. Each team runs its own tool with no cross-visibility or real integration.</p>
+      </article>
+      <article class="pillar reveal d2">
+        <span class="pnum">02</span>
+        <h4>Manual and inefficient processes</h4>
+        <p>Email approvals, spreadsheets, and WhatsApp create bottlenecks, rework, and errors that are hard to track or fix.</p>
+      </article>
+      <article class="pillar reveal d3">
+        <span class="pnum">03</span>
+        <h4>Impossible to scale with quality</h4>
+        <p>Assaí growth demands intelligent automation. Without it, operational costs grow faster than revenue.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEW REALITY ============ -->
+<section id="reality">
+  <div class="wrap">
+    <div class="section-no">03</div>
+    <div class="eyebrow reveal">The New Reality</div>
+    <h2 class="kicker reveal d1">ServiceNow was built for this moment.</h2>
+    <p class="lead reveal d2">One intelligence platform, autonomous AI operations, and measurable ROI from Phase 1.</p>
+
+    <div class="pillars">
+      <article class="pillar reveal d1">
+        <span class="pnum">01</span>
+        <h4>A single intelligence platform</h4>
+        <p>Digitizing processes is not enough. Everything must be connected in a unified view with native AI and real-time data.</p>
+      </article>
+      <article class="pillar reveal d2">
+        <span class="pnum">02</span>
+        <h4>Operational autonomy with AI</h4>
+        <p>AI that acts, not just suggests: resolves tickets, categorizes cases, predicts failures, and reroutes teams automatically.</p>
+      </article>
+      <article class="pillar reveal d3">
+        <span class="pnum">03</span>
+        <h4>Measurable ROI from Phase 1</h4>
+        <p>Each feature delivers immediate, measurable value. Alpar guarantees proven returns before scaling.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AI PLATFORM ============ -->
+<section id="platform">
+  <div class="wrap">
+    <div class="section-no">04</div>
+    <div class="eyebrow reveal">ServiceNow AI Platform</div>
+    <h2 class="kicker reveal d1">The AI control tower for business reinvention</h2>
+    <p class="lead reveal d2">Five capabilities that turn ServiceNow into Assaí's intelligent command center.</p>
+
+    <div class="platform">
+      <article class="pf reveal d1">
+        <div class="pf-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
+        <h4>AI Control Tower</h4>
+        <p>An intelligent command center connecting people, processes, and systems in real time.</p>
+      </article>
+      <article class="pf reveal d2">
+        <div class="pf-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 1 1-3.7-7"/><path d="M21 4v5h-5"/></svg></div>
+        <h4>Now Assist</h4>
+        <p>Generative AI copilot integrated across all modules: summarizes tickets, suggests actions, and resolves issues in natural language.</p>
+      </article>
+      <article class="pf reveal d3">
+        <div class="pf-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l3-3 4 4 5-6"/></svg></div>
+        <h4>Predictive Intelligence</h4>
+        <p>Native machine learning that categorizes, prioritizes, and routes incidents and cases without human intervention.</p>
+      </article>
+      <article class="pf reveal d4">
+        <div class="pf-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+        <h4>Process Mining</h4>
+        <p>Maps operational bottlenecks in real time based on actual process data, not perceptions.</p>
+      </article>
+      <article class="pf reveal d5">
+        <div class="pf-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M6 17V9M11 17V5M16 17v-6M21 17v-9"/></svg></div>
+        <h4>Performance Analytics</h4>
+        <p>Executive and operational dashboards with real-time KPIs for data-driven decisions at Assaí.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHASE 1 ROADMAP TABLE ============ -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-no">05</div>
+    <div class="eyebrow reveal">Phase 1 · AI Roadmap</div>
+    <h2 class="kicker reveal d1">AI Implementation, Assaí</h2>
+    <p class="lead reveal d2">Eleven features grouped into structural foundations, automation, and productivity. Two go-lives confirmed in March.</p>
+
+    <div class="table-wrap reveal d3">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Application</th>
+            <th class="num">Volume / Year</th>
+            <th class="num">Assists</th>
+            <th class="num">Assists 2026</th>
+            <th>Solution</th>
+            <th class="num">Min Saved</th>
+            <th class="num">Hours Saved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="struct">
+            <td>AI Control Tower</td>
+            <td>Platform</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td><span class="pill-sm struct">Structural</span></td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+          </tr>
+          <tr class="struct">
+            <td>Assist Consumption</td>
+            <td>Platform</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td><span class="pill-sm struct">Structural</span></td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+          </tr>
+          <tr class="struct">
+            <td>IT Workspace</td>
+            <td>IT</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td><span class="pill-sm struct">Structural</span></td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+          </tr>
+          <tr class="struct">
+            <td>RaptorDB</td>
+            <td>Platform</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td><span class="pill-sm struct">Structural</span></td>
+            <td class="num">Under review</td>
+            <td class="num" style="color:var(--muted)">0</td>
+          </tr>
+          <tr class="auto">
+            <td>Assaí Card (Passai)</td>
+            <td>Case (Customer Space)</td>
+            <td class="num">24.000</td>
+            <td class="num">24.000</td>
+            <td class="num">20.000</td>
+            <td><span class="pill-sm auto">Automation</span></td>
+            <td class="num">4</td>
+            <td class="num">1.600</td>
+          </tr>
+          <tr class="auto">
+            <td>Price discrepancy</td>
+            <td>Case (Customer Space)</td>
+            <td class="num">3.957</td>
+            <td class="num">150.000</td>
+            <td class="num">125.000</td>
+            <td><span class="pill-sm auto">Automation</span></td>
+            <td class="num">20</td>
+            <td class="num">1.319</td>
+          </tr>
+          <tr class="auto">
+            <td>Case Categorization</td>
+            <td>Case (Customer Space)</td>
+            <td class="num">81.065</td>
+            <td class="num">81.066</td>
+            <td class="num">67.555</td>
+            <td><span class="pill-sm auto">Automation</span></td>
+            <td class="num">2</td>
+            <td class="num">2.702</td>
+          </tr>
+          <tr class="struct">
+            <td>Auto Summary on Close (Inc)</td>
+            <td>Incident</td>
+            <td class="num">104.239</td>
+            <td class="num">104.239</td>
+            <td class="num">86.866</td>
+            <td><span class="pill-sm struct">Structural</span></td>
+            <td class="num">2</td>
+            <td class="num">3.475</td>
+          </tr>
+          <tr class="struct">
+            <td>Auto Summary on Close (EC)</td>
+            <td>Case (Customer Space)</td>
+            <td class="num">81.000</td>
+            <td class="num">81.000</td>
+            <td class="num">67.500</td>
+            <td><span class="pill-sm struct">Structural</span></td>
+            <td class="num">2</td>
+            <td class="num">2.700</td>
+          </tr>
+          <tr class="prod">
+            <td>Case Summarization N2 (EC)</td>
+            <td>Case (Customer Space)</td>
+            <td class="num">81.000</td>
+            <td class="num">81.000</td>
+            <td class="num">67.500</td>
+            <td><span class="pill-sm prod">Productivity</span></td>
+            <td class="num">2</td>
+            <td class="num">2.700</td>
+          </tr>
+          <tr class="prod">
+            <td>E-mail Recommendation</td>
+            <td>Case (Customer Space)</td>
+            <td class="num">38.014</td>
+            <td class="num">200.000</td>
+            <td class="num">166.667</td>
+            <td><span class="pill-sm prod">Productivity</span></td>
+            <td class="num">2</td>
+            <td class="num">1.267</td>
+          </tr>
+          <tr class="prod">
+            <td>Sentiment / Feeling Analysis (EC)</td>
+            <td>Case (Customer Space)</td>
+            <td class="num">81.000</td>
+            <td class="num">81.000</td>
+            <td class="num">67.500</td>
+            <td><span class="pill-sm prod">Productivity</span></td>
+            <td class="num" style="color:var(--muted)">0</td>
+            <td class="num" style="color:var(--muted)">0</td>
+          </tr>
+          <tr class="total">
+            <td>Total</td>
+            <td></td>
+            <td class="num">575.342</td>
+            <td class="num">802.305</td>
+            <td class="num">668.588</td>
+            <td></td>
+            <td class="num"></td>
+            <td class="num">15.763</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tbl-foot">
+        Phase 1 total: 802.305 projected assists / year · 668.588 assists in 2026 · 15.763 hours saved.
+        Go-live · Assaí Card (Passai) on 16/Mar · Price discrepancy on 23/Mar.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOP OFFENDERS · CUSTOMER SPACE ============ -->
+<section id="offenders-cs">
+  <div class="wrap">
+    <div class="section-no">06</div>
+    <div class="eyebrow reveal">Diagnostics · Top Offenders</div>
+    <h2 class="kicker reveal d1">Customer Space</h2>
+    <p class="lead reveal d2">Ten highest-volume contact reasons mapped from Assaí's Customer Space. LGPD requests dominate the top of the funnel.</p>
+
+    <div class="table-wrap reveal d3">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Contact Reason</th>
+            <th>Request Type</th>
+            <th>Classification</th>
+            <th class="num">Volume</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rk">1</td><td>Personal data update</td><td>LGPD</td><td class="tag">Request</td><td class="num">31.162</td></tr>
+          <tr><td class="rk">2</td><td>Personal data query</td><td>LGPD</td><td class="tag">Request</td><td class="num">7.774</td></tr>
+          <tr><td class="rk">3</td><td>Price discrepancy</td><td>Pricing</td><td class="tag">Complaint</td><td class="num">3.972</td></tr>
+          <tr><td class="rk">4</td><td>Improper sensory preservation</td><td>Food Safety</td><td class="tag">Critical</td><td class="num">2.877</td></tr>
+          <tr><td class="rk">5</td><td>Other information, other subjects / data</td><td>Personal Service</td><td class="tag">Information</td><td class="num">2.126</td></tr>
+          <tr><td class="rk">6</td><td>Personal data deletion</td><td>LGPD</td><td class="tag">Request</td><td class="num">1.048</td></tr>
+          <tr><td class="rk">7</td><td>Gender</td><td>Personal Service</td><td class="tag">Complaint</td><td class="num">1.036</td></tr>
+          <tr><td class="rk">8</td><td>Features</td><td>Food E-commerce</td><td class="tag">Complaint</td><td class="num">981</td></tr>
+          <tr><td class="rk">9</td><td>Stop receiving promotional information</td><td>LGPD</td><td class="tag">Request</td><td class="num">837</td></tr>
+          <tr><td class="rk">10</td><td>Other credit / debit reasons</td><td>Financial Service</td><td class="tag">Complaint</td><td class="num">705</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-foot">
+        LGPD requests (#1, #2, #6, #9) are prime candidates for Virtual Agent deflection and knowledge-base self-service.
+        Price discrepancy (#3) already in Phase 1 with 150K predicted assists.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOP OFFENDERS · IT INCIDENTS ============ -->
+<section id="offenders-it">
+  <div class="wrap">
+    <div class="section-no">07</div>
+    <div class="eyebrow reveal">Diagnostics · Top Offenders</div>
+    <h2 class="kicker reveal d1">IT Incidents</h2>
+    <p class="lead reveal d2">Tax and POS dominate IT incident volume. Auto Summary, Predictive Intelligence, and L1 runbooks target each pattern.</p>
+
+    <div class="table-wrap reveal d3">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Service Offering</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th class="num">Volume</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rk">1</td><td>NF-e invoice issues</td><td>Tax</td><td>NF-e issuance</td><td class="num">26.462</td></tr>
+          <tr><td class="rk">2</td><td>NFS-e / RPS issues</td><td>Tax</td><td>NFS-e issuance</td><td class="num">20.024</td></tr>
+          <tr><td class="rk">3</td><td>Product load issues</td><td>Commercial / Registration</td><td>Product integration</td><td class="num">10.854</td></tr>
+          <tr><td class="rk">4</td><td>Price discrepancy between POS</td><td>Commercial / Pricing</td><td>Price synchronization</td><td class="num">10.262</td></tr>
+          <tr><td class="rk">5</td><td>Wrong price</td><td>Commercial / Pricing</td><td>Price registration</td><td class="num">9.063</td></tr>
+          <tr><td class="rk">6</td><td>POS issues</td><td>Store Operations</td><td>Systems</td><td class="num">9.054</td></tr>
+          <tr><td class="rk">7</td><td>Execution error</td><td>Systems</td><td>Processing / Jobs</td><td class="num">7.339</td></tr>
+          <tr><td class="rk">8</td><td>Invoice did not reach C5 panel</td><td>Tax / Integration</td><td>C5 monitor</td><td class="num">5.922</td></tr>
+          <tr><td class="rk">9</td><td>Product not registered in POS</td><td>Commercial / Registration</td><td>Product registration</td><td class="num">5.259</td></tr>
+          <tr class="total"><td></td><td>Total</td><td></td><td></td><td class="num">104.239</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-foot">
+        NF-e (#1) and NFS-e (#2) follow the same pattern, candidate for grouping. Price discrepancy (#4) automated proactively via Predictive Intelligence.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOP OFFENDERS · CSA CASES ============ -->
+<section id="offenders-csa">
+  <div class="wrap">
+    <div class="section-no">08</div>
+    <div class="eyebrow reveal">Diagnostics · Top Offenders</div>
+    <h2 class="kicker reveal d1">CSA Cases</h2>
+    <p class="lead reveal d2">CSA volume concentrated in commercial / tax discrepancies and invoice posting. AI categorization plus email recommendation target the head of the curve.</p>
+
+    <div class="table-wrap reveal d3">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Service Offering</th>
+            <th>Item (main)</th>
+            <th class="num">Volume</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rk">1</td><td>Discrepancy adjustment</td><td>Commercial / Tax</td><td class="num">300.658</td></tr>
+          <tr><td class="rk">2</td><td>NF discrepancy on resale posting</td><td>Invoice</td><td class="num">215.189</td></tr>
+          <tr><td class="rk">3</td><td>Cash closing</td><td>Finance / Cash</td><td class="num">114.161</td></tr>
+          <tr><td class="rk">4</td><td>Tax discrepancy analysis on NF receiving</td><td>Tax</td><td class="num">63.019</td></tr>
+          <tr><td class="rk">5</td><td>Truck receiving discrepancy</td><td>Logistics / Receiving</td><td class="num">50.487</td></tr>
+          <tr><td class="rk">6</td><td>Spot sale</td><td>Commercial</td><td class="num">48.377</td></tr>
+          <tr><td class="rk">7</td><td>Emergency</td><td>Emergencies</td><td class="num">40.041</td></tr>
+          <tr><td class="rk">8</td><td>Electronic manifest</td><td>Logistics / Tax</td><td class="num">24.463</td></tr>
+          <tr><td class="rk">9</td><td>Cash drop adjustment</td><td>Vault Room / Finance</td><td class="num">23.588</td></tr>
+          <tr><td class="rk">10</td><td>Cash closing with balance and negatives</td><td>Finance</td><td class="num">21.422</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-foot">
+        #1 and #2 represent the highest CSA volume, candidates for AI categorization and process standardization.
+        #4 targeted by AI Knowledge Article for autonomous L1 resolution.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROVEN IMPACT ============ -->
+<section id="impact">
+  <div class="wrap">
+    <div class="section-no">09</div>
+    <div class="eyebrow reveal">Proven Impact</div>
+    <h2 class="kicker reveal d1">Real results with autonomous operations</h2>
+    <p class="lead reveal d2">Benchmarks across the ServiceNow customer base, the destination Assaí is heading to in Phase 1.</p>
+
+    <div class="kpis k4">
+      <div class="kpi reveal d1">
+        <b><span data-count="60">0</span><span class="unit">%</span></b>
+        <span>reduction in mean time to resolve (MTTR)<small class="src">ServiceNow Customers</small></span>
+      </div>
+      <div class="kpi reveal d2">
+        <b><span data-count="40">0</span><span class="unit">%</span></b>
+        <span>fewer tickets with AI deflection<small class="src">Now Assist Data</small></span>
+      </div>
+      <div class="kpi reveal d3">
+        <b><span data-count="3">0</span><span class="unit">x</span></b>
+        <span>higher employee satisfaction (CSAT)<small class="src">ServiceNow Research</small></span>
+      </div>
+      <div class="kpi reveal d4">
+        <b><span data-count="90">0</span><span class="unit">%</span></b>
+        <span>of critical processes automated in Phase 1<small class="src">Alpar Methodology</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BVA · INVESTMENT / RETURN / ROI ============ -->
+<section id="bva">
+  <div class="wrap">
+    <div class="section-no">10</div>
+    <div class="eyebrow reveal">Business Value Assessment</div>
+    <h2 class="kicker reveal d1">Investment, return and ROI</h2>
+    <p class="lead reveal d2">What the project requires, what it delivers, and how the curve breaks even in Year 2.</p>
+
+    <div class="invret">
+      <div class="ir-card invest reveal d1">
+        <span class="tag">Investment</span>
+        <h3>What the project requires</h3>
+        <div class="ir-row"><span class="lbl">Annual licenses (ServiceNow)</span><span class="val">R$ 200.000</span></div>
+        <div class="ir-row"><span class="lbl">Services (implementation)</span><span class="val">R$ 400.000</span></div>
+        <div class="ir-row total"><span class="lbl">Total invested</span><span class="val">R$ 600.000</span></div>
+      </div>
+      <div class="ir-card return reveal d2">
+        <span class="tag">Return</span>
+        <h3>What the project delivers</h3>
+        <div class="ir-row"><span class="lbl">FTE reduction (per FTE / year)</span><span class="val">R$ 167.000</span></div>
+        <div class="ir-row"><span class="lbl">Total FTE reduction (3 FTEs)</span><span class="val">R$ 500.000</span></div>
+        <div class="ir-row"><span class="lbl">AI potential (8 FTEs eliminated)</span><span class="val">R$ 1.336.000</span></div>
+        <div class="ir-row total"><span class="lbl">Net gain, Year 3</span><span class="val">R$ 500.000</span></div>
+      </div>
+    </div>
+
+    <div class="roi">
+      <div class="roi-card roi-1 reveal d1">
+        <span class="tag">Year 1</span>
+        <b>R$ <span data-count="500">0</span> K</b>
+        <span class="desc">Cumulative savings</span>
+        <div class="mini">
+          <div>Net P&amp;L: <b style="color:var(--danger)">R$ (100.000)</b></div>
+          <div>ROI: <b style="color:var(--danger)">(17%)</b></div>
+        </div>
+      </div>
+      <div class="roi-card roi-2 reveal d2">
+        <span class="tag">Year 2</span>
+        <b>R$ <span data-count="800">0</span> K</b>
+        <span class="desc">Cumulative savings</span>
+        <div class="mini">
+          <div>Net P&amp;L: <b>+ R$ 200.000</b></div>
+          <div>ROI: <b>33%</b></div>
+        </div>
+      </div>
+      <div class="roi-card roi-3 reveal d3">
+        <span class="tag">Year 3</span>
+        <b>R$ <span data-count="1.1" data-decimals="1">0</span> M</b>
+        <span class="desc">Cumulative savings</span>
+        <div class="mini">
+          <div>Net P&amp;L: <b>+ R$ 500.000</b></div>
+          <div>ROI: <b>83%</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIMELINE / GANTT ============ -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="section-no">11</div>
+    <div class="eyebrow reveal">Implementation Timeline</div>
+    <h2 class="kicker reveal d1">Phase 1, eight weeks</h2>
+    <p class="lead reveal d2">Setup and structural foundation in weeks 1, 2. Categorization, summarization, email recommendation and sentiment analysis from weeks 3 to 6. Two go-lives in March.</p>
+
+    <div class="timeline reveal d3">
+      <div class="tl-head">
+        <div class="h">Task</div>
+        <div class="h">Wk 1</div><div class="h">Wk 2</div><div class="h">Wk 3</div><div class="h">Wk 4</div>
+        <div class="h">Wk 5</div><div class="h">Wk 6</div><div class="h">Wk 7</div><div class="h">Wk 8</div>
+      </div>
+
+      <div class="tl-row">
+        <div class="lbl">Assist Consumption</div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row">
+        <div class="lbl">AI Control Tower</div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row">
+        <div class="lbl">IT Workspace</div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row">
+        <div class="lbl">CSM Workspace</div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row">
+        <div class="lbl">Case Categorization</div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row">
+        <div class="lbl">Auto Summary on Close</div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row">
+        <div class="lbl">Auto Summary on Close (EC)</div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row">
+        <div class="lbl">Case Summarization (EC)</div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row">
+        <div class="lbl">E-mail Recommendation</div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row">
+        <div class="lbl">Sentiment Analysis (EC)</div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell on"></div><div class="tl-cell on"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+      </div>
+      <div class="tl-row go">
+        <div class="lbl">Go-live · Assaí Card (Passai)</div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell gl" data-date="16/Mar"></div>
+        <div class="tl-cell"></div>
+      </div>
+      <div class="tl-row go">
+        <div class="lbl">Go-live · Price discrepancy</div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div><div class="tl-cell"></div>
+        <div class="tl-cell"></div>
+        <div class="tl-cell gl" data-date="23/Mar"></div>
+      </div>
+
+      <div class="tl-legend">
+        <span><i class="on"></i> Activity</span>
+        <span><i class="gl"></i> Go-live / Milestone</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LONG-TERM VISION ============ -->
+<section id="vision">
+  <div class="wrap">
+    <div class="section-no">12</div>
+    <div class="eyebrow reveal">Long-term Vision</div>
+    <h2 class="kicker reveal d1">Next phases beyond go-live</h2>
+    <p class="lead reveal d2">Phase 1 builds the foundation. Phases 2 to 4 layer in agent productivity, generative virtual agent, and executive AI insights.</p>
+
+    <div class="phases">
+      <article class="phase reveal d1">
+        <div class="step">2</div>
+        <span class="ph-tag">Phase 2 · Now Assist for Agent</span>
+        <h4>Agent productivity</h4>
+        <ul>
+          <li>Incident Summarization<small>Incident</small></li>
+          <li>Knowledge Article Suggestions<small>ITSM, CSA, CSM</small></li>
+          <li>Similar Record from Case<small>ITSM, CSA</small></li>
+          <li>Suggested Resolution / Next Best Action<small>Incident, Case</small></li>
+          <li>Text Rewriting / Tone Adjustment<small>CSA, External Support</small></li>
+          <li>Generate change request plans<small>ITSM</small></li>
+        </ul>
+      </article>
+      <article class="phase reveal d2">
+        <div class="step">3</div>
+        <span class="ph-tag">Phase 3 · Virtual Agent</span>
+        <h4>Generative chatbot</h4>
+        <ul>
+          <li>Virtual Agent with generative AI<small>Internal / external portal</small></li>
+          <li>Agent understanding<small>ITSM, CSA, CSM</small></li>
+          <li>VA &gt; Agent Handoff with Summary<small>ITSM, CSA, CSM</small></li>
+          <li>Top Offenders deep dive<small>ITSM, CSA, CSM</small></li>
+        </ul>
+      </article>
+      <article class="phase reveal d3">
+        <div class="step">4</div>
+        <span class="ph-tag">Phase 4 · Now Assist Insights</span>
+        <h4>Executive AI insights</h4>
+        <ul>
+          <li>Trend &amp; Pattern Insights<small>Managers</small></li>
+          <li>Queue executive summaries<small>Leadership</small></li>
+          <li>Generate post-incident reviews<small>Leadership</small></li>
+          <li>Analyze incident trends<small>Leadership</small></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<section id="final">
+  <div class="wrap">
+    <div class="section-no">13</div>
+    <div class="final-wrap">
+      <div class="eyebrow reveal" style="justify-content:center">Next Steps with Alpar</div>
+      <h2 class="reveal d1">
+        <span class="grad">Transformation starts</span><br/>
+        <span class="grad">with the right decision.</span>
+      </h2>
+
+      <div class="next">
+        <div class="next-step reveal d1"><b>Step 01</b>Validate and adjust the Phase 1 plan with the technical and commercial teams.</div>
+        <div class="next-step reveal d2"><b>Step 02</b>Validate the proposal and formalize the agreement: scope, investment, timeline.</div>
+        <div class="next-step reveal d3"><b>Step 03</b>Parallelize the Top Offenders deep dive to design Phase 2 of the roadmap.</div>
+        <div class="next-step reveal d4"><b>Step 04</b>Draft Phase 2 of the AI roadmap based on Phase 1 learnings.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Alpar — ServiceNow Global Partner</div>
+  <div class="row2">
+    <span>Assaí · AI Framework — 2026</span>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  function formatNumber(value, decimals, format){
+    let v = decimals ? value.toFixed(decimals).replace('.', ',') : Math.round(value).toString();
+    if (format === 'thousands') {
+      const n = Math.round(value);
+      v = n.toLocaleString('pt-BR');
+    }
+    return v;
+  }
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      const format = el.dataset.format || '';
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now){
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const cur = target * eased;
+        el.textContent = formatNumber(cur, decimals, format) + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = formatNumber(target, decimals, format) + suffix;
+      }
+      requestAnimationFrame(tick);
+      countObs.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+  const dots = document.querySelectorAll('aside.dots a');
+  const sections = Array.from(dots).map(a => document.querySelector(a.getAttribute('href')));
+  const activeObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        const id = '#' + e.target.id;
+        dots.forEach(d => d.classList.toggle('active', d.getAttribute('href') === id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => s && activeObs.observe(s));
+</script>
+</body>
+</html>
