@@ -34,7 +34,7 @@
 
   .brandbar{position:fixed;top:28px;left:clamp(40px,6vw,110px);z-index:30;display:flex;align-items:center;gap:12px;
     font-family:'Manrope';font-weight:700;letter-spacing:.18em;font-size:12px;color:var(--ink-2);text-transform:uppercase;}
-  .brandbar .logo{width:52px;height:52px;border-radius:11px;background:url('../alpar-logo.png') center/132% no-repeat;}
+  .brandbar .logo{width:72px;height:72px;border-radius:14px;background:url('../alpar-logo.png') center/132% no-repeat;}
   .progress{position:fixed;top:0;left:0;height:3px;z-index:40;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 0 16px rgba(63,184,255,.6);transition:width .6s cubic-bezier(.7,0,.2,1);}
   .counter{position:fixed;bottom:26px;right:clamp(40px,6vw,110px);z-index:30;font-family:'Manrope';font-weight:700;font-size:13px;color:var(--ink-2);letter-spacing:.05em;}
   .counter b{color:var(--ink);font-size:16px}
@@ -82,6 +82,19 @@
   .alert{margin-top:30px;display:flex;gap:16px;align-items:flex-start;background:rgba(255,178,62,.08);border:1px solid rgba(255,178,62,.3);border-radius:16px;padding:18px 22px;max-width:980px;}
   .alert .ic{font-family:'Manrope';font-weight:800;color:var(--amber);font-size:20px;line-height:1}
   .alert p{font-size:14.5px;color:var(--ink-2);line-height:1.5}.alert b{color:var(--amber)}
+  /* milestone rows PF/PJ */
+  .mstones{margin-top:30px;display:flex;flex-direction:column;gap:14px}
+  .mrow{display:grid;grid-template-columns:58px 1fr;align-items:stretch;gap:18px}
+  .mrow .tag{display:flex;align-items:center;justify-content:center;font-family:'Manrope';font-weight:800;font-size:17px;color:#03101f;border-radius:12px}
+  .mrow .tag.pf{background:linear-gradient(180deg,#5fc6ff,#3FB8FF)}
+  .mrow .tag.pj{background:linear-gradient(180deg,#79e36a,#62D84E)}
+  .mrow .chips{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .mchip{background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:11px 12px;text-align:center;position:relative;overflow:hidden}
+  .mchip::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+  .mrow.r-pf .mchip::before{background:var(--alpar)}
+  .mrow.r-pj .mchip::before{background:var(--snow)}
+  .mchip .d{font-family:'Manrope';font-weight:800;font-size:16px;color:#fff;letter-spacing:-.01em}
+  .mchip .e{font-size:11px;color:var(--ink-2);margin-top:4px;line-height:1.32}
 
   /* financial */
   .flow{display:flex;align-items:stretch;gap:16px;margin-top:32px;flex-wrap:wrap}
@@ -159,12 +172,10 @@
 
   <!-- 1 COVER -->
   <section class="slide cover active">
-    <div class="eyebrow reveal d1">Proposta de Retomada · Junho 2026</div>
+    <div class="eyebrow reveal d1">Proposta de Projeto · Junho 2026</div>
     <h1 class="reveal d2">Projeto<br><span>Matrícula-Já</span></h1>
-    <div class="sub reveal d3">Retomada · Pessoa Física (PF) e Pessoa Jurídica (PJ) · Alpar para FIEP</div>
     <div class="meta reveal d4">
       <div class="mi"><div class="k">Cliente</div><div class="v">FIEP</div></div>
-      <div class="mi"><div class="k">Início da retomada</div><div class="v">17/06/2026</div></div>
       <div class="mi"><div class="k">Data-base</div><div class="v">15/06/2026</div></div>
     </div>
   </section>
@@ -181,15 +192,26 @@
       <div class="card reveal d5"><div class="num">03</div><h3>Aprovação das histórias</h3><p>User stories revisadas e aprovadas pelo cliente antes da execução.</p></div>
       <div class="card reveal d6"><div class="num">04</div><h3>Requisitos mapeados</h3><p>Escopo conforme requisitos já identificados e mapeados anteriormente.</p></div>
     </div>
-    <div class="tl reveal d5" style="margin-top:42px">
-      <div class="line"></div>
-      <div class="steps">
-        <div class="tstep done"><div class="node"></div><div class="date">15/06</div><div class="ev">Apresentação da proposta de reinício</div></div>
-        <div class="tstep done"><div class="node"></div><div class="date">16/06</div><div class="ev">Reunião de Kickoff</div></div>
-        <div class="tstep"><div class="node"></div><div class="date">17/06</div><div class="ev">Início Dev. Fase 1 · Matrícula PF</div></div>
-        <div class="tstep"><div class="node"></div><div class="date">15/07</div><div class="ev">Prazo das Integrações FIEP (R1 a R7)</div></div>
-        <div class="tstep"><div class="node"></div><div class="date">30/10</div><div class="ev">Go-Live</div></div>
-        <div class="tstep"><div class="node"></div><div class="date">16/11</div><div class="ev">Encerramento do Hypercare</div></div>
+    <div class="mstones">
+      <div class="mrow r-pf reveal d5">
+        <div class="tag pf">PF</div>
+        <div class="chips">
+          <div class="mchip"><div class="d">17/06</div><div class="e">Início Dev. Matrícula PF</div></div>
+          <div class="mchip"><div class="d">30/06 e 15/07</div><div class="e">1ª e 2ª Entrega · Prazo Integrações FIEP</div></div>
+          <div class="mchip"><div class="d">16/10</div><div class="e">Review / Início Homologação</div></div>
+          <div class="mchip"><div class="d">30/10</div><div class="e">Subida PRD</div></div>
+          <div class="mchip"><div class="d">06/11</div><div class="e">Encerramento Hypercare</div></div>
+        </div>
+      </div>
+      <div class="mrow r-pj reveal d6">
+        <div class="tag pj">PJ</div>
+        <div class="chips">
+          <div class="mchip"><div class="d">16/07</div><div class="e">Início Dev. Matrícula PJ</div></div>
+          <div class="mchip"><div class="d">15/07</div><div class="e">Prazo Integrações FIEP</div></div>
+          <div class="mchip"><div class="d">07/12</div><div class="e">Review / Início Homologação</div></div>
+          <div class="mchip"><div class="d">21/12</div><div class="e">Subida PRD</div></div>
+          <div class="mchip"><div class="d">29/12</div><div class="e">Encerramento Hypercare</div></div>
+        </div>
       </div>
     </div>
   </section>
@@ -448,36 +470,35 @@
     <div class="meta-line reveal d3">
       <span><b>23</b> integrações</span><span class="sep">|</span>
       <span><b>10</b> concluídas</span><span class="sep">|</span>
-      <span>Período: <b>01/05/26 a 30/06/26</b></span><span class="sep">|</span>
       <span>Dependência crítica: integrações FIEP até <b>30/06/26</b></span>
     </div>
     <div class="tablewrap reveal d3">
       <table class="dtable">
-        <thead><tr><th class="c">% concluída</th><th>Frente</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias</th></tr></thead>
+        <thead><tr><th class="c">% concluída</th><th>Frente</th><th class="c">Início</th><th class="c">Fim</th></tr></thead>
         <tbody>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Criação de login · Integração com Whatsapp · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Integração · Consulta de cursos no ERP · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Integração · Valores dos cursos · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Integração · Receita Federal · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Responsável Financeiro · Integração ERP, Inadimplência · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Responsável Financeiro · Integração Serasa, Inadimplência · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Pagamento (Gateway) · Gateway de Pagamento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Acomp. e Cancel. de Matrícula (SGE) · Cancelamento em 7 dias (Envio) · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Acomp. e Cancel. de Matrícula (SGE) · ERP, Status de Cancelamento após vencimento do Adiantamento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Escolher Perfil/Curso · CRM, Validação de Adiantamento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Escolher Perfil/Curso · CRM, Regras de Parcelamento / Precificação · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Cadastro do Aluno · SGE, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro do Aluno · Receita Federal, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro do Aluno · GED, Salvar Documento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Cadastro Responsável Financeiro · SGE, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro Responsável Financeiro · Receita Federal, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro Responsável Financeiro · GED, Consulta Documentos Existentes · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro Responsável Financeiro · GED, Salvar Documento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Documentos · GED, Consulta Documentos Existentes · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Documentos · GED, Salvar Documento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Descontos · Conecta, Consulta Sindicatos e Empresas Associadas · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Descontos · Conecta, Consulta Indústrias Contribuintes · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
-<tr><td class="c"><span class="badge done">100%</span></td><td>Descontos · SGE, Consulta Recompra · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Criação de login · Integração com Whatsapp · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Integração · Consulta de cursos no ERP · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Integração · Valores dos cursos · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Integração · Receita Federal · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Responsável Financeiro · Integração ERP, Inadimplência · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Responsável Financeiro · Integração Serasa, Inadimplência · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Pagamento (Gateway) · Gateway de Pagamento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Acomp. e Cancel. de Matrícula (SGE) · Cancelamento em 7 dias (Envio) · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Acomp. e Cancel. de Matrícula (SGE) · ERP, Status de Cancelamento após vencimento do Adiantamento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Escolher Perfil/Curso · CRM, Validação de Adiantamento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Escolher Perfil/Curso · CRM, Regras de Parcelamento / Precificação · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Cadastro do Aluno · SGE, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro do Aluno · Receita Federal, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro do Aluno · GED, Salvar Documento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Cadastro Responsável Financeiro · SGE, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro Responsável Financeiro · Receita Federal, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro Responsável Financeiro · GED, Consulta Documentos Existentes · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro Responsável Financeiro · GED, Salvar Documento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Documentos · GED, Consulta Documentos Existentes · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Documentos · GED, Salvar Documento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Descontos · Conecta, Consulta Sindicatos e Empresas Associadas · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Descontos · Conecta, Consulta Indústrias Contribuintes · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Descontos · SGE, Consulta Recompra · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td></tr>
         </tbody>
       </table>
     </div>
@@ -495,36 +516,36 @@
     </div>
     <div class="tablewrap reveal d3">
       <table class="dtable">
-        <thead><tr><th class="c">% concluída</th><th>Frente</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias</th></tr></thead>
+        <thead><tr><th class="c">% concluída</th><th>Frente</th><th class="c">Início</th><th class="c">Fim</th></tr></thead>
         <tbody>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Validação de Vagas</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Consulta de Nova Turma</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · CRM, Validação de Adiantamento</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consulta de Modelo de Contrato</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Gerar Pré Emitido</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consultar HTML Contrato</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consulta Contrato Escrito</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · Lacuna, Salvar Documento</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · Lacuna, Consultar Documento</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · Lacuna, Assinatura de Contrato</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Receber informação de assinatura</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consulta Valores de Desconto</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Criar Parcelas do Contrato</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consultar HTML Boleto (se adiantamento por Boleto)</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Pagamento do Adiantamento (Gateway)</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Receber o Status de Pagamento (SN)</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Confirmação de Matrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Consulta Status de Matrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Envio do Aceite ao ServiceNow</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Consulta da Turma para Rematrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Criar uma Pré-Matrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Consulta Dados do Curso</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · CRM, Consultar Valor do Curso</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · CRM, Regras de Precificação</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · CRM, Consultar Regras de Parcelamento</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Listagem de Disciplinas</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Confirmação de Rematrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
-<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Consultar Status de Rematrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Validação de Vagas</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Consulta de Nova Turma</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · CRM, Validação de Adiantamento</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consulta de Modelo de Contrato</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Gerar Pré Emitido</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consultar HTML Contrato</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consulta Contrato Escrito</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · Lacuna, Salvar Documento</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · Lacuna, Consultar Documento</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · Lacuna, Assinatura de Contrato</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Receber informação de assinatura</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consulta Valores de Desconto</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Criar Parcelas do Contrato</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consultar HTML Boleto (se adiantamento por Boleto)</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Pagamento do Adiantamento (Gateway)</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Receber o Status de Pagamento (SN)</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Confirmação de Matrícula</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Consulta Status de Matrícula</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Envio do Aceite ao ServiceNow</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Consulta da Turma para Rematrícula</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Criar uma Pré-Matrícula</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Consulta Dados do Curso</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · CRM, Consultar Valor do Curso</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · CRM, Regras de Precificação</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · CRM, Consultar Regras de Parcelamento</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Listagem de Disciplinas</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Confirmação de Rematrícula</td><td class="c">01/05</td><td class="c">15/07</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Consultar Status de Rematrícula</td><td class="c">01/05</td><td class="c">15/07</td></tr>
         </tbody>
       </table>
     </div>
