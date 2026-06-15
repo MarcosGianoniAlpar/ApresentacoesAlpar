@@ -3,243 +3,149 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Retomada Matrícula-Já · Fase 1 (PF) · Alpar para FIEP</title>
+<title>Projeto Matrícula-Já · Retomada · Alpar para FIEP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg:#070E1F;
-    --bg-2:#0B1730;
-    --panel:rgba(255,255,255,.04);
-    --panel-line:rgba(255,255,255,.10);
-    --accent:#3FB8FF;
-    --accent-2:#00A6ED;
-    --green:#3FE0A0;
-    --amber:#FFC861;
-    --ink:#E8EEFA;
-    --ink-2:#A9B6CF;
-    --ink-3:#6B7896;
-    --alpar:#3FB8FF;
-    --snow:#62D84E;
-    --fiep:#FFB23E;
+    --bg:#070E1F; --bg-2:#0B1730;
+    --panel:rgba(255,255,255,.04); --panel-line:rgba(255,255,255,.10);
+    --accent:#3FB8FF; --accent-2:#00A6ED;
+    --green:#3FE0A0; --amber:#FFC861;
+    --ink:#E8EEFA; --ink-2:#A9B6CF; --ink-3:#6B7896;
+    --alpar:#3FB8FF; --snow:#62D84E; --fiep:#FFB23E;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter',system-ui,sans-serif;
-    overflow:hidden;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  /* ===== DECK ===== */
-  .deck{
-    position:fixed; inset:0;
-    display:flex;
-    width:100%; height:100%;
-    transition:transform .6s cubic-bezier(.7,0,.2,1);
-    will-change:transform;
-  }
-  .slide{
-    position:relative;
-    min-width:100vw; height:100vh;
-    flex:0 0 100vw;
-    display:flex; flex-direction:column;
-    justify-content:center;
-    padding:clamp(40px,6vw,110px);
-    overflow:hidden;
-  }
-  /* background texture */
-  .slide::before{
-    content:"";
-    position:absolute; inset:0;
-    background:
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;}
+  .deck{position:fixed;inset:0;display:flex;width:100%;height:100%;transition:transform .6s cubic-bezier(.7,0,.2,1);will-change:transform;}
+  .slide{position:relative;min-width:100vw;height:100vh;flex:0 0 100vw;display:flex;flex-direction:column;justify-content:center;padding:clamp(40px,6vw,110px);overflow:hidden;}
+  .slide::before{content:"";position:absolute;inset:0;background:
       radial-gradient(1200px 700px at 85% -10%, rgba(63,184,255,.10), transparent 60%),
       radial-gradient(900px 600px at 10% 110%, rgba(0,166,237,.08), transparent 60%),
-      linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 100%);
-    z-index:-2;
-  }
-  .slide::after{
-    content:"";
-    position:absolute; inset:0;
-    background-image:
+      linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 100%);z-index:-2;}
+  .slide::after{content:"";position:absolute;inset:0;background-image:
       linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-    background-size:64px 64px;
-    -webkit-mask-image:radial-gradient(1000px 800px at 80% 20%, #000, transparent 75%);
-            mask-image:radial-gradient(1000px 800px at 80% 20%, #000, transparent 75%);
-    z-index:-1;
-    opacity:.6;
-  }
+      background-size:64px 64px;
+      -webkit-mask-image:radial-gradient(1000px 800px at 80% 20%, #000, transparent 75%);
+              mask-image:radial-gradient(1000px 800px at 80% 20%, #000, transparent 75%);z-index:-1;opacity:.6;}
 
-  /* ===== chrome ===== */
-  .brandbar{
-    position:fixed; top:28px; left:clamp(40px,6vw,110px);
-    z-index:30; display:flex; align-items:center; gap:12px;
-    font-family:'Manrope'; font-weight:700; letter-spacing:.18em;
-    font-size:12px; color:var(--ink-2); text-transform:uppercase;
-  }
-  .brandbar .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
-  .brandbar .dot.b{background:#fff;box-shadow:0 0 10px rgba(255,255,255,.6)}
+  .brandbar{position:fixed;top:28px;left:clamp(40px,6vw,110px);z-index:30;display:flex;align-items:center;gap:12px;
+    font-family:'Manrope';font-weight:700;letter-spacing:.18em;font-size:12px;color:var(--ink-2);text-transform:uppercase;}
+  .brandbar .logo{width:30px;height:30px;border-radius:7px;background:url('../alpar-logo.png') center/130% no-repeat;}
+  .progress{position:fixed;top:0;left:0;height:3px;z-index:40;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 0 16px rgba(63,184,255,.6);transition:width .6s cubic-bezier(.7,0,.2,1);}
+  .counter{position:fixed;bottom:26px;right:clamp(40px,6vw,110px);z-index:30;font-family:'Manrope';font-weight:700;font-size:13px;color:var(--ink-2);letter-spacing:.05em;}
+  .counter b{color:var(--ink);font-size:16px}
+  .dots{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:30;display:flex;gap:9px;}
+  .dots button{width:9px;height:9px;border-radius:50%;border:0;cursor:pointer;padding:0;background:rgba(255,255,255,.18);transition:.25s;}
+  .dots button.on{background:var(--accent);width:26px;border-radius:5px;box-shadow:0 0 10px var(--accent)}
+  .nav-hint{position:fixed;bottom:26px;left:clamp(40px,6vw,110px);z-index:30;font-size:12px;color:var(--ink-3);display:flex;gap:8px;align-items:center;}
+  .key{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border:1px solid var(--panel-line);border-radius:6px;font-size:11px;color:var(--ink-2);font-family:'Manrope';font-weight:600;}
 
-  .progress{
-    position:fixed; top:0; left:0; height:3px; z-index:40;
-    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    box-shadow:0 0 16px rgba(63,184,255,.6);
-    transition:width .6s cubic-bezier(.7,0,.2,1);
-  }
-  .counter{
-    position:fixed; bottom:30px; right:clamp(40px,6vw,110px); z-index:30;
-    font-family:'Manrope'; font-weight:700; font-size:13px; color:var(--ink-2);
-    letter-spacing:.05em;
-  }
-  .counter b{color:var(--ink); font-size:16px}
-  .dots{
-    position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
-    z-index:30; display:flex; gap:10px;
-  }
-  .dots button{
-    width:9px;height:9px;border-radius:50%;border:0;cursor:pointer;padding:0;
-    background:rgba(255,255,255,.18); transition:.25s;
-  }
-  .dots button.on{background:var(--accent); width:26px; border-radius:5px; box-shadow:0 0 10px var(--accent)}
-  .nav-hint{
-    position:fixed; bottom:28px; left:clamp(40px,6vw,110px); z-index:30;
-    font-size:12px; color:var(--ink-3); display:flex; gap:8px; align-items:center;
-  }
-  .key{
-    display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;
-    border:1px solid var(--panel-line); border-radius:6px; font-size:11px; color:var(--ink-2);
-    font-family:'Manrope';font-weight:600;
-  }
-
-  /* ===== typography ===== */
-  .eyebrow{
-    font-family:'Manrope'; font-weight:700; font-size:13px; letter-spacing:.28em;
-    text-transform:uppercase; color:var(--accent);
-    display:flex; align-items:center; gap:14px; margin-bottom:26px;
-  }
+  .eyebrow{font-family:'Manrope';font-weight:700;font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:14px;margin-bottom:22px;}
   .eyebrow::before{content:"";width:42px;height:2px;background:var(--accent);border-radius:2px}
-  h1{font-family:'Manrope';font-weight:800;line-height:1.02;letter-spacing:-.02em;
-     font-size:clamp(40px,6.4vw,92px); color:#fff;}
-  h2{font-family:'Manrope';font-weight:800;line-height:1.05;letter-spacing:-.02em;
-     font-size:clamp(32px,4.4vw,60px); color:#fff; margin-bottom:14px;}
-  .lead{font-size:clamp(16px,1.5vw,21px); color:var(--ink-2); max-width:760px; line-height:1.55;}
+  h1{font-family:'Manrope';font-weight:800;line-height:1.02;letter-spacing:-.02em;font-size:clamp(40px,6.4vw,92px);color:#fff;}
+  h2{font-family:'Manrope';font-weight:800;line-height:1.05;letter-spacing:-.02em;font-size:clamp(28px,3.8vw,52px);color:#fff;margin-bottom:10px;}
+  .lead{font-size:clamp(15px,1.4vw,20px);color:var(--ink-2);max-width:860px;line-height:1.55;}
   .accent{color:var(--accent)}
 
-  /* reveal */
-  .reveal{opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1);}
-  .slide.active .reveal{opacity:1; transform:none;}
-  .slide.active .reveal.d1{transition-delay:.08s}
-  .slide.active .reveal.d2{transition-delay:.18s}
-  .slide.active .reveal.d3{transition-delay:.30s}
-  .slide.active .reveal.d4{transition-delay:.42s}
-  .slide.active .reveal.d5{transition-delay:.54s}
-  .slide.active .reveal.d6{transition-delay:.66s}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1);}
+  .slide.active .reveal{opacity:1;transform:none;}
+  .slide.active .reveal.d1{transition-delay:.06s}.slide.active .reveal.d2{transition-delay:.14s}
+  .slide.active .reveal.d3{transition-delay:.24s}.slide.active .reveal.d4{transition-delay:.34s}
+  .slide.active .reveal.d5{transition-delay:.44s}.slide.active .reveal.d6{transition-delay:.54s}
 
-  /* ===== COVER ===== */
-  .cover .eyebrow{margin-bottom:30px}
-  .cover h1 span{color:var(--accent)}
+  .cover .eyebrow{margin-bottom:30px}.cover h1 span{color:var(--accent)}
   .cover .sub{font-family:'Manrope';font-weight:600;font-size:clamp(18px,2vw,26px);color:var(--ink-2);margin-top:18px;}
-  .cover .meta{margin-top:54px;display:flex;gap:38px;flex-wrap:wrap;padding-top:30px;border-top:1px solid var(--panel-line);max-width:720px;}
+  .cover .meta{margin-top:50px;display:flex;gap:38px;flex-wrap:wrap;padding-top:28px;border-top:1px solid var(--panel-line);max-width:760px;}
   .cover .meta .mi .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-family:'Manrope';font-weight:600;margin-bottom:6px}
   .cover .meta .mi .v{font-family:'Manrope';font-weight:700;font-size:17px;color:var(--ink)}
 
-  /* ===== generic grids ===== */
-  .cards{display:grid;gap:18px;margin-top:40px}
-  .cards.c2{grid-template-columns:repeat(2,1fr)}
-  .cards.c3{grid-template-columns:repeat(3,1fr)}
+  .cards{display:grid;gap:16px;margin-top:30px}
   .cards.c4{grid-template-columns:repeat(4,1fr)}
-  .card{
-    background:var(--panel); border:1px solid var(--panel-line); border-radius:18px;
-    padding:26px 26px 24px; position:relative; overflow:hidden;
-  }
-  .card .num{font-family:'Manrope';font-weight:700;color:var(--accent);font-size:13px;letter-spacing:.1em;margin-bottom:14px}
-  .card h3{font-family:'Manrope';font-weight:700;font-size:18px;color:#fff;margin-bottom:8px}
-  .card p{font-size:14.5px;color:var(--ink-2);line-height:1.5}
+  .card{background:var(--panel);border:1px solid var(--panel-line);border-radius:16px;padding:22px 22px 20px;position:relative;overflow:hidden;}
+  .card .num{font-family:'Manrope';font-weight:700;color:var(--accent);font-size:13px;letter-spacing:.1em;margin-bottom:12px}
+  .card h3{font-family:'Manrope';font-weight:700;font-size:16.5px;color:#fff;margin-bottom:7px}
+  .card p{font-size:13.5px;color:var(--ink-2);line-height:1.5}
 
-  /* ===== FINANCIAL FLOW (slide 3) ===== */
-  .flow{display:flex;align-items:stretch;gap:18px;margin-top:46px;flex-wrap:wrap}
-  .fcell{
-    flex:1; min-width:220px;
-    background:var(--panel); border:1px solid var(--panel-line); border-radius:20px;
-    padding:30px 30px 28px; position:relative;
-  }
-  .fcell .lbl{font-family:'Manrope';font-weight:600;font-size:13px;letter-spacing:.05em;color:var(--ink-2);text-transform:uppercase;margin-bottom:16px}
-  .fcell .val{font-family:'Manrope';font-weight:800;font-size:clamp(30px,3.2vw,46px);color:#fff;letter-spacing:-.02em;white-space:nowrap}
+  /* timeline */
+  .tl{position:relative;margin-top:36px;padding:0 10px}
+  .tl .line{position:absolute;left:0;right:0;top:9px;height:2px;background:linear-gradient(90deg,var(--accent),rgba(63,184,255,.15))}
+  .tl .steps{display:flex;justify-content:space-between;position:relative}
+  .tstep{flex:1;text-align:center;position:relative;padding:0 6px}
+  .tstep .node{width:18px;height:18px;border-radius:50%;background:var(--bg);border:3px solid var(--accent);margin:0 auto 18px;box-shadow:0 0 0 5px rgba(63,184,255,.12)}
+  .tstep.done .node{background:var(--accent)}
+  .tstep .date{font-family:'Manrope';font-weight:800;font-size:19px;color:#fff;margin-bottom:6px}
+  .tstep .ev{font-size:12.5px;color:var(--ink-2);line-height:1.4;max-width:155px;margin:0 auto}
+  .alert{margin-top:30px;display:flex;gap:16px;align-items:flex-start;background:rgba(255,178,62,.08);border:1px solid rgba(255,178,62,.3);border-radius:16px;padding:18px 22px;max-width:980px;}
+  .alert .ic{font-family:'Manrope';font-weight:800;color:var(--amber);font-size:20px;line-height:1}
+  .alert p{font-size:14.5px;color:var(--ink-2);line-height:1.5}.alert b{color:var(--amber)}
+
+  /* financial */
+  .flow{display:flex;align-items:stretch;gap:16px;margin-top:32px;flex-wrap:wrap}
+  .fcell{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--panel-line);border-radius:18px;padding:26px 26px 24px;position:relative;}
+  .fcell .lbl{font-family:'Manrope';font-weight:600;font-size:12.5px;letter-spacing:.05em;color:var(--ink-2);text-transform:uppercase;margin-bottom:14px}
+  .fcell .val{font-family:'Manrope';font-weight:800;font-size:clamp(28px,3vw,44px);color:#fff;letter-spacing:-.02em;white-space:nowrap}
   .fcell .val .cur{font-size:.55em;color:var(--ink-3);font-weight:700;margin-right:6px;vertical-align:.12em}
-  .fcell .note{font-size:13px;color:var(--ink-3);margin-top:12px;line-height:1.45}
-  .fcell.op{flex:0 0 56px;min-width:0;background:transparent;border:0;display:flex;align-items:center;justify-content:center;padding:0}
-  .fcell.op span{font-family:'Manrope';font-weight:800;font-size:40px;color:var(--accent);opacity:.8}
+  .fcell .note{font-size:12.5px;color:var(--ink-3);margin-top:10px;line-height:1.45}
+  .fcell.op{flex:0 0 50px;min-width:0;background:transparent;border:0;display:flex;align-items:center;justify-content:center;padding:0}
+  .fcell.op span{font-family:'Manrope';font-weight:800;font-size:38px;color:var(--accent);opacity:.8}
   .fcell.result{background:linear-gradient(150deg, rgba(63,184,255,.16), rgba(0,166,237,.06));border-color:rgba(63,184,255,.45)}
   .fcell.result .val{color:var(--accent)}
-  .pill-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
-  .pill{background:var(--panel);border:1px solid var(--panel-line);border-radius:999px;padding:12px 20px;font-size:14px;color:var(--ink-2)}
-  .pill b{color:#fff;font-family:'Manrope';font-weight:700}
-
-  /* ===== DISTRIBUTION (slide 4) ===== */
-  .dist-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center;margin-top:30px}
-  .stackbar{display:flex;height:64px;border-radius:14px;overflow:hidden;border:1px solid var(--panel-line)}
-  .stackbar .seg{display:flex;align-items:center;justify-content:center;font-family:'Manrope';font-weight:800;color:#03101f;font-size:15px;transition:width 1s cubic-bezier(.7,0,.2,1)}
+  .distbox{margin-top:26px}
+  .dist-title{font-family:'Manrope';font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px}
+  .stackbar{display:flex;height:54px;border-radius:12px;overflow:hidden;border:1px solid var(--panel-line)}
+  .stackbar .seg{display:flex;align-items:center;justify-content:center;font-family:'Manrope';font-weight:800;color:#03101f;font-size:14px;}
   .seg.alpar{background:linear-gradient(180deg,#5fc6ff,#3FB8FF)}
   .seg.snow{background:linear-gradient(180deg,#79e36a,#62D84E)}
   .seg.fiep{background:linear-gradient(180deg,#ffc56a,#FFB23E)}
-  .legend{display:flex;flex-direction:column;gap:14px;margin-top:30px}
-  .lrow{display:flex;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;padding:16px 20px}
-  .lrow .sw{width:14px;height:14px;border-radius:4px;flex:0 0 14px}
-  .lrow .sw.alpar{background:var(--alpar)} .lrow .sw.snow{background:var(--snow)} .lrow .sw.fiep{background:var(--fiep)}
-  .lrow .nm{font-family:'Manrope';font-weight:700;font-size:16px;color:#fff;flex:1}
-  .lrow .vv{font-family:'Manrope';font-weight:800;font-size:18px;color:#fff;white-space:nowrap}
-  .lrow .pc{font-family:'Manrope';font-weight:700;font-size:13px;color:var(--ink-3);margin-left:14px;min-width:56px;text-align:right}
-  .highlight-box{
-    background:linear-gradient(150deg, rgba(63,184,255,.14), rgba(98,216,78,.06));
-    border:1px solid rgba(63,184,255,.4); border-radius:20px; padding:34px;
-  }
-  .highlight-box .big{font-family:'Manrope';font-weight:800;font-size:clamp(36px,4vw,58px);color:#fff;letter-spacing:-.02em;line-height:1}
-  .highlight-box .big .accent{color:var(--accent)}
-  .highlight-box p{margin-top:16px;color:var(--ink-2);font-size:15.5px;line-height:1.55}
-  .highlight-box .tag{display:inline-block;font-family:'Manrope';font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:18px}
+  .legend{display:flex;gap:14px;margin-top:18px;flex-wrap:wrap}
+  .lrow{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;padding:14px 18px;flex:1;min-width:220px}
+  .lrow .sw{width:13px;height:13px;border-radius:4px;flex:0 0 13px}
+  .lrow .sw.alpar{background:var(--alpar)}.lrow .sw.snow{background:var(--snow)}.lrow .sw.fiep{background:var(--fiep)}
+  .lrow .nm{font-family:'Manrope';font-weight:700;font-size:15px;color:#fff;flex:1}
+  .lrow .vv{font-family:'Manrope';font-weight:800;font-size:17px;color:#fff;white-space:nowrap}
+  .lrow .pc{font-family:'Manrope';font-weight:700;font-size:12px;color:var(--ink-3);margin-left:12px;min-width:48px;text-align:right}
 
-  /* ===== TIMELINE (slide 5) ===== */
-  .tl{position:relative;margin-top:60px;padding:0 10px}
-  .tl .line{position:absolute;left:0;right:0;top:18px;height:2px;background:linear-gradient(90deg,var(--accent),rgba(63,184,255,.15))}
-  .tl .steps{display:flex;justify-content:space-between;position:relative}
-  .tstep{flex:1;text-align:center;position:relative;padding:0 6px}
-  .tstep .node{width:18px;height:18px;border-radius:50%;background:var(--bg);border:3px solid var(--accent);margin:0 auto 22px;box-shadow:0 0 0 5px rgba(63,184,255,.12)}
-  .tstep.done .node{background:var(--accent)}
-  .tstep .date{font-family:'Manrope';font-weight:800;font-size:20px;color:#fff;margin-bottom:6px}
-  .tstep .ev{font-size:13px;color:var(--ink-2);line-height:1.4;max-width:150px;margin:0 auto}
-  .alert{
-    margin-top:64px;display:flex;gap:16px;align-items:flex-start;
-    background:rgba(255,178,62,.08);border:1px solid rgba(255,178,62,.3);border-radius:16px;padding:20px 24px;max-width:840px;
-  }
-  .alert .ic{font-family:'Manrope';font-weight:800;color:var(--amber);font-size:20px;line-height:1}
-  .alert p{font-size:15px;color:var(--ink-2);line-height:1.5}
-  .alert b{color:var(--amber)}
+  /* dense / tables */
+  .slide.dense{justify-content:flex-start;padding-top:clamp(80px,11vh,118px);padding-bottom:80px;}
+  .dense h2{margin-bottom:6px}
+  .meta-line{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:8px;margin-bottom:16px;font-size:13px;color:var(--ink-2);font-family:'Manrope';font-weight:600;}
+  .meta-line b{color:#fff}
+  .meta-line .sep{color:var(--ink-3)}
+  .tablewrap{flex:1;min-height:0;overflow:auto;border:1px solid var(--panel-line);border-radius:14px;background:rgba(255,255,255,.02);}
+  .tablewrap::-webkit-scrollbar{width:10px;height:10px}
+  .tablewrap::-webkit-scrollbar-thumb{background:rgba(63,184,255,.35);border-radius:8px}
+  .tablewrap::-webkit-scrollbar-track{background:transparent}
+  .dtable{width:100%;border-collapse:collapse;font-size:13px}
+  .dtable th{position:sticky;top:0;background:#0e1d3c;color:var(--ink);text-align:left;font-family:'Manrope';font-weight:700;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;padding:11px 14px;border-bottom:1px solid var(--panel-line);white-space:nowrap;z-index:2}
+  .dtable td{padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.05);color:var(--ink-2);vertical-align:top;line-height:1.45}
+  .dtable tbody tr:hover td{background:rgba(63,184,255,.05)}
+  .dtable td.c,.dtable th.c{text-align:center;white-space:nowrap}
+  .dtable .fr{font-family:'Manrope';font-weight:700;color:var(--accent)}
+  .badge{display:inline-block;min-width:46px;text-align:center;font-family:'Manrope';font-weight:700;font-size:11.5px;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .badge.done{background:rgba(63,224,160,.16);color:var(--green)}
+  .badge.todo{background:rgba(255,255,255,.06);color:var(--ink-3)}
+  .badge.mid{background:rgba(255,200,97,.16);color:var(--amber)}
+  .cols{display:grid;gap:18px;flex:1;min-height:0}
+  .cols.c2{grid-template-columns:1.25fr 1fr}
+  .cols.even{grid-template-columns:1fr 1fr}
+  .colstack{display:flex;flex-direction:column;gap:18px;min-height:0}
+  .subhead{font-family:'Manrope';font-weight:700;font-size:13px;color:var(--accent);letter-spacing:.02em;margin-bottom:8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .subhead .rng{font-weight:600;font-size:12px;color:var(--ink-3);font-family:'Inter'}
+  .blk{display:flex;flex-direction:column;min-height:0}
+  .pillrow{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .pill{background:var(--panel);border:1px solid var(--panel-line);border-radius:999px;padding:8px 16px;font-size:12.5px;color:var(--ink-2)}
+  .pill b{color:#fff;font-family:'Manrope';font-weight:700}
 
-  /* ===== CLOSING (slide 6) ===== */
-  .closing{justify-content:center}
-  .steps-list{margin-top:36px;display:flex;flex-direction:column;gap:16px;max-width:820px}
-  .sli{display:flex;gap:20px;align-items:center}
-  .sli .n{flex:0 0 44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--panel);border:1px solid var(--panel-line);font-family:'Manrope';font-weight:800;color:var(--accent);font-size:18px}
-  .sli .t{font-size:17px;color:var(--ink);font-weight:500}
-  .sli .t b{color:#fff;font-weight:700}
-  .signoff{margin-top:60px;padding-top:28px;border-top:1px solid var(--panel-line);max-width:820px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
-  .signoff .who{font-family:'Manrope';font-weight:800;font-size:22px;color:#fff}
-  .signoff .role{color:var(--ink-2);font-size:14px;margin-top:4px}
-  .signoff .co{font-family:'Manrope';font-weight:700;letter-spacing:.16em;font-size:12px;text-transform:uppercase;color:var(--ink-3)}
+  .wm{position:absolute;right:clamp(30px,5vw,90px);top:clamp(70px,10vh,120px);font-family:'Manrope';font-weight:800;font-size:clamp(110px,18vw,280px);line-height:.8;color:rgba(255,255,255,.025);z-index:-1;letter-spacing:-.04em}
 
-  /* section number watermark */
-  .wm{position:absolute;right:clamp(30px,5vw,90px);top:clamp(80px,11vh,130px);font-family:'Manrope';font-weight:800;
-      font-size:clamp(120px,20vw,320px);line-height:.8;color:rgba(255,255,255,.025);z-index:-1;letter-spacing:-.04em}
-
-  @media (max-width:880px){
-    .dist-wrap{grid-template-columns:1fr;gap:30px}
-    .cards.c4,.cards.c3{grid-template-columns:repeat(2,1fr)}
-    .flow{flex-direction:column}
-    .fcell.op{flex:0 0 auto;transform:rotate(90deg)}
+  @media (max-width:1000px){
+    .cards.c4{grid-template-columns:repeat(2,1fr)}
+    .cols.c2,.cols.even{grid-template-columns:1fr}
+    .flow{flex-direction:column}.fcell.op{flex:0 0 auto;transform:rotate(90deg)}
     .nav-hint{display:none}
   }
 </style>
@@ -247,147 +153,421 @@
 <body>
 
 <div class="progress" id="progress"></div>
-<div class="brandbar"><span class="dot b"></span><span class="dot"></span>ALPAR&nbsp;&nbsp;PARA&nbsp;&nbsp;FIEP</div>
+<div class="brandbar"><span class="logo"></span>ALPAR&nbsp;&nbsp;PARA&nbsp;&nbsp;FIEP</div>
 
 <div class="deck" id="deck">
 
-  <!-- SLIDE 1 — COVER -->
+  <!-- 1 COVER -->
   <section class="slide cover active">
     <div class="eyebrow reveal d1">Proposta de Retomada · Junho 2026</div>
-    <h1 class="reveal d2">Retomada do<br><span>Projeto Matrícula-Já</span></h1>
-    <div class="sub reveal d3">Fase 1 · Pessoa Física (PF) · Alpar para FIEP</div>
+    <h1 class="reveal d2">Projeto<br><span>Matrícula-Já</span></h1>
+    <div class="sub reveal d3">Retomada · Pessoa Física (PF) e Pessoa Jurídica (PJ) · Alpar para FIEP</div>
     <div class="meta reveal d4">
       <div class="mi"><div class="k">Cliente</div><div class="v">FIEP</div></div>
-      <div class="mi"><div class="k">Engagement Manager</div><div class="v">Josimar de Paula</div></div>
+      <div class="mi"><div class="k">Gerente do projeto</div><div class="v">Josimar de Paula</div></div>
       <div class="mi"><div class="k">Início da retomada</div><div class="v">17/06/2026</div></div>
-      <div class="mi"><div class="k">Status</div><div class="v">Aguardando aprovação</div></div>
+      <div class="mi"><div class="k">Data-base</div><div class="v">15/06/2026</div></div>
     </div>
   </section>
 
-  <!-- SLIDE 2 — CONTEXTO -->
+  <!-- 2 PREMISSAS -->
   <section class="slide">
     <span class="wm">01</span>
-    <div class="eyebrow reveal d1">O cenário</div>
+    <div class="eyebrow reveal d1">Premissas para retomada</div>
     <h2 class="reveal d2">Pronto para retomar, com<br>premissas alinhadas</h2>
-    <p class="lead reveal d3">A Fase 1 (Matrícula PF) está estruturada para reinício imediato. A retomada depende de poucas premissas claras e de um racional financeiro que viabiliza o projeto para a FIEP.</p>
+    <p class="lead reveal d3">Para a retomada, é essencial alinhar premissas e prazos com o cliente, em especial a entrega das APIs de integração no prazo acordado.</p>
     <div class="cards c4">
-      <div class="card reveal d3"><div class="num">01</div><h3>Documentação de integração</h3><p>Especificações técnicas completas e validadas antes do desenvolvimento.</p></div>
-      <div class="card reveal d4"><div class="num">02</div><h3>Datas de integração</h3><p>Entregas das integrações FIEP conforme o cronograma macro acordado.</p></div>
+      <div class="card reveal d3"><div class="num">01</div><h3>Documentação de integração</h3><p>Especificações técnicas completas e validadas antes do início do desenvolvimento.</p></div>
+      <div class="card reveal d4"><div class="num">02</div><h3>Datas de integração</h3><p>Entregas das integrações FIEP conforme datas definidas no cronograma macro.</p></div>
       <div class="card reveal d5"><div class="num">03</div><h3>Aprovação das histórias</h3><p>User stories revisadas e aprovadas pelo cliente antes da execução.</p></div>
-      <div class="card reveal d6"><div class="num">04</div><h3>Requisitos mapeados</h3><p>Escopo conforme os requisitos já identificados e mapeados.</p></div>
+      <div class="card reveal d6"><div class="num">04</div><h3>Requisitos mapeados</h3><p>Escopo conforme requisitos já identificados e mapeados anteriormente.</p></div>
+    </div>
+    <div class="tl reveal d5" style="margin-top:42px">
+      <div class="line"></div>
+      <div class="steps">
+        <div class="tstep done"><div class="node"></div><div class="date">15/06</div><div class="ev">Apresentação da proposta de reinício</div></div>
+        <div class="tstep done"><div class="node"></div><div class="date">16/06</div><div class="ev">Reunião de Kickoff</div></div>
+        <div class="tstep"><div class="node"></div><div class="date">17/06</div><div class="ev">Início Dev. Fase 1 · Matrícula PF</div></div>
+        <div class="tstep"><div class="node"></div><div class="date">15/07</div><div class="ev">Prazo das Integrações FIEP (R1 a R7)</div></div>
+        <div class="tstep"><div class="node"></div><div class="date">30/10</div><div class="ev">Go-Live</div></div>
+        <div class="tstep"><div class="node"></div><div class="date">16/11</div><div class="ev">Encerramento do Hypercare</div></div>
+      </div>
     </div>
   </section>
 
-  <!-- SLIDE 3 — RACIONAL FINANCEIRO -->
-  <section class="slide">
+  <!-- 3 CRONOGRAMA MACRO PF -->
+  <section class="slide dense">
     <span class="wm">02</span>
-    <div class="eyebrow reveal d1">Racional financeiro</div>
-    <h2 class="reveal d2">Quanto falta para concluir o projeto</h2>
-    <p class="lead reveal d3">Do custo total do escopo, descontamos o que a FIEP já investiu. O que resta é a diferença a ser aportada para o go-live.</p>
+    <div class="eyebrow reveal d1">Cronograma macro · Matrícula Já PF</div>
+    <h2 class="reveal d2">Da retomada ao go-live em PF</h2>
+    <div class="meta-line reveal d3">
+      <span>Cliente: <b>FIEP</b></span><span class="sep">|</span>
+      <span>Início Retomada: <b>17/06/2026</b></span><span class="sep">|</span>
+      <span>Data-base: <b>17/06/2026</b></span><span class="sep">|</span>
+      <span>Go-Live previsto: <b>30/10/2026</b></span>
+    </div>
+    <div class="tablewrap reveal d3">
+      <table class="dtable">
+        <thead><tr><th>Fase</th><th>Atividade</th><th>Responsável</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias úteis</th><th class="c">Status</th></tr></thead>
+        <tbody>
+<tr><td>Refinamento</td><td class="fr">Reunião de Retomada</td><td>Alpar / Fiep</td><td class="c">15/06/26</td><td class="c">16/06/26</td><td class="c">2</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Tech Fiep</td><td class="fr">Integrações Fiep · 1ª Remessa</td><td>Fiep</td><td class="c">01/05/26</td><td class="c">30/06/26</td><td class="c">43</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Tech Fiep</td><td class="fr">Integrações Fiep · 2ª Remessa</td><td>Fiep</td><td class="c">01/05/26</td><td class="c">15/07/26</td><td class="c">54</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Desenvolvimento</td><td class="fr">Matrícula e Rematrícula · PF</td><td>Squad Alpar</td><td class="c">17/06/26</td><td class="c">15/10/26</td><td class="c">87</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Review</td><td class="fr">Review</td><td>Alpar / Fiep</td><td class="c">16/10/26</td><td class="c">16/10/26</td><td class="c">1</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Teste Cliente</td><td class="fr">Homologação do cliente</td><td>Fiep</td><td class="c">16/10/26</td><td class="c">30/10/26</td><td class="c">11</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Desenvolvimento</td><td class="fr">Ajustes</td><td>Time Dev</td><td class="c">16/10/26</td><td class="c">30/10/26</td><td class="c">11</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Treinamento</td><td class="fr">Treinamento para Área de Negócios</td><td>Fiep</td><td class="c">30/10/26</td><td class="c">06/11/26</td><td class="c">6</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Go-Live / Hypercare</td><td class="fr">Subida PRD</td><td>Squad Alpar + Fiep</td><td class="c">30/10/26</td><td class="c">30/10/26</td><td class="c">1</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Go-Live / Hypercare</td><td class="fr">Acompanhar período de hypercare</td><td>Squad Alpar + PO Fiep</td><td class="c">30/10/26</td><td class="c">05/11/26</td><td class="c">5</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pillrow reveal d4" style="margin-top:14px;margin-bottom:0">
+      <div class="pill">17/06 <b>Início Dev. Matrícula PF</b></div>
+      <div class="pill">30/06 <b>1ª Entrega Integrações</b></div>
+      <div class="pill">15/07 <b>2ª Entrega · Prazo Integrações FIEP</b></div>
+      <div class="pill">16/10 <b>Review / Início Homologação</b></div>
+      <div class="pill">30/10 <b>Subida PRD</b></div>
+      <div class="pill">06/11 <b>Encerramento Hypercare</b></div>
+    </div>
+  </section>
 
+  <!-- 4 PRAZOS DETALHADOS PF -->
+  <section class="slide dense">
+    <span class="wm">03</span>
+    <div class="eyebrow reveal d1">Prazos detalhados por frente · PF</div>
+    <h2 class="reveal d2">Desenvolvimento Matrícula PF</h2>
+    <div class="meta-line reveal d3">
+      <span>20 frentes (R1 a R20)</span><span class="sep">|</span>
+      <span>Período total: <b>15/06/26 a 06/11/26</b></span><span class="sep">|</span>
+      <span>Dependência crítica: integrações FIEP até <b>15/07/26</b></span>
+    </div>
+    <div class="cols c2 reveal d3">
+      <div class="blk">
+        <div class="subhead">Matrícula PF · F1 a F17 <span class="rng">17/06/26 a 31/07/26</span></div>
+        <div class="tablewrap">
+          <table class="dtable">
+            <thead><tr><th class="c">#</th><th>Frente</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias</th></tr></thead>
+            <tbody>
+<tr><td class="fr">F1</td><td>Criar Conta / Login</td><td class="c">17/06</td><td class="c">23/06</td><td class="c">5</td></tr>
+<tr><td class="fr">F2</td><td>Escolher Perfil / Curso</td><td class="c">17/06</td><td class="c">23/06</td><td class="c">5</td></tr>
+<tr><td class="fr">F3</td><td>Cadastro do Aluno</td><td class="c">17/06</td><td class="c">31/07</td><td class="c">32</td></tr>
+<tr><td class="fr">F4</td><td>Responsável Financeiro</td><td class="c">17/06</td><td class="c">16/07</td><td class="c">21</td></tr>
+<tr><td class="fr">F5</td><td>Documentos</td><td class="c">17/06</td><td class="c">14/07</td><td class="c">19</td></tr>
+<tr><td class="fr">F6</td><td>Descontos</td><td class="c">17/06</td><td class="c">08/07</td><td class="c">15</td></tr>
+<tr><td class="fr">F7</td><td>Acomp./Cancel. Matrícula</td><td class="c">17/06</td><td class="c">01/07</td><td class="c">11</td></tr>
+<tr><td class="fr">F8</td><td>FAQ / Central de Ajuda</td><td class="c">23/06</td><td class="c">13/07</td><td class="c">15</td></tr>
+<tr><td class="fr">F9</td><td>Pagamento (Gateway)</td><td class="c">16/07</td><td class="c">29/09</td><td class="c">53</td></tr>
+<tr><td class="fr">F10</td><td>Assin. Contrato (e-Sign)</td><td class="c">30/07</td><td class="c">16/09</td><td class="c">33</td></tr>
+<tr><td class="fr">F11</td><td>Confirm. Matrícula (SGE)</td><td class="c">16/07</td><td class="c">20/08</td><td class="c">25</td></tr>
+<tr><td class="fr">F12</td><td>Atendente · Abertura</td><td class="c">16/07</td><td class="c">31/07</td><td class="c">12</td></tr>
+<tr><td class="fr">F13</td><td>Atendente · Gestão Matr.</td><td class="c">16/07</td><td class="c">22/07</td><td class="c">5</td></tr>
+<tr><td class="fr">F14</td><td>Atendente · Matr. em Lote</td><td class="c">16/07</td><td class="c">11/09</td><td class="c">41</td></tr>
+<tr><td class="fr">F15</td><td>(Melh.) Descontos</td><td class="c">16/07</td><td class="c">10/09</td><td class="c">40</td></tr>
+<tr><td class="fr">F16</td><td>(Melh.) Assin. Contrato</td><td class="c">29/09</td><td class="c">07/10</td><td class="c">7</td></tr>
+<tr><td class="fr">F17</td><td>(Melh.) Gratuidade Não Regim.</td><td class="c">15/09</td><td class="c">15/10</td><td class="c">22</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="colstack">
+        <div class="blk" style="flex:0 0 auto">
+          <div class="subhead">Rematrícula PF · F18 a F20 <span class="rng">17/06/26 a 31/07/26</span></div>
+          <div class="tablewrap" style="flex:0 0 auto;max-height:none">
+            <table class="dtable">
+              <thead><tr><th class="c">#</th><th>Frente</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias</th></tr></thead>
+              <tbody>
+<tr><td class="fr">F18</td><td>Rematrícula</td><td class="c">19/08</td><td class="c">15/09</td><td class="c">18</td></tr>
+<tr><td class="fr">F19</td><td>Rematrícula · Disciplinas</td><td class="c">31/07</td><td class="c">31/08</td><td class="c">21</td></tr>
+<tr><td class="fr">F20</td><td>Atend. · Rematr. em Lote</td><td class="c">22/07</td><td class="c">10/09</td><td class="c">36</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="blk" style="min-height:0">
+          <div class="subhead">Homologação, Treinamento e Go-Live <span class="rng">16/10/26 a 06/11/26</span></div>
+          <div class="tablewrap">
+            <table class="dtable">
+              <thead><tr><th>Atividade</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias</th></tr></thead>
+              <tbody>
+<tr><td>Review</td><td class="c">16/10</td><td class="c">16/10</td><td class="c">0,5</td></tr>
+<tr><td>Homologação cliente</td><td class="c">16/10</td><td class="c">30/10</td><td class="c">10</td></tr>
+<tr><td>Ajustes</td><td class="c">16/10</td><td class="c">30/10</td><td class="c">10</td></tr>
+<tr><td>Treinam. Negócios</td><td class="c">30/10</td><td class="c">06/11</td><td class="c">5</td></tr>
+<tr><td>Plano Go-Live (Cutover)</td><td class="c">16/10</td><td class="c">06/11</td><td class="c">15,5</td></tr>
+<tr><td>Subida PRD</td><td class="c">30/10</td><td class="c">30/10</td><td class="c">0,5</td></tr>
+<tr><td>Hypercare</td><td class="c">30/10</td><td class="c">06/11</td><td class="c">5</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 CRONOGRAMA MACRO PJ -->
+  <section class="slide dense">
+    <span class="wm">04</span>
+    <div class="eyebrow reveal d1">Cronograma macro · Matrícula Já PJ</div>
+    <h2 class="reveal d2">Da retomada ao go-live em PJ</h2>
+    <div class="meta-line reveal d3">
+      <span>Cliente: <b>FIEP</b></span><span class="sep">|</span>
+      <span>Início Retomada: <b>17/06/2026</b></span><span class="sep">|</span>
+      <span>Data-base: <b>17/06/2026</b></span><span class="sep">|</span>
+      <span>Go-Live previsto: <b>21/12/2026</b></span>
+    </div>
+    <div class="tablewrap reveal d3">
+      <table class="dtable">
+        <thead><tr><th>Fase</th><th>Atividade</th><th>Responsável</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias úteis</th><th class="c">Status</th></tr></thead>
+        <tbody>
+<tr><td>Refinamento</td><td class="fr">Reunião de Retomada</td><td>Alpar / Fiep</td><td class="c">15/06/26</td><td class="c">16/06/26</td><td class="c">2</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Tech Fiep</td><td class="fr">Integrações Fiep</td><td>Fiep</td><td class="c">01/05/26</td><td class="c">15/07/26</td><td class="c">54</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Desenvolvimento</td><td class="fr">Matrícula e Rematrícula · PJ</td><td>Squad Alpar</td><td class="c">16/07/26</td><td class="c">04/12/26</td><td class="c">102</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Review</td><td class="fr">Review</td><td>Alpar / Fiep</td><td class="c">07/12/26</td><td class="c">07/12/26</td><td class="c">1</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Teste Cliente</td><td class="fr">Homologação do cliente</td><td>Fiep</td><td class="c">07/12/26</td><td class="c">21/12/26</td><td class="c">11</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Desenvolvimento</td><td class="fr">Ajustes</td><td>Time Dev</td><td class="c">07/12/26</td><td class="c">21/12/26</td><td class="c">11</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Treinamento</td><td class="fr">Treinamento para Área de Negócios</td><td>Fiep</td><td class="c">21/12/26</td><td class="c">29/12/26</td><td class="c">7</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Go-Live / Hypercare</td><td class="fr">Subida PRD</td><td>Squad Alpar + Fiep</td><td class="c">21/12/26</td><td class="c">21/12/26</td><td class="c">1</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+<tr><td>Go-Live / Hypercare</td><td class="fr">Acompanhar período de hypercare</td><td>Squad Alpar + PO Fiep</td><td class="c">21/12/26</td><td class="c">29/12/26</td><td class="c">7</td><td class="c"><span class="badge todo">Não iniciado</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pillrow reveal d4" style="margin-top:14px;margin-bottom:0">
+      <div class="pill">16/07 <b>Início Dev. Matrícula PJ</b></div>
+      <div class="pill">15/07 <b>Prazo Integrações FIEP</b></div>
+      <div class="pill">07/12 <b>Review / Início Homologação</b></div>
+      <div class="pill">21/12 <b>Subida PRD</b></div>
+      <div class="pill">29/12 <b>Encerramento Hypercare</b></div>
+    </div>
+  </section>
+
+  <!-- 6 PRAZOS DETALHADOS PJ -->
+  <section class="slide dense">
+    <span class="wm">05</span>
+    <div class="eyebrow reveal d1">Prazos detalhados por frente · PJ</div>
+    <h2 class="reveal d2">Desenvolvimento Matrícula Já PJ</h2>
+    <div class="meta-line reveal d3">
+      <span>19 frentes (PJ-01 a PJ-19)</span><span class="sep">|</span>
+      <span>Período total: <b>16/07/26 a 04/12/26</b></span><span class="sep">|</span>
+      <span>Dependência crítica: integrações FIEP até <b>15/07/26</b></span>
+    </div>
+    <div class="subhead reveal d3">Matrícula e Rematrícula PJ · Frentes 1 a 19 <span class="rng">16/07/26 a 04/12/26</span></div>
+    <div class="cols even reveal d3">
+      <div class="tablewrap">
+        <table class="dtable">
+          <thead><tr><th class="c">#</th><th>Frente</th></tr></thead>
+          <tbody>
+<tr><td class="fr c">1</td><td>Integrações a serem Construídas pela Fiep</td></tr>
+<tr><td class="fr c">2</td><td>PJ · Voucher</td></tr>
+<tr><td class="fr c">3</td><td>PJ · Escolha de Curso por Voucher</td></tr>
+<tr><td class="fr c">4</td><td>PJ · Cadastro do Aluno</td></tr>
+<tr><td class="fr c">5</td><td>PJ · Documentos</td></tr>
+<tr><td class="fr c">6</td><td>PJ · Termo de Responsabilidade</td></tr>
+<tr><td class="fr c">7</td><td>PJ · Confirmação</td></tr>
+<tr><td class="fr c">8</td><td>PJ · Matrícula em Lote</td></tr>
+<tr><td class="fr c">9</td><td>PJ · Gestão de Matrícula</td></tr>
+<tr><td class="fr c">10</td><td>PJ · Rascunhos</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tablewrap">
+        <table class="dtable">
+          <thead><tr><th class="c">#</th><th>Frente</th></tr></thead>
+          <tbody>
+<tr><td class="fr c">11</td><td>PJ · Rematrícula · Aceite</td></tr>
+<tr><td class="fr c">12</td><td>PJ · Rematrícula · Voucher</td></tr>
+<tr><td class="fr c">13</td><td>PJ · Rematrícula</td></tr>
+<tr><td class="fr c">14</td><td>PJ · Rematrícula · Grade de Disciplinas</td></tr>
+<tr><td class="fr c">15</td><td>PJ · Rematrícula · Confirmação</td></tr>
+<tr><td class="fr c">16</td><td>PJ · Transformar Matrícula PJ para PF</td></tr>
+<tr><td class="fr c">17</td><td>PJ · Visão do Aluno</td></tr>
+<tr><td class="fr c">18</td><td>PJ · Visão da Empresa</td></tr>
+<tr><td class="fr c">19</td><td>PJ · Visão do Atendente</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 RESUMO FINANCEIRO -->
+  <section class="slide">
+    <span class="wm">06</span>
+    <div class="eyebrow reveal d1">Resumo financeiro</div>
+    <h2 class="reveal d2">Estrutura de custos do projeto</h2>
+    <p class="lead reveal d3">Do custo total do escopo, a FIEP já aportou R$ 465 mil. A diferença a fechar é co-investida por Alpar e ServiceNow, reduzindo o valor restante para a FIEP.</p>
     <div class="flow">
       <div class="fcell reveal d3">
         <div class="lbl">Custo total do projeto</div>
         <div class="val"><span class="cur">R$</span>2.071.445</div>
-        <div class="note">Escopo completo, 20 frentes de desenvolvimento (R1 a R20).</div>
+        <div class="note">Escopo completo, Matrícula PF + PJ.</div>
       </div>
       <div class="fcell op reveal d4"><span>&minus;</span></div>
       <div class="fcell reveal d4">
         <div class="lbl">Já investido pela FIEP</div>
-        <div class="val"><span class="cur">R$</span>238.000</div>
+        <div class="val"><span class="cur">R$</span>465.000</div>
         <div class="note">Valor aportado na fase inicial do projeto.</div>
       </div>
       <div class="fcell op reveal d5"><span>=</span></div>
       <div class="fcell result reveal d5">
-        <div class="lbl">Diferença a investir</div>
-        <div class="val"><span class="cur">R$</span>1.833.445</div>
-        <div class="note">Valor restante para a conclusão da Fase 1 (PF).</div>
+        <div class="lbl">Diferença a fechar</div>
+        <div class="val"><span class="cur">R$</span>1.606.445</div>
+        <div class="note">Valor restante para a conclusão do projeto.</div>
       </div>
     </div>
-
-    <div class="pill-row reveal d6">
-      <div class="pill">Custo do projeto inicial: <b>R$ 796.375</b></div>
-      <div class="pill">Custo total do projeto: <b>R$ 2.071.445</b></div>
-    </div>
-  </section>
-
-  <!-- SLIDE 4 — DISTRIBUIÇÃO -->
-  <section class="slide">
-    <span class="wm">03</span>
-    <div class="eyebrow reveal d1">Como a diferença é dividida</div>
-    <h2 class="reveal d2">Um investimento compartilhado</h2>
-
-    <div class="dist-wrap">
-      <div>
-        <div class="stackbar reveal d3">
-          <div class="seg alpar" style="width:36.7%">36,7%</div>
-          <div class="seg snow"  style="width:36.5%">36,5%</div>
-          <div class="seg fiep"  style="width:26.8%">26,8%</div>
-        </div>
-        <div class="legend">
-          <div class="lrow reveal d3"><span class="sw alpar"></span><span class="nm">Alpar</span><span class="vv">R$ 673.445</span><span class="pc">36,7%</span></div>
-          <div class="lrow reveal d4"><span class="sw snow"></span><span class="nm">ServiceNow</span><span class="vv">R$ 670.000</span><span class="pc">36,5%</span></div>
-          <div class="lrow reveal d5"><span class="sw fiep"></span><span class="nm">FIEP</span><span class="vv">R$ 490.000</span><span class="pc">26,8%</span></div>
-        </div>
+    <div class="distbox reveal d6">
+      <div class="dist-title">Distribuição do investimento</div>
+      <div class="stackbar">
+        <div class="seg alpar" style="width:32.5%">Alpar 32,5%</div>
+        <div class="seg snow"  style="width:32.3%">ServiceNow 32,3%</div>
+        <div class="seg fiep"  style="width:35.2%">FIEP 35,2%</div>
       </div>
-
-      <div class="highlight-box reveal d4">
-        <span class="tag">Valor para a FIEP</span>
-        <div class="big">Alpar e ServiceNow<br>co-investem <span class="accent">R$ 1,34 mi</span></div>
-        <p>Juntas, Alpar e ServiceNow absorvem <b style="color:#fff">73%</b> do valor restante. A FIEP conclui um projeto de <b style="color:#fff">R$ 2,07 milhões</b> aportando mais <b style="color:#fff">R$ 490 mil</b>, R$ 728 mil no total.</p>
+      <div class="legend">
+        <div class="lrow"><span class="sw alpar"></span><span class="nm">Alpar</span><span class="vv">R$ 673.445</span><span class="pc">32,5%</span></div>
+        <div class="lrow"><span class="sw snow"></span><span class="nm">ServiceNow</span><span class="vv">R$ 670.000</span><span class="pc">32,3%</span></div>
+        <div class="lrow"><span class="sw fiep"></span><span class="nm">FIEP</span><span class="vv">R$ 728.000</span><span class="pc">35,2%</span></div>
+      </div>
+      <div class="pillrow" style="margin-top:16px;margin-bottom:0">
+        <div class="pill">Custo do escopo inicial: <b>R$ 796.375</b></div>
+        <div class="pill">FIEP: <b>R$ 465.000</b> já aportados + <b>R$ 263.000</b> a fechar</div>
+        <div class="pill">Alpar e ServiceNow co-investem <b>R$ 1,34 mi</b></div>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 5 — CRONOGRAMA -->
-  <section class="slide">
-    <span class="wm">04</span>
-    <div class="eyebrow reveal d1">Cronograma macro</div>
-    <h2 class="reveal d2">Da aprovação ao go-live em ~5 meses</h2>
-
-    <div class="tl reveal d3">
-      <div class="line"></div>
-      <div class="steps">
-        <div class="tstep done"><div class="node"></div><div class="date">15/06</div><div class="ev">Apresentação da proposta de retomada</div></div>
-        <div class="tstep done"><div class="node"></div><div class="date">16/06</div><div class="ev">Reunião de retomada com o cliente</div></div>
-        <div class="tstep"><div class="node"></div><div class="date">17/06</div><div class="ev">Início Dev. Fase 1 · Matrícula PF</div></div>
-        <div class="tstep"><div class="node"></div><div class="date">15/07</div><div class="ev">Prazo das integrações FIEP (R1 a R7)</div></div>
-        <div class="tstep"><div class="node"></div><div class="date">30/10</div><div class="ev">Go-Live · Subida em produção</div></div>
-        <div class="tstep"><div class="node"></div><div class="date">06/11</div><div class="ev">Encerramento do Hypercare</div></div>
-      </div>
+  <!-- 8 INTEGRAÇÕES PF 1 -->
+  <section class="slide dense">
+    <span class="wm">07</span>
+    <div class="eyebrow reveal d1">Integrações FIEP · PF</div>
+    <h2 class="reveal d2">Integrações FIEP PF · 1ª Remessa</h2>
+    <div class="meta-line reveal d3">
+      <span><b>23</b> integrações</span><span class="sep">|</span>
+      <span><b>10</b> concluídas</span><span class="sep">|</span>
+      <span>Período: <b>01/05/26 a 30/06/26</b></span><span class="sep">|</span>
+      <span>Dependência crítica: integrações FIEP até <b>30/06/26</b></span>
     </div>
-
-    <div class="alert reveal d5">
-      <span class="ic">!</span>
-      <p><b>Dependência crítica:</b> as integrações da FIEP precisam ser entregues até <b>15/07/2026</b>. O cumprimento desse prazo é a principal premissa para o go-live em 30/10.</p>
+    <div class="tablewrap reveal d3">
+      <table class="dtable">
+        <thead><tr><th class="c">% concluída</th><th>Frente</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias</th></tr></thead>
+        <tbody>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Criação de login · Integração com Whatsapp · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Integração · Consulta de cursos no ERP · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Integração · Valores dos cursos · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Integração · Receita Federal · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Responsável Financeiro · Integração ERP, Inadimplência · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Responsável Financeiro · Integração Serasa, Inadimplência · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Pagamento (Gateway) · Gateway de Pagamento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Acomp. e Cancel. de Matrícula (SGE) · Cancelamento em 7 dias (Envio) · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Acomp. e Cancel. de Matrícula (SGE) · ERP, Status de Cancelamento após vencimento do Adiantamento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Escolher Perfil/Curso · CRM, Validação de Adiantamento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Escolher Perfil/Curso · CRM, Regras de Parcelamento / Precificação · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Cadastro do Aluno · SGE, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro do Aluno · Receita Federal, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro do Aluno · GED, Salvar Documento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Cadastro Responsável Financeiro · SGE, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro Responsável Financeiro · Receita Federal, Consulta Dados Pessoais · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro Responsável Financeiro · GED, Consulta Documentos Existentes · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Cadastro Responsável Financeiro · GED, Salvar Documento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Documentos · GED, Consulta Documentos Existentes · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Documentos · GED, Salvar Documento · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Descontos · Conecta, Consulta Sindicatos e Empresas Associadas · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Descontos · Conecta, Consulta Indústrias Contribuintes · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+<tr><td class="c"><span class="badge done">100%</span></td><td>Descontos · SGE, Consulta Recompra · End Point Fiep</td><td class="c">01/05</td><td class="c">30/06</td><td class="c">60</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
-  <!-- SLIDE 6 — PRÓXIMOS PASSOS -->
-  <section class="slide closing">
-    <span class="wm">05</span>
-    <div class="eyebrow reveal d1">Próximos passos</div>
-    <h2 class="reveal d2">Decisão para destravar a Fase 1</h2>
-
-    <div class="steps-list">
-      <div class="sli reveal d3"><span class="n">1</span><span class="t"><b>Aprovar a retomada</b> e o racional financeiro proposto.</span></div>
-      <div class="sli reveal d4"><span class="n">2</span><span class="t"><b>Alinhar as premissas</b> de integração e a aprovação das histórias.</span></div>
-      <div class="sli reveal d5"><span class="n">3</span><span class="t"><b>Garantir as integrações FIEP</b> até 15/07 para sustentar o cronograma.</span></div>
+  <!-- 9 INTEGRAÇÕES PF 2 -->
+  <section class="slide dense">
+    <span class="wm">08</span>
+    <div class="eyebrow reveal d1">Integrações FIEP · PF</div>
+    <h2 class="reveal d2">Integrações FIEP PF · 2ª Remessa</h2>
+    <div class="meta-line reveal d3">
+      <span><b>28</b> integrações</span><span class="sep">|</span>
+      <span>Período: <b>01/05/26 a 15/07/26</b></span><span class="sep">|</span>
+      <span>Dependência crítica: integrações FIEP até <b>15/07/26</b></span>
     </div>
+    <div class="tablewrap reveal d3">
+      <table class="dtable">
+        <thead><tr><th class="c">% concluída</th><th>Frente</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias</th></tr></thead>
+        <tbody>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Validação de Vagas</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Consulta de Nova Turma</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · CRM, Validação de Adiantamento</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consulta de Modelo de Contrato</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Gerar Pré Emitido</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consultar HTML Contrato</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consulta Contrato Escrito</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · Lacuna, Salvar Documento</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · Lacuna, Consultar Documento</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · Lacuna, Assinatura de Contrato</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Receber informação de assinatura</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consulta Valores de Desconto</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Criar Parcelas do Contrato</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Consultar HTML Boleto (se adiantamento por Boleto)</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Pagamento do Adiantamento (Gateway)</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · ERP, Receber o Status de Pagamento (SN)</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Confirmação de Matrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Confirmação de Matrícula (SGE) · SGE, Consulta Status de Matrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Envio do Aceite ao ServiceNow</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Consulta da Turma para Rematrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Criar uma Pré-Matrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Consulta Dados do Curso</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · CRM, Consultar Valor do Curso</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · CRM, Regras de Precificação</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · CRM, Consultar Regras de Parcelamento</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Listagem de Disciplinas</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Confirmação de Rematrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>Rematrícula · SGE, Consultar Status de Rematrícula</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-    <div class="signoff reveal d6">
-      <div>
-        <div class="who">Josimar de Paula</div>
-        <div class="role">Engagement Manager · Alpar</div>
-      </div>
-      <div class="co">Consultoria e Tecnologia para Grandes Empresas</div>
+  <!-- 10 INTEGRAÇÕES PJ -->
+  <section class="slide dense">
+    <span class="wm">09</span>
+    <div class="eyebrow reveal d1">Integrações FIEP · PJ</div>
+    <h2 class="reveal d2">Integrações FIEP PJ</h2>
+    <div class="meta-line reveal d3">
+      <span><b>20</b> integrações</span><span class="sep">|</span>
+      <span>Período: <b>01/05/26 a 15/07/26</b></span><span class="sep">|</span>
+      <span>Dependência crítica: integrações FIEP até <b>15/07/26</b></span>
+    </div>
+    <div class="tablewrap reveal d3">
+      <table class="dtable">
+        <thead><tr><th class="c">% concluída</th><th>Frente</th><th class="c">Início</th><th class="c">Fim</th><th class="c">Dias</th></tr></thead>
+        <tbody>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Matrícula · Voucher · Envio de Contrato/Turma para o ServiceNow (Criar Voucher) · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Matrícula · Voucher · Consulta Responsáveis pela criação da Turma · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Matrícula · Voucher · Trazer quem será notificado (Voucher) · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Matrícula · Voucher · Consulta de Turmas · SGE</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Matrícula · Voucher · Validação de Vagas Disponíveis · SGE</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Matrícula · Voucher · Validação de Vagas Vendidas · ERP</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Matrícula · Voucher · Recebimento do Código do Voucher no CRM · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Matrícula · Voucher · Cancelamento do Voucher no ServiceNow · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Matrícula · Confirmação · Efetivação de Matrícula · SGE</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Aceite · Envio do Aceite ao ServiceNow · SGE</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Aceite · Confirmação do Aceite do Aluno · SGE</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Voucher · Envio do Contrato Antigo ao ServiceNow · SGE</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Voucher · Consulta de Turma/Contrato · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Voucher · Buscar Criado por/Proprietário da Conta para Notificação · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Voucher · Envio do Contrato (antigo, novo) para criar um Voucher no ServiceNow · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Voucher · Recebimento do Número do Voucher no CRM · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Voucher · Mudança de Status da Pré-Matrícula · SGE</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Voucher · Cancelamento do Voucher no ServiceNow · CRM</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Disciplina · Listagem de Disciplinas · SGE</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+<tr><td class="c"><span class="badge todo">0%</span></td><td>PJ · Rematrícula · Confirmação · Efetivação de Rematrícula · SGE</td><td class="c">01/05</td><td class="c">15/07</td><td class="c">75</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
 </div>
 
 <div class="dots" id="dots"></div>
-<div class="counter"><b id="cur">1</b> / <span id="tot">6</span></div>
+<div class="counter"><b id="cur">1</b> / <span id="tot">10</span></div>
 <div class="nav-hint"><span class="key">&larr;</span><span class="key">&rarr;</span> navegar &nbsp;&middot;&nbsp; <span class="key">F</span> tela cheia</div>
 
 <script>
@@ -397,13 +577,8 @@
   let i=0;
   const dotsWrap=document.getElementById('dots');
   document.getElementById('tot').textContent=total;
-  slides.forEach((_,idx)=>{
-    const b=document.createElement('button');
-    b.addEventListener('click',()=>go(idx));
-    dotsWrap.appendChild(b);
-  });
+  slides.forEach((_,idx)=>{const b=document.createElement('button');b.addEventListener('click',()=>go(idx));dotsWrap.appendChild(b);});
   const dots=[...dotsWrap.children];
-
   function go(n){
     i=Math.max(0,Math.min(total-1,n));
     deck.style.transform=`translateX(-${i*100}vw)`;
@@ -413,31 +588,24 @@
     document.getElementById('progress').style.width=((i+1)/total*100)+'%';
   }
   function next(){go(i+1)} function prev(){go(i-1)}
-
+  function inScroll(el,dy){const w=el.closest('.tablewrap');if(!w)return false;
+    if(dy>0)return w.scrollTop+w.clientHeight < w.scrollHeight-1;
+    return w.scrollTop>0;}
   window.addEventListener('keydown',e=>{
     if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
     else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
     else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(total-1);}
-    else if(e.key.toLowerCase()==='f'){
-      if(!document.fullscreenElement){document.documentElement.requestFullscreen?.();}
-      else{document.exitFullscreen?.();}
-    }
+    else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement){document.documentElement.requestFullscreen?.();}else{document.exitFullscreen?.();}}
   });
-  // swipe
   let sx=0;
   window.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
-  window.addEventListener('touchend',e=>{
-    const dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)>50){dx<0?next():prev();}
-  },{passive:true});
-  // wheel (debounced)
+  window.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){dx<0?next():prev();}},{passive:true});
   let wlock=false;
   window.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaY)>Math.abs(e.deltaX) && inScroll(e.target,e.deltaY))return;
     if(wlock)return; if(Math.abs(e.deltaY)<24 && Math.abs(e.deltaX)<24)return;
-    wlock=true; (e.deltaY>0||e.deltaX>0)?next():prev();
-    setTimeout(()=>wlock=false,700);
+    wlock=true;(e.deltaY>0||e.deltaX>0)?next():prev();setTimeout(()=>wlock=false,700);
   },{passive:true});
-
   go(0);
 </script>
 </body>
