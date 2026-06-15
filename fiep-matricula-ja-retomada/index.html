@@ -92,22 +92,22 @@
   .fcell .note{font-size:12.5px;color:var(--ink-3);margin-top:10px;line-height:1.45}
   .fcell.op{flex:0 0 50px;min-width:0;background:transparent;border:0;display:flex;align-items:center;justify-content:center;padding:0}
   .fcell.op span{font-family:'Manrope';font-weight:800;font-size:38px;color:var(--accent);opacity:.8}
-  .fcell.result{background:linear-gradient(150deg, rgba(63,184,255,.16), rgba(0,166,237,.06));border-color:rgba(63,184,255,.45)}
-  .fcell.result .val{color:var(--accent)}
-  .distbox{margin-top:26px}
-  .dist-title{font-family:'Manrope';font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px}
-  .stackbar{display:flex;height:54px;border-radius:12px;overflow:hidden;border:1px solid var(--panel-line)}
-  .stackbar .seg{display:flex;align-items:center;justify-content:center;font-family:'Manrope';font-weight:800;color:#03101f;font-size:14px;}
-  .seg.alpar{background:linear-gradient(180deg,#5fc6ff,#3FB8FF)}
-  .seg.snow{background:linear-gradient(180deg,#79e36a,#62D84E)}
-  .seg.fiep{background:linear-gradient(180deg,#ffc56a,#FFB23E)}
-  .legend{display:flex;gap:14px;margin-top:18px;flex-wrap:wrap}
-  .lrow{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;padding:14px 18px;flex:1;min-width:220px}
-  .lrow .sw{width:13px;height:13px;border-radius:4px;flex:0 0 13px}
-  .lrow .sw.alpar{background:var(--alpar)}.lrow .sw.snow{background:var(--snow)}.lrow .sw.fiep{background:var(--fiep)}
-  .lrow .nm{font-family:'Manrope';font-weight:700;font-size:15px;color:#fff;flex:1}
-  .lrow .vv{font-family:'Manrope';font-weight:800;font-size:17px;color:#fff;white-space:nowrap}
-  .lrow .pc{font-family:'Manrope';font-weight:700;font-size:12px;color:var(--ink-3);margin-left:12px;min-width:48px;text-align:right}
+  .fcell.result{background:linear-gradient(150deg,#0c2036,#0a1830);border-color:rgba(63,184,255,.45)}
+  .fcell.result .val{color:#F4B740}
+  .fcell.result .note{color:var(--accent)}
+  .distbox{margin-top:30px}
+  .dist-title{font-family:'Manrope';font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px}
+  .dbars{display:flex;flex-direction:column;gap:16px}
+  .dbar{display:grid;grid-template-columns:130px 1fr;align-items:center;gap:22px}
+  .dbar .who{font-family:'Manrope';font-weight:700;font-size:16px;color:#fff}
+  .dbar .track{display:flex;align-items:stretch;height:42px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid var(--panel-line);overflow:hidden;font-family:'Manrope';font-weight:800;font-size:13.5px}
+  .dbar .seg2{display:flex;align-items:center;justify-content:center;white-space:nowrap;color:#03101f}
+  .dbar .seg2.alpar{background:linear-gradient(180deg,#5fc6ff,#3FB8FF)}
+  .dbar .seg2.snow{background:linear-gradient(180deg,#79e36a,#62D84E)}
+  .dbar .seg2.paid{background:linear-gradient(180deg,#46639f,#33518a);color:#e7eeff}
+  .dbar .seg2.fiep{background:linear-gradient(180deg,#ffc56a,#FFB23E)}
+  .dbar .bval{display:flex;align-items:center;padding-left:16px;color:var(--ink-2);font-family:'Manrope';font-weight:700;font-size:14px;white-space:nowrap}
+  @media (max-width:1000px){.dbar{grid-template-columns:88px 1fr;gap:12px}}
 
   /* dense / tables */
   .slide.dense{justify-content:flex-start;padding-top:clamp(80px,11vh,118px);padding-bottom:80px;}
@@ -395,42 +395,48 @@
     <span class="wm">06</span>
     <div class="eyebrow reveal d1">Resumo financeiro</div>
     <h2 class="reveal d2">Estrutura de custos do projeto</h2>
-    <p class="lead reveal d3">Do custo total do escopo, a FIEP já aportou R$ 465 mil. A diferença a fechar é co-investida por Alpar e ServiceNow, reduzindo o valor restante para a FIEP.</p>
     <div class="flow">
       <div class="fcell reveal d3">
-        <div class="lbl">Custo total do projeto</div>
-        <div class="val"><span class="cur">R$</span>2.071.445</div>
-        <div class="note">Escopo completo, Matrícula PF + PJ.</div>
+        <div class="lbl">Custo do Escopo Inicial</div>
+        <div class="val"><span class="cur">R$</span>796.375</div>
+        <div class="note">Matrícula PF + PJ</div>
       </div>
-      <div class="fcell op reveal d4"><span>&minus;</span></div>
       <div class="fcell reveal d4">
-        <div class="lbl">Já investido pela FIEP</div>
-        <div class="val"><span class="cur">R$</span>465.000</div>
-        <div class="note">Valor aportado na fase inicial do projeto.</div>
+        <div class="lbl">Custo Total do Projeto</div>
+        <div class="val"><span class="cur">R$</span>2.071.445</div>
+        <div class="note">Escopo completo</div>
       </div>
-      <div class="fcell op reveal d5"><span>=</span></div>
       <div class="fcell result reveal d5">
-        <div class="lbl">Diferença a fechar</div>
+        <div class="lbl">Diferença a Fechar</div>
         <div class="val"><span class="cur">R$</span>1.606.445</div>
-        <div class="note">Valor restante para a conclusão do projeto.</div>
+        <div class="note">R$ 465.000 da FIEP</div>
       </div>
     </div>
     <div class="distbox reveal d6">
       <div class="dist-title">Distribuição do investimento</div>
-      <div class="stackbar">
-        <div class="seg alpar" style="width:32.5%">Alpar 32,5%</div>
-        <div class="seg snow"  style="width:32.3%">ServiceNow 32,3%</div>
-        <div class="seg fiep"  style="width:35.2%">FIEP 35,2%</div>
-      </div>
-      <div class="legend">
-        <div class="lrow"><span class="sw alpar"></span><span class="nm">Alpar</span><span class="vv">R$ 673.445</span><span class="pc">32,5%</span></div>
-        <div class="lrow"><span class="sw snow"></span><span class="nm">ServiceNow</span><span class="vv">R$ 670.000</span><span class="pc">32,3%</span></div>
-        <div class="lrow"><span class="sw fiep"></span><span class="nm">FIEP</span><span class="vv">R$ 728.000</span><span class="pc">35,2%</span></div>
-      </div>
-      <div class="pillrow" style="margin-top:16px;margin-bottom:0">
-        <div class="pill">Custo do escopo inicial: <b>R$ 796.375</b></div>
-        <div class="pill">FIEP: <b>R$ 465.000</b> já aportados + <b>R$ 263.000</b> a fechar</div>
-        <div class="pill">Alpar e ServiceNow co-investem <b>R$ 1,34 mi</b></div>
+      <div class="dbars">
+        <div class="dbar">
+          <div class="who">Alpar</div>
+          <div class="track">
+            <div class="seg2 alpar" style="width:51%"></div>
+            <div class="bval">R$ 673.445</div>
+          </div>
+        </div>
+        <div class="dbar">
+          <div class="who">ServiceNow</div>
+          <div class="track">
+            <div class="seg2 snow" style="width:50.8%"></div>
+            <div class="bval">R$ 670.000</div>
+          </div>
+        </div>
+        <div class="dbar">
+          <div class="who">FIEP</div>
+          <div class="track">
+            <div class="seg2 paid" style="width:35.2%">R$ 465.000</div>
+            <div class="seg2 fiep" style="width:19.9%">R$ 263.000</div>
+            <div class="bval">R$ 728.000</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
