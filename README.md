@@ -12,7 +12,8 @@ Apresentações HTML one-page da Alpar, publicadas via GitHub Pages.
 | **FIEP** — Backoffice Process Optimization & Automation | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/bva-fiep/) |
 | **Afya** — Digital Admission | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/afya-digital-admission/) |
 | **Afya** — Access Management (BVA · 3 meses pós Go-Live) | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/afya-access-management/) |
-| **Report Executivo de Horas** — Billabilidade (interno · out/2023 a jun/2026) | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/report-horas/) |
+| **Report Executivo de Horas** 🇧🇷 — Billabilidade (interno · out/2023 a jun/2026) | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/report-horas/) |
+| **Executive Hours Report** 🇺🇸 — Billability (internal · Oct/2023 to Jun/2026) | [Open](https://marcosgianonialpar.github.io/ApresentacoesAlpar/report-hours/) |
 
 ## Estrutura
 
