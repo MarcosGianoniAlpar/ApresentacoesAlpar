@@ -112,6 +112,46 @@ Peça ao usuário:
 5. Screenshot de cada seção em `viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1.5`
 6. Enviar via `SendUserFile` para revisão do usuário
 
+## Página protegida por senha (login client-side criptografado)
+
+Para páginas com **dado sensível** num link **público** (ex.: report de horas/billabilidade). Um login só em JS (esconder/mostrar) NÃO protege: os dados ficam no HTML e qualquer um lê no "ver código-fonte". A solução real: **criptografar o payload com a senha** e descriptografar no navegador só após login.
+
+### Como funciona
+- Payload sensível (dados + Excel embutido) vira **`{data, xlsx}` em JSON**, criptografado com **AES-256-GCM**, chave derivada da senha via **PBKDF2 (SHA-256, 200.000 iterações)**.
+- No HTML fica só o cifrado (`const ENC={s:salt, i:iv, n:iters, c:ciphertext}`, tudo base64). Sem a senha = lixo cifrado, nem no source-code aparece nada.
+- Tela de login (overlay `#lock`) → senha certa descriptografa via Web Crypto e chama `boot(payload)` que popula as variáveis e roda `render()`. Senha errada → o decrypt lança erro.
+- 100% estático/offline (GitHub Pages). **Requer secure context**: https (Pages), localhost ou file:// — `crypto.subtle` não roda em http puro.
+
+### Regras de implementação
+- Trocar `const RAW={...};const PEOPLE=...` por `let RAW={},PEOPLE=[],ROLES=[],MONTHS=[],DATA=[];` + `const ENC={...}`.
+- O Excel embutido (`XLSX_FILE_B64`) também entra no payload cifrado → vira `let XLSX_FILE_B64="";` e o botão de download só funciona após login.
+- Remover o `render()` automático do fim; ele passa a ser chamado dentro de `boot()`.
+- **Senha compartilhada** (mesma p/ todos). Trocar a senha = **re-criptografar** o payload (gera novo ENC). Pode ter mais de uma senha gerando múltiplos ENC.
+- Verificar no deploy: `grep -c "<algum nome/dado>" pagina.html` deve dar **0** (nada em claro).
+- Compartilhar a senha por canal separado do link.
+
+### JS de descriptografia/login (reusável)
+```js
+async function decryptPayload(pw){const d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+  const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
+  const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:d(ENC.s),iterations:ENC.n,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);
+  const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:d(ENC.i)},key,d(ENC.c));return JSON.parse(new TextDecoder().decode(pt));}
+// no submit: try{ boot(await decryptPayload(senha)); document.getElementById('lock').remove(); }catch{ erro(); }
+```
+
+### Build em Python (cripto compatível com Web Crypto)
+A lib `cryptography` está quebrada no ambiente → usar **`hashlib.pbkdf2_hmac`** (nativo) + **`pycryptodome`** (`pip install pycryptodome`):
+```python
+import hashlib, os, base64; from Crypto.Cipher import AES
+salt=os.urandom(16); iv=os.urandom(12)
+key=hashlib.pbkdf2_hmac('sha256', PW.encode(), salt, 200000, 32)
+ct,tag=AES.new(key,AES.MODE_GCM,nonce=iv).encrypt_and_digest(payload_json_bytes)
+# ENC.c = base64(ct+tag)  (Web Crypto AES-GCM espera ciphertext||tag de 16 bytes)
+```
+
+### Referência funcional
+`report-horas/index.html` (PT) e `report-hours/index.html` (EN) usam exatamente essa solução. Login atual: usuário `Alpar`, senha `Alpar@2026`.
+
 ## Referência canônica
 
 `_template/index.html` é a cópia funcional completa da apresentação **bvA FIEP** (primeira do repo).
