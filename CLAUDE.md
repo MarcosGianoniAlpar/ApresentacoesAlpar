@@ -160,6 +160,8 @@ Para padrões de animação, side dots, cards, workload chart, processes detail:
 ## Princípios de interação
 
 - Conversar em **português**
+- **No começo da conversa**, perguntar se a página vai ter **login/senha** (solução criptografada acima) — para já planejar.
+- **Logo após publicar** uma página (deploy no Pages), **confirmar** com o usuário se ele quer **incluir senha no link**; se sim, aplicar o gate criptografado e republicar.
 - **Listar todos os ajustes** antes de aplicar em lote → "pode ajustar?"
 - **Confirmar com "pode subir?"** antes do push final
 - **Verificar deploy** com WebFetch ou Playwright após push
