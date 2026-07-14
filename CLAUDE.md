@@ -152,6 +152,52 @@ ct,tag=AES.new(key,AES.MODE_GCM,nonce=iv).encrypt_and_digest(payload_json_bytes)
 ### Referência funcional
 `report-horas/index.html` (PT) e `report-hours/index.html` (EN) usam exatamente essa solução. Login atual: usuário `Alpar`, senha `Alpar@2026`.
 
+## Acesso ao ServiceNow (REST API) — guia para o Claude
+
+A instância da Alpar é acessada **direto pela REST API** (não há MCP/conector do SN). Credenciais já vêm em **variáveis de ambiente**:
+```
+SERVICENOW_INSTANCE_URL   # ex.: https://alparbrdemo1.service-now.com
+SERVICENOW_USERNAME
+SERVICENOW_PASSWORD
+```
+- **Auth:** Basic Auth over HTTPS → header `Authorization: Basic base64(user:pass)`, `Accept: application/json`. Nunca logar user/senha em claro (referencie as env vars).
+- **Somente leitura (GET).** Não escrever na instância.
+- **Table API:** `GET {URL}/api/now/table/{tabela}` · **Aggregate API:** `GET {URL}/api/now/stats/{tabela}`.
+- Params úteis: `sysparm_query` (filtros, ex.: `week_starts_on>=2025-01-01^state=Processed`, `sys_idIN<id1>,<id2>`), `sysparm_fields` (só colunas necessárias), `sysparm_display_value=all` (traz `{value, display_value}` por campo — inclusive `sys_id` vira objeto!), `sysparm_limit`/`sysparm_offset` (paginação, use lotes de 2000), `sysparm_count=true`, `sysparm_group_by`, `sysparm_sum_fields`.
+
+### Snippet Python (urllib) reusável
+```python
+import os, json, urllib.request, urllib.parse, base64
+base=os.environ['SERVICENOW_INSTANCE_URL'].rstrip('/')
+auth=base64.b64encode(f"{os.environ['SERVICENOW_USERNAME']}:{os.environ['SERVICENOW_PASSWORD']}".encode()).decode()
+def get(path):
+    req=urllib.request.Request(base+path, headers={"Accept":"application/json","Authorization":f"Basic {auth}"})
+    with urllib.request.urlopen(req,timeout=90) as r: return json.load(r)["result"]
+# paginar:
+off=0; rows=[]
+while True:
+    p=urllib.parse.urlencode({"sysparm_query":"week_starts_on>=2025-01-01^state=Processed",
+        "sysparm_fields":"user,task,top_task,total,week_starts_on","sysparm_display_value":"all",
+        "sysparm_limit":2000,"sysparm_offset":off})
+    d=get(f"/api/now/table/time_card?{p}")
+    if not d: break
+    rows+=d; off+=2000
+    if len(d)<2000: break
+```
+
+### Tabelas-chave (report de horas) e como cruzar
+- **`time_card`**: apontamento. Campos: `user`, `task`, `top_task` (projeto), `resource_plan`, `state` (`Processed`=Aprovado, `Submitted`, `Rejected`, `Pending`), `total`, e horas por dia `monday`..`sunday` + `week_starts_on`. **Para somatória mensal correta**, atribua cada dia ao seu mês real (semana pode cruzar meses): `dia = week_starts_on + offset_do_dia`.
+- **Billable:** campo custom **`u_no_billable`** na **tarefa** (`task`/`pm_project_task`), fallback no **projeto** (`pm_project`). `false`=billable, `true`=não billable.
+- **Vertical:** `pm_project.u_opportunity` → **`x_alpa2_crm_opportunity.business_unit`** (`ServiceNow`, `Tecnologia`, …).
+- **Cargo (atual):** `sys_user.u_job_role`.
+- **Papel na época (as-of):** `resource_plan.group_resource` (ex.: `Techinical Consultant PL (RM)`) — referenciado por `time_card.resource_plan`.
+- **Custo/financeiro:** `fm_expense_line` (legível; `amount`, `month`, `short_description` com nome+data, `task`, `cost_plan`). O nome/vertical não vêm prontos; parsear do `short_description`.
+
+### Limites de ACL conhecidos (usuário da integração)
+- **`u_time_card_financial`**: existe (~4.790 linhas) mas a leitura retorna **0 linhas** (ACL de linha) → use `fm_expense_line`.
+- **`sys_dictionary`** e algumas tabelas de rate card: **403**. Para descobrir campos, inspecione um registro real com `sysparm_display_value=all` em vez do dicionário.
+- Rede: **`api.github.com` bloqueada** (403) — publicar via `git push` pelo proxy do ambiente, não pela API do GitHub.
+
 ## Referência canônica
 
 `_template/index.html` é a cópia funcional completa da apresentação **bvA FIEP** (primeira do repo).
