@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Status do Projeto — GT Catálogo Guiado | Alpar</title>
+<meta name="description" content="Status do projeto GT Catálogo Guiado (Virtual Agent Liza) para a Localiza em ServiceNow. Fases, completude do desenvolvimento, pendências e evidências." />
+<meta name="theme-color" content="#0A1530" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070E1F;
+    --bg-2:#0A1530;
+    --ink:#E8EEFA;
+    --ink-2:#A9B6CF;
+    --muted:#6B7A99;
+    --line:rgba(255,255,255,0.08);
+    --line-2:rgba(255,255,255,0.14);
+    --accent:#3FB8FF;       /* ServiceNow cyan */
+    --card:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    --card-solid:#0d1424;
+    /* status (tuned for dark) — nomes referenciados pelo JS/inline */
+    --green:#62E0A1;
+    --amber:#E8C26B;
+    --red:#FF7A7A;
+    --gray:#5A6B8C;
+    --r:14px;
+    --t-fast:.35s cubic-bezier(.2,.7,.2,1);
+    --max:1100px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    padding:96px 24px 60px;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#001022}
+
+  /* Ambient backdrop */
+  .ambient{
+    position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(63,184,255,.14), transparent 60%),
+      radial-gradient(900px 600px at -10% 30%, rgba(98,224,161,.07), transparent 60%),
+      radial-gradient(800px 500px at 50% 115%, rgba(232,194,107,.06), transparent 60%),
+      linear-gradient(180deg, #060B1A 0%, #070E1F 50%, #050913 100%);
+  }
+  .grid-overlay{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse at center, #000 30%, transparent 78%);
+  }
+
+  .wrap{max-width:var(--max);margin:0 auto;}
+
+  /* Top bar */
+  header.bar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:saturate(140%) blur(14px);
+    background:linear-gradient(180deg, rgba(7,14,31,.82), rgba(7,14,31,.4));
+    border-bottom:1px solid var(--line);
+  }
+  .bar-inner{
+    max-width:var(--max);margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;font-family:"Manrope";font-weight:700;letter-spacing:.02em}
+  .brand .brand-logo{
+    display:block;width:118px;height:36px;
+    background:url('../alpar-logo.png') center/130% no-repeat;
+  }
+  .brand b{font-size:14px}
+  .brand span{display:block;font-size:12px;color:var(--ink-2);font-weight:500;margin-top:1px}
+  .pill{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    padding:6px 12px;border:1px solid var(--line-2);border-radius:999px;color:var(--ink-2);
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));white-space:nowrap;
+  }
+  @media (max-width:640px){ .pill{display:none} }
+
+  /* Page head */
+  .page-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    flex-wrap:wrap;gap:16px;margin-bottom:34px;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Manrope";font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:16px;
+  }
+  .eyebrow::before{content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--accent))}
+  .page-head h1{
+    font-family:"Manrope";font-weight:800;letter-spacing:-.02em;line-height:1.03;
+    font-size:clamp(32px,4.4vw,52px);margin:0 0 12px;
+    background:linear-gradient(90deg,#fff 0%, #BCE3FF 45%, #3FB8FF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .page-head .sub{margin:0;color:var(--ink-2);font-size:14.5px}
+  .badge-live{
+    font-family:"Manrope";font-weight:700;
+    background:linear-gradient(160deg, rgba(63,184,255,.16), rgba(255,255,255,.02));
+    border:1px solid rgba(63,184,255,.35);color:var(--ink);
+    padding:10px 16px;border-radius:999px;font-size:13px;white-space:nowrap;
+    box-shadow:0 8px 30px rgba(63,184,255,.14);
+  }
+
+  /* Cards */
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:22px 20px;transition:border-color var(--t-fast), transform var(--t-fast);
+  }
+  .card h2{font-family:"Manrope";font-size:15px;margin:0 0 16px;color:var(--ink);letter-spacing:-.01em}
+
+  /* KPIs */
+  .kpis{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
+    margin-bottom:22px;max-width:640px;
+  }
+  .kpi{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:22px 22px;
+  }
+  .kpi .num{font-family:"Manrope";font-weight:800;font-size:clamp(30px,2.8vw,40px);color:var(--ink);line-height:1;letter-spacing:-.02em}
+  .kpi .lbl{font-size:13px;color:var(--ink);margin-top:8px;font-weight:600}
+  .kpi .sub{font-size:12px;color:var(--ink-2);margin-top:4px}
+  .kpi.highlight{
+    background:linear-gradient(160deg, rgba(63,184,255,.12) 0%, rgba(255,255,255,.02) 60%);
+    border-color:rgba(63,184,255,.32);
+  }
+  .kpi.highlight .num{color:var(--accent)}
+
+  .grid2{display:grid;grid-template-columns:340px 1fr;gap:20px;margin-bottom:20px;}
+
+  .donut-row{display:flex;align-items:center;gap:14px;}
+  .donut-card{background:var(--card-solid)}
+  .donut{
+    width:128px;height:128px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .donut::after{content:"";width:80px;height:80px;border-radius:50%;background:var(--card-solid)}
+  .donut-center{position:relative}
+  .donut-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+  .donut-label .pct{font-family:"Manrope";font-size:22px;font-weight:800;color:var(--ink)}
+  .donut-label .txt{font-size:10px;color:var(--ink-2);letter-spacing:.04em}
+
+  .legend{display:flex;flex-direction:column;gap:4px;font-size:12.5px;min-width:0;}
+  .legend .row{
+    display:flex;justify-content:space-between;gap:8px;cursor:pointer;
+    padding:7px 8px;border-radius:8px;margin:0 -8px;transition:background var(--t-fast);white-space:nowrap;
+  }
+  .legend .row:hover{background:rgba(255,255,255,.04)}
+  .legend .row.active{background:rgba(63,184,255,.10);font-weight:700}
+  .legend .row.active .n{color:var(--ink)}
+  .legend .l{display:flex;align-items:center;gap:8px}
+  .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .legend .n{color:var(--ink-2);font-weight:600}
+
+  .list-card h2{display:flex;align-items:center;gap:8px}
+  .count-badge{
+    font-size:11.5px;font-weight:700;background:rgba(255,255,255,.06);color:var(--ink-2);
+    border:1px solid var(--line);border-radius:10px;padding:1px 9px;
+  }
+
+  .bar-track{background:rgba(255,255,255,.06);border-radius:8px;height:10px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:8px;display:block;width:0;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+
+  /* Stepper */
+  .stepper{display:flex;align-items:flex-start;justify-content:space-between;position:relative;padding:8px 4px 0}
+  .stepper::before{content:"";position:absolute;top:26px;left:6%;right:6%;height:2px;background:var(--line-2)}
+  .step{position:relative;flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .step .circ{
+    width:40px;height:40px;border-radius:50%;background:var(--bg-2);border:2px solid var(--gray);
+    display:flex;align-items:center;justify-content:center;font-family:"Manrope";font-weight:700;
+    font-size:12px;color:var(--ink-2);z-index:1;transition:box-shadow var(--t-fast)
+  }
+  .step.dev .circ{border-color:var(--amber);color:var(--amber);background:rgba(232,194,107,.08)}
+  .step.done .circ{border-color:var(--green);color:#04150C;background:var(--green)}
+  .step .name{font-size:12.5px;font-weight:600;color:var(--ink);max-width:150px}
+  .step .status{font-size:11.5px;color:var(--ink-2)}
+  .step .date{font-size:11px;color:var(--muted)}
+  .step.dev .status{color:var(--amber);font-weight:600}
+  .step.clickable{cursor:pointer}
+  .step.clickable .name{text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:3px}
+  .step.clickable:hover .circ{box-shadow:0 0 0 4px rgba(63,184,255,.12)}
+  .step.clickable.open .circ{box-shadow:0 0 0 4px rgba(63,184,255,.22)}
+
+  .phase-panel{display:none;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+
+  ul.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+  ul.list li{display:flex;gap:10px;font-size:13.5px;line-height:1.45;color:var(--ink)}
+  ul.list li .mark{
+    flex-shrink:0;width:18px;height:18px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:700;color:#04150C;margin-top:1px;
+  }
+  .mark.done{background:var(--green)}
+  .mark.wip{background:var(--amber)}
+  .mark.blocked{background:var(--red)}
+  .mark.todo{background:var(--gray);color:var(--ink)}
+  .tag-cliente{
+    font-size:11px;color:#FFB4B4;background:rgba(255,122,122,.12);border:1px solid rgba(255,122,122,.24);
+    padding:1px 8px;border-radius:8px;margin-left:6px;white-space:nowrap;
+  }
+
+  .section-title{font-family:"Manrope";font-size:18px;color:var(--ink);margin:34px 0 16px;letter-spacing:-.01em}
+
+  footer{
+    border-top:1px solid var(--line);margin-top:34px;padding-top:26px;
+    text-align:center;color:var(--muted);font-size:12.5px;
+    display:flex;flex-direction:column;gap:6px;align-items:center;
+  }
+  footer .row2{color:var(--ink-2)}
+
+  /* Entrance */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .page-head,.kpis,.card{animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) both}
+  .kpis{animation-delay:.05s}
+  .card{animation-delay:.1s}
+
+  @media (max-width:800px){
+    .kpis{grid-template-columns:1fr;max-width:none}
+    .grid2{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grid-overlay"></div>
+
+<header class="bar">
+  <div class="bar-inner">
+    <div class="brand">
+      <span class="brand-logo" role="img" aria-label="Alpar"></span>
+      <div>
+        <b>Alpar + Localiza</b>
+        <span>Status do Projeto</span>
+      </div>
+    </div>
+    <span class="pill">ServiceNow · Global Partner</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <header class="page-head">
+    <div>
+      <div class="eyebrow">Status do Projeto</div>
+      <h1 id="proj-title">Status do Projeto</h1>
+      <p class="sub" id="proj-sub"></p>
+    </div>
+    <div class="badge-live" id="badge-golive"></div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="num" id="kpi-pct-num">–</div>
+      <div class="lbl">do desenvolvimento concluído</div>
+      <div class="sub" id="kpi-pct-sub"></div>
+    </div>
+    <div class="kpi highlight">
+      <div class="num" id="kpi-scope-num"></div>
+      <div class="lbl" id="kpi-scope-lbl"></div>
+      <div class="sub" id="kpi-scope-sub"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <h2>Fases do projeto</h2>
+    <div class="stepper">
+      <div class="step done">
+        <div class="circ">✓</div>
+        <div class="name" id="phase-assessment-name"></div>
+        <div class="status" id="phase-assessment-status"></div>
+        <div class="date" id="phase-assessment-date"></div>
+      </div>
+      <div class="step dev clickable" id="phase-step-dev" onclick="togglePhase('dev')">
+        <div class="circ" id="phase-dev-circ"></div>
+        <div class="name" id="phase-dev-name"></div>
+        <div class="status" id="phase-dev-status"></div>
+        <div class="date" id="phase-dev-date"></div>
+      </div>
+      <div class="step clickable" id="phase-step-hml" onclick="togglePhase('hml')">
+        <div class="circ">3</div>
+        <div class="name" id="phase-hml-name"></div>
+        <div class="status" id="phase-hml-status"></div>
+        <div class="date" id="phase-hml-date"></div>
+      </div>
+      <div class="step clickable" id="phase-step-golive" onclick="togglePhase('golive')">
+        <div class="circ">4</div>
+        <div class="name" id="phase-golive-name"></div>
+        <div class="status" id="phase-golive-status"></div>
+        <div class="date" id="phase-golive-date"></div>
+      </div>
+    </div>
+
+    <div class="phase-panel" id="phase-hml">
+      <ul class="list" id="list-hml"></ul>
+    </div>
+
+    <div class="phase-panel" id="phase-golive">
+      <ul class="list" id="list-golive"></ul>
+    </div>
+  </div>
+
+  <div class="dev-details" id="dev-details" style="display:none;">
+  <div class="grid2">
+    <div class="card donut-card">
+      <h2>Completude do desenvolvimento</h2>
+      <div class="donut-row">
+        <div class="donut-center">
+          <div class="donut" id="donut"></div>
+          <div class="donut-label"><div class="pct" id="donut-pct-label"></div><div class="txt">concluído</div></div>
+        </div>
+        <div class="legend">
+          <div class="row active" data-tab="done" onclick="showTab('done')"><span class="l"><span class="dot" style="background:var(--green)"></span><span id="legend-label-done"></span></span><span class="n" id="legend-n-done"></span></div>
+          <div class="row" data-tab="wip" onclick="showTab('wip')"><span class="l"><span class="dot" style="background:var(--amber)"></span><span id="legend-label-wip"></span></span><span class="n" id="legend-n-wip"></span></div>
+          <div class="row" data-tab="blocked" onclick="showTab('blocked')"><span class="l"><span class="dot" style="background:var(--red)"></span><span id="legend-label-blocked"></span></span><span class="n" id="legend-n-blocked"></span></div>
+          <div class="row" data-tab="todo" onclick="showTab('todo')"><span class="l"><span class="dot" style="background:var(--gray)"></span><span id="legend-label-todo"></span></span><span class="n" id="legend-n-todo"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card list-card">
+      <h2 id="list-title"></h2>
+      <ul class="list" id="list-done"></ul>
+      <ul class="list" id="list-wip" style="display:none;"></ul>
+      <ul class="list" id="list-blocked" style="display:none;"></ul>
+      <ul class="list" id="list-todo" style="display:none;"></ul>
+    </div>
+  </div>
+
+  <h2 class="section-title">Documentação &amp; evidências de teste</h2>
+  <div class="grid2">
+    <div class="card">
+      <h2>Documentações <span class="count-badge" id="docs-badge"></span></h2>
+      <div class="bar-track" style="margin-bottom:18px;"><div class="bar-fill" id="docs-bar" style="background:var(--green);"></div></div>
+      <ul class="list" id="list-docs"></ul>
+    </div>
+
+    <div class="card">
+      <h2>Evidências de teste <span class="count-badge" id="evid-badge"></span></h2>
+      <div class="bar-track" style="margin-bottom:18px;"><div class="bar-fill" id="evid-bar" style="background:var(--green);"></div></div>
+      <ul class="list" id="list-evid"></ul>
+    </div>
+  </div>
+  </div>
+
+  <footer>
+    <div>Alpar — ServiceNow Global Partner</div>
+    <div class="row2">GT Catálogo Guiado · Localiza</div>
+  </footer>
+
+</div>
+
+<script>
+/* ============================================================
+   DADOS DO PROJETO — edite só esta seção e salve o arquivo.
+   O restante da página (percentuais, gráfico, listas) é
+   recalculado e preenchido automaticamente ao abrir o HTML.
+   status possíveis: "done" (concluído), "wip" (em andamento),
+   "blocked" (pendência/bloqueio), "todo" (a iniciar)
+   ============================================================ */
+var DATA = {
+
+  meta: {
+    projectName: "GT Catálogo Guiado",
+    client: "Localiza",
+    platform: "ServiceNow",
+    updatedAt: "16 de julho de 2026",
+    goLiveDate: "17/08/2026"
+  },
+
+  // Card de destaque (KPI da direita, em azul)
+  scopeWin: {
+    value: "45+",
+    label: "catálogos conversacionais entregues",
+    sub: "vs. 13 previstos no escopo (3,5x)"
+  },
+
+  // Nomes exibidos para cada status (usados na legenda do gráfico e no título da lista)
+  statusLabels: {
+    done: "Concluído",
+    wip: "Em andamento",
+    blocked: "Pendências",
+    todo: "A iniciar"
+  },
+
+  // Lista principal de atividades do desenvolvimento.
+  // Adicione/edite itens livremente — o % concluído e o gráfico se recalculam sozinhos.
+  // "client:true" marca pendência que depende da Localiza (mostra a tag "Localiza").
+  activities: [
+    {name:"Instalação de plugins", status:"done"},
+    {name:"AI Agent: Enriquecimento de Descrições", status:"done"},
+    {name:"AI Agent: Enriquecimento de Catálogo único", status:"done"},
+    {name:"API Connect: Definição de informações obrigatórias de Envio e Recebimento", status:"done"},
+    {name:"Disponibilizar requisitos necessários: SharePoint", status:"done"},
+    {name:"Disponibilizar requisitos necessários: Microsoft Azure / Entra ID", status:"done"},
+    {name:"Configuração inicial do bot primário", status:"done"},
+    {name:"Ativação do chat com LLM", status:"done"},
+    {name:"Configuração de mensagens iniciais e saudações", status:"done"},
+    {name:"Remoção do widget existente no portal Localiza", status:"done"},
+    {name:"Remoção dos links existentes no portal Localiza", status:"done"},
+    {name:"Configuração do widget no portal da Localiza", status:"done"},
+    {name:"Configuração do comportamento de fallback", status:"done"},
+    {name:"Configuração inicial das fontes de conhecimento", status:"done"},
+    {name:"Testes unitários de direcionamento de catálogo", status:"done"},
+    {name:"Corrigir Warning (requisito para catálogos conversacionais)", status:"done"},
+    {name:"Ativação dos itens conversacionais", status:"done"},
+    {name:"Integração com o Teams", status:"done"},
+    {name:"Desenvolvimento da estrutura das notificações proativas no Teams (Liza)", status:"done"},
+    {name:"Configuração do bot interconnect para conexão com Connect", status:"done"},
+    {name:"Configuração do branding da Liza (cores, foto, nome)", status:"done"},
+
+    {name:"Integração com a Amazon Connect: identificação da intenção do usuário para roteamento entre os flows do Connect", status:"wip"},
+    {name:"Notificações de aprovação no Teams", status:"wip"},
+
+    {name:"Parametrizações na Azure para conexão com o SharePoint", status:"blocked", client:true},
+    {name:"Alterações no flow de troca de senha do Connect: evitar perda de mensagens por +1 de post", status:"blocked", client:true},
+    {name:"Alteração no flow de troca de senha do Connect: envio do step de senha via texto (SN devolve senha criptografada)", status:"blocked", client:true},
+    {name:"Compartilhamento dos flowIDs do Connect mapeados com objetivos, para roteamento via bot primário", status:"blocked", client:true},
+
+    {name:"Conexão com o SharePoint", status:"todo"},
+    {name:"Ajuste na fonte de pesquisa do VA para incluir o site do SharePoint", status:"todo"},
+    {name:"Relatórios & Dashboards", status:"todo"}
+  ],
+
+  // Fases do projeto (linha do tempo clicável)
+  phases: {
+    assessment: {
+      name: "Assessment",
+      statusLabel: "Concluído",
+      date: "15/05/2026"
+    },
+    dev: {
+      name: "Desenvolvimento",
+      statusLabel: "Em andamento",
+      dateRange: "15/05 → 04/08/2026"
+      // o círculo (%) é calculado a partir de "activities" acima
+    },
+    hml: {
+      name: "Disponibilização em homologação",
+      statusLabel: "A iniciar",
+      date: "04/08/2026",
+      activities: [
+        {name:"Instalação dos plugins no ambiente de homologação", status:"todo"},
+        {name:"Subida de todos os update sets", status:"todo"},
+        {name:"Homologação do Virtual Agent no Portal", status:"todo"},
+        {name:"Homologação do Virtual Agent no Teams", status:"todo"},
+        {name:"Homologação dos catálogos conversacionais", status:"todo"}
+      ]
+    },
+    golive: {
+      name: "Go-live",
+      statusLabel: "Previsto",
+      date: "17/08/2026",
+      activities: [
+        {name:"Criação da Liza de produção", status:"todo"},
+        {name:"Criação da aplicação do SharePoint de produção", status:"todo"},
+        {name:"Instalação dos plugins em produção", status:"todo"},
+        {name:"Subida dos update sets em produção", status:"todo"},
+        {name:"Hypercare", status:"todo"}
+      ]
+    }
+  },
+
+  // Documentações que precisam ser entregues
+  documentacoes: [
+    {name:"Boas práticas para desenvolvimento de catálogos conversacionais", status:"wip"},
+    {name:"Integração do bot Interconnect", status:"todo"},
+    {name:"Estrutura de notificações proativas com Adaptive Cards", status:"done"},
+    {name:"Notificações de aprovação no Teams", status:"todo"},
+    {name:"Configurações do bot", status:"todo"}
+  ],
+
+  // Evidências de teste
+  evidencias: [
+    {name:"Direcionamento de catálogo", status:"done"},
+    {name:"Adaptive Cards no Teams", status:"done"},
+    {name:"Catálogos conversacionais", status:"wip"}
+  ]
+};
+/* ======================= FIM DOS DADOS ======================= */
+
+
+/* ================= RENDERIZAÇÃO (não precisa mexer) ================= */
+var STATS = null;
+
+function statusIcon(status){
+  if(status === 'done') return '✓';
+  if(status === 'blocked') return '!';
+  return '•';
+}
+
+function renderItem(item){
+  var tag = item.client ? ' <span class="tag-cliente">Localiza</span>' : '';
+  return '<li><span class="mark ' + item.status + '">' + statusIcon(item.status) + '</span> ' + item.name + tag + '</li>';
+}
+
+function renderMeta(){
+  document.title = 'Status do Projeto — ' + DATA.meta.projectName + ' | Alpar';
+  document.getElementById('proj-title').textContent = DATA.meta.projectName;
+  document.getElementById('proj-sub').textContent = DATA.meta.client + ' · ' + DATA.meta.platform + ' · atualizado em ' + DATA.meta.updatedAt;
+  document.getElementById('badge-golive').textContent = 'Go-live previsto: ' + DATA.meta.goLiveDate;
+
+  document.getElementById('kpi-scope-num').textContent = DATA.scopeWin.value;
+  document.getElementById('kpi-scope-lbl').textContent = DATA.scopeWin.label;
+  document.getElementById('kpi-scope-sub').textContent = DATA.scopeWin.sub;
+}
+
+function renderActivities(){
+  var order = ['done','wip','blocked','todo'];
+  var counts = {done:0, wip:0, blocked:0, todo:0};
+  DATA.activities.forEach(function(a){ counts[a.status] = (counts[a.status]||0) + 1; });
+  var total = DATA.activities.length;
+  var pct = {};
+  order.forEach(function(k){ pct[k] = total ? Math.round(counts[k] / total * 100) : 0; });
+
+  STATS = {counts:counts, pct:pct, total:total};
+
+  // KPI principal
+  document.getElementById('kpi-pct-num').textContent = pct.done + '%';
+  document.getElementById('kpi-pct-sub').textContent = counts.done + ' de ' + total + ' atividades';
+
+  // gráfico de rosca (percentuais exatos, sem arredondar, para o desenho ficar preciso)
+  var colorVar = {done:'var(--green)', wip:'var(--amber)', blocked:'var(--red)', todo:'var(--gray)'};
+  var cum = 0, stops = [];
+  order.forEach(function(k){
+    var start = cum;
+    cum += total ? (counts[k] / total * 100) : 0;
+    stops.push(colorVar[k] + ' ' + start.toFixed(2) + '% ' + cum.toFixed(2) + '%');
+  });
+  document.getElementById('donut').style.background = 'conic-gradient(' + stops.join(',') + ')';
+  document.getElementById('donut-pct-label').textContent = pct.done + '%';
+
+  // legenda
+  order.forEach(function(k){
+    document.getElementById('legend-label-' + k).textContent = DATA.statusLabels[k];
+    document.getElementById('legend-n-' + k).textContent = counts[k] + ' · ' + pct[k] + '%';
+  });
+
+  // círculo da fase "Desenvolvimento"
+  document.getElementById('phase-dev-circ').textContent = pct.done + '%';
+
+  // listas por status
+  order.forEach(function(k){
+    var items = DATA.activities.filter(function(a){ return a.status === k; });
+    document.getElementById('list-' + k).innerHTML = items.map(renderItem).join('');
+  });
+
+  showTab('done');
+}
+
+function renderPhases(){
+  var p = DATA.phases;
+
+  document.getElementById('phase-assessment-name').textContent = p.assessment.name;
+  document.getElementById('phase-assessment-status').textContent = p.assessment.statusLabel;
+  document.getElementById('phase-assessment-date').textContent = p.assessment.date;
+
+  document.getElementById('phase-dev-name').textContent = p.dev.name;
+  document.getElementById('phase-dev-status').textContent = p.dev.statusLabel;
+  document.getElementById('phase-dev-date').textContent = p.dev.dateRange;
+
+  document.getElementById('phase-hml-name').textContent = p.hml.name;
+  document.getElementById('phase-hml-status').textContent = p.hml.statusLabel;
+  document.getElementById('phase-hml-date').textContent = p.hml.date;
+  document.getElementById('list-hml').innerHTML = p.hml.activities.map(renderItem).join('');
+
+  document.getElementById('phase-golive-name').textContent = p.golive.name;
+  document.getElementById('phase-golive-status').textContent = p.golive.statusLabel;
+  document.getElementById('phase-golive-date').textContent = p.golive.date;
+  document.getElementById('list-golive').innerHTML = p.golive.activities.map(renderItem).join('');
+}
+
+function renderProgressBlock(items, barId, badgeId, listId, verb){
+  var done = items.filter(function(i){ return i.status === 'done'; }).length;
+  var total = items.length;
+  var pctv = total ? Math.round(done / total * 100) : 0;
+  document.getElementById(barId).style.width = pctv + '%';
+  document.getElementById(badgeId).textContent = done + ' de ' + total + ' ' + verb;
+  document.getElementById(listId).innerHTML = items.map(renderItem).join('');
+}
+
+function showTab(tab){
+  ['done','wip','blocked','todo'].forEach(function(t){
+    document.getElementById('list-' + t).style.display = (t === tab) ? 'flex' : 'none';
+  });
+  document.querySelectorAll('.legend .row').forEach(function(row){
+    row.classList.toggle('active', row.dataset.tab === tab);
+  });
+  document.getElementById('list-title').innerHTML = DATA.statusLabels[tab] + ' <span class="count-badge">' + STATS.counts[tab] + '</span>';
+}
+
+var phaseKeys = ['dev','hml','golive'];
+function togglePhase(key){
+  var panelId = (key === 'dev') ? 'dev-details' : 'phase-' + key;
+  var panel = document.getElementById(panelId);
+  var wasOpen = panel.style.display === 'block';
+
+  phaseKeys.forEach(function(k){
+    document.getElementById(k === 'dev' ? 'dev-details' : 'phase-' + k).style.display = 'none';
+    document.getElementById('phase-step-' + k).classList.remove('open');
+  });
+
+  if(!wasOpen){
+    panel.style.display = 'block';
+    document.getElementById('phase-step-' + key).classList.add('open');
+  }
+}
+
+function renderAll(){
+  renderMeta();
+  renderActivities();
+  renderPhases();
+  renderProgressBlock(DATA.documentacoes, 'docs-bar', 'docs-badge', 'list-docs', 'entregues');
+  renderProgressBlock(DATA.evidencias, 'evid-bar', 'evid-badge', 'list-evid', 'compartilhadas');
+}
+
+document.addEventListener('DOMContentLoaded', renderAll);
+</script>
+</body>
+</html>
