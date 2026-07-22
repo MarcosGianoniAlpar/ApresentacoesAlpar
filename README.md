@@ -16,6 +16,7 @@ Apresentações HTML one-page da Alpar, publicadas via GitHub Pages.
 | **Localiza** — Status GT Catálogo Guiado (versão documento original) | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/localiza-status-virtual-agent-doc/) |
 | **Report Executivo de Horas** 🇧🇷 — Billabilidade (interno · out/2023 a jun/2026) | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/report-horas/) |
 | **Executive Hours Report** 🇺🇸 — Billability (internal · Oct/2023 to Jun/2026) | [Open](https://marcosgianonialpar.github.io/ApresentacoesAlpar/report-hours/) |
+| **Alpar × ServiceNow** 🔒 — Operation & Growth Executive Briefing (deck fullscreen · acesso restrito) | [Abrir](https://marcosgianonialpar.github.io/ApresentacoesAlpar/alpar-servicenow-overview/) |
 
 ## Estrutura
 
