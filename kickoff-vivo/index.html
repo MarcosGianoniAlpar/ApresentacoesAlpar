@@ -82,11 +82,11 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
 .cover .kick{font-size:clamp(12px,1vw,13.5px);font-weight:700;letter-spacing:.24em;text-transform:uppercase;
   color:var(--cyan);margin-bottom:22px;display:inline-flex;align-items:center;gap:11px}
 .cover .kick::before{content:"";width:30px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--green))}
-.sparkles{position:relative;height:min(60vh,540px)}
-.spark{position:absolute;filter:drop-shadow(0 26px 40px rgba(0,0,0,.42))}
-.spark.big{width:clamp(180px,20vw,300px);right:6%;top:16%}
-.spark.mid{width:clamp(96px,10vw,150px);right:2%;top:2%}
-.spark.sml{width:clamp(52px,5.4vw,82px);right:34%;top:52%}
+.sparkles{position:relative;height:min(62vh,560px)}
+.spark-main{position:absolute;right:2%;top:6%;width:clamp(270px,33vw,470px);height:auto;
+  filter:drop-shadow(0 34px 54px rgba(0,0,0,.5))}
+.spark-small{position:absolute;right:29%;top:64%;width:clamp(54px,6.2vw,94px);height:auto;
+  filter:drop-shadow(0 16px 26px rgba(0,0,0,.45))}
 
 /* Divider slides */
 .divider{}
@@ -274,9 +274,8 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
           <h1 data-reveal><span class="w">Planejamento</span><span class="l2 g">Prova de Conceito</span></h1>
         </div>
         <div class="sparkles" data-reveal>
-          <svg class="spark big" viewBox="0 0 100 100"><defs><radialGradient id="gG" cx="34%" cy="30%" r="80%"><stop offset="0%" stop-color="#9CF08A"/><stop offset="52%" stop-color="#5FD35A"/><stop offset="100%" stop-color="#2C9A3E"/></radialGradient></defs><path d="M50 3 Q55 45 97 50 Q55 55 50 97 Q45 55 3 50 Q45 45 50 3 Z" fill="url(#gG)"/></svg>
-          <svg class="spark mid" viewBox="0 0 100 100"><defs><radialGradient id="gB" cx="36%" cy="30%" r="80%"><stop offset="0%" stop-color="#DCE6F0"/><stop offset="55%" stop-color="#A9BCD2"/><stop offset="100%" stop-color="#7387A0"/></radialGradient></defs><path d="M50 4 Q54 46 96 50 Q54 54 50 96 Q46 54 4 50 Q46 46 50 4 Z" fill="url(#gB)"/></svg>
-          <svg class="spark sml" viewBox="0 0 100 100"><path d="M50 6 Q54 46 94 50 Q54 54 50 94 Q46 54 6 50 Q46 46 50 6 Z" fill="#8EA1B8"/></svg>
+          <img class="spark-main" src="assets/spark-main.png" alt="" />
+          <img class="spark-small" src="assets/spark-small.png" alt="" />
         </div>
       </div>
     </div>
