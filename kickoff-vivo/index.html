@@ -155,7 +155,7 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
 
 /* ---------- ServiceNow wordmark ---------- */
 .sn-logo{display:inline-flex;align-items:center;font-weight:800;color:#fff;letter-spacing:-.035em;line-height:1;white-space:nowrap}
-.sn-logo .sn-mark{width:.82em;height:.82em;margin:0 .012em;display:block}
+.sn-logo .sn-mark{width:.92em;height:.92em;margin:0 -.11em;display:block}
 .sn-logo .sn-mark path{fill:var(--green)}
 .sn-logo .sn-r{font-size:.26em;font-weight:600;align-self:flex-start;margin-top:.12em;margin-left:.05em;color:var(--ink-2)}
 
@@ -422,7 +422,7 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
   "use strict";
 
   /* ---- inject brand marks ---- */
-  var SN='servicen<svg class="sn-mark" viewBox="0 0 100 100" aria-hidden="true"><path fill-rule="evenodd" d="M32 6h36a26 26 0 0 1 26 26v36a26 26 0 0 1 -26 26h-36a26 26 0 0 1 -26 -26v-36a26 26 0 0 1 26 -26Z M34 61a18 18 0 1 0 36 0a18 18 0 1 0 -36 0Z M44 34a8 8 0 1 0 16 0a8 8 0 1 0 -16 0Z"/></svg>w<sup class="sn-r">&reg;</sup>';
+  var SN='servicen<svg class="sn-mark" viewBox="0 0 100 100" aria-hidden="true"><path fill-rule="evenodd" d="M18 62a32 32 0 1 0 64 0a32 32 0 1 0 -64 0Z M35 62a15 15 0 1 0 30 0a15 15 0 1 0 -30 0Z M38 16a12 12 0 1 0 24 0a12 12 0 1 0 -24 0Z"/></svg>w<sup class="sn-r">&reg;</sup>';
   var VIVO='<span class="vivo-word">vivo</span><svg class="vivo-mark" viewBox="0 0 96 104" aria-hidden="true"><circle cx="48" cy="19" r="18"/><path d="M48 56 L15 40"/><path d="M48 56 L81 40"/><path d="M48 60 L18 94"/><path d="M48 60 L78 94"/></svg>';
   document.querySelectorAll('[data-sn]').forEach(function(e){e.innerHTML=SN;});
   document.querySelectorAll('[data-vivo]').forEach(function(e){e.innerHTML=VIVO;});
