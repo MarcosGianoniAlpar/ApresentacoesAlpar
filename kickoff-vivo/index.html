@@ -161,10 +161,10 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
 
 /* ---------- Vivo wordmark (monochrome white on dark) ---------- */
 .vivo-pill{display:inline-flex;align-items:center;line-height:1}
-.vivo-word{color:#fff;font-weight:800;letter-spacing:-.04em;font-size:1em}
-.vivo-mark{height:1.18em;width:auto;display:block;margin-left:.24em}
+.vivo-word{color:#fff;font-weight:800;letter-spacing:-.02em;font-size:1em}
+.vivo-mark{height:1.24em;width:auto;display:block;margin-left:.22em}
 .vivo-mark circle{fill:#fff}
-.vivo-mark path{stroke:#fff;stroke-width:21;stroke-linecap:round;fill:none}
+.vivo-mark path{stroke:#fff;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;fill:none}
 
 /* ---------- Alpar logo (monochrome white on dark) ---------- */
 .alpar-logo{height:1em;width:auto;display:block;filter:brightness(0) invert(1);opacity:.96}
@@ -422,8 +422,8 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
   "use strict";
 
   /* ---- inject brand marks ---- */
-  var SN='servicen<svg class="sn-mark" viewBox="0 0 100 100" aria-hidden="true"><path fill-rule="evenodd" d="M18 62a32 32 0 1 0 64 0a32 32 0 1 0 -64 0Z M35 62a15 15 0 1 0 30 0a15 15 0 1 0 -30 0Z M38 16a12 12 0 1 0 24 0a12 12 0 1 0 -24 0Z"/></svg>w<sup class="sn-r">&reg;</sup>';
-  var VIVO='<span class="vivo-word">vivo</span><svg class="vivo-mark" viewBox="0 0 96 104" aria-hidden="true"><circle cx="48" cy="19" r="18"/><path d="M48 56 L15 40"/><path d="M48 56 L81 40"/><path d="M48 60 L18 94"/><path d="M48 60 L78 94"/></svg>';
+  var SN='servicen<svg class="sn-mark" viewBox="0 0 100 100" aria-hidden="true"><path fill-rule="evenodd" d="M16 50a34 34 0 1 0 68 0a34 34 0 1 0 -68 0Z M34 50a16 16 0 1 0 32 0a16 16 0 1 0 -32 0Z"/></svg>w<sup class="sn-r">&reg;</sup>';
+  var VIVO='<span class="vivo-word">vivo</span><svg class="vivo-mark" viewBox="0 0 100 110" aria-hidden="true"><circle cx="50" cy="17" r="16"/><path d="M50 34 L50 62"/><path d="M50 42 L16 28"/><path d="M50 42 L84 28"/><path d="M50 62 L20 98"/><path d="M50 62 L80 98"/></svg>';
   document.querySelectorAll('[data-sn]').forEach(function(e){e.innerHTML=SN;});
   document.querySelectorAll('[data-vivo]').forEach(function(e){e.innerHTML=VIVO;});
 
