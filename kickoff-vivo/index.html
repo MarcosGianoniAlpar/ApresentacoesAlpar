@@ -162,6 +162,9 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
 /* ---------- Vivo pill ---------- */
 .vivo-pill{display:inline-flex;align-items:center;background:#fff;border-radius:.5em;padding:.3em .58em;line-height:1}
 .vivo-word{color:var(--vivo);font-weight:800;letter-spacing:-.04em;font-size:1em}
+.vivo-mark{height:1.18em;width:auto;display:block;margin-left:.24em}
+.vivo-mark circle{fill:var(--vivo)}
+.vivo-mark path{stroke:var(--vivo);stroke-width:21;stroke-linecap:round;fill:none}
 
 /* ---------- Alpar logo (monochrome white on dark) ---------- */
 .alpar-logo{height:1em;width:auto;display:block;filter:brightness(0) invert(1);opacity:.96}
@@ -420,7 +423,7 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
 
   /* ---- inject brand marks ---- */
   var SN='servicen<svg class="sn-mark" viewBox="0 0 100 100" aria-hidden="true"><path fill-rule="evenodd" d="M32 6h36a26 26 0 0 1 26 26v36a26 26 0 0 1 -26 26h-36a26 26 0 0 1 -26 -26v-36a26 26 0 0 1 26 -26Z M34 61a18 18 0 1 0 36 0a18 18 0 1 0 -36 0Z M44 34a8 8 0 1 0 16 0a8 8 0 1 0 -16 0Z"/></svg>w<sup class="sn-r">&reg;</sup>';
-  var VIVO='<span class="vivo-word">vivo</span>';
+  var VIVO='<span class="vivo-word">vivo</span><svg class="vivo-mark" viewBox="0 0 96 104" aria-hidden="true"><circle cx="48" cy="19" r="18"/><path d="M48 56 L15 40"/><path d="M48 56 L81 40"/><path d="M48 60 L18 94"/><path d="M48 60 L78 94"/></svg>';
   document.querySelectorAll('[data-sn]').forEach(function(e){e.innerHTML=SN;});
   document.querySelectorAll('[data-vivo]').forEach(function(e){e.innerHTML=VIVO;});
 
