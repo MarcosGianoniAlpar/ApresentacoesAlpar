@@ -121,6 +121,28 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
 .col li{position:relative;padding-left:18px;font-size:clamp(13px,1.12vw,15.5px);color:var(--ink-2);line-height:1.4;font-weight:500}
 .col li::before{content:"";position:absolute;left:0;top:.5em;width:6px;height:6px;border-radius:50%;background:var(--green)}
 
+/* ---------- Kickoff / placeholder slides ---------- */
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.chip-tbd{display:inline-flex;align-items:center;gap:7px;padding:4px 11px;border-radius:999px;
+  font-size:clamp(11px,.98vw,13px);font-weight:700;letter-spacing:.01em;white-space:nowrap;vertical-align:middle;
+  background:rgba(232,188,80,.12);border:1px solid rgba(232,188,80,.45);color:#EAC978}
+.chip-tbd::before{content:"";width:6px;height:6px;border-radius:50%;background:#EAC978;flex:none}
+.klist{display:flex;flex-direction:column;margin-top:6px}
+.krow{display:grid;grid-template-columns:clamp(150px,17vw,230px) 1fr;gap:20px;align-items:baseline;
+  padding:clamp(11px,1.7vh,17px) 0;border-bottom:1px solid var(--line)}
+.krow:last-child{border-bottom:0}
+.krow .k{color:var(--cyan);font-weight:800;font-size:clamp(14px,1.25vw,18px);line-height:1.3}
+.krow .v{color:var(--ink-2);font-size:clamp(13.5px,1.18vw,16.5px);line-height:1.55;font-weight:500}
+.krow .v .have{color:var(--ink);font-weight:600}
+.pf{margin-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  font-size:clamp(12.5px,1.08vw,15px);color:var(--ink-3);font-weight:600}
+.tbl{width:100%;border-collapse:collapse;margin-top:12px;font-size:clamp(13px,1.15vw,16.5px)}
+.tbl th{text-align:left;color:var(--cyan);font-weight:800;padding:10px 14px;border-bottom:1px solid var(--line-2);
+  font-size:clamp(12px,1.05vw,15px)}
+.tbl td{padding:13px 14px;border-bottom:1px solid var(--line);color:var(--ink-2);font-weight:500}
+.tbl td.m{color:var(--ink);font-weight:700}
+.tbl tr:last-child td{border-bottom:0}
+
 /* Gantt */
 .gantt-title{margin-bottom:18px}
 .gantt-title h2{font-size:clamp(30px,4vw,54px)}
@@ -278,6 +300,35 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
     <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg">2</span></div>
   </section>
 
+  <!-- CONTEXTO (placeholder) -->
+  <section class="slide" data-title="Contexto">
+    <div class="slide-inner">
+      <div class="chead" data-reveal>
+        <h2 class="w">Contexto e situação atual</h2>
+        <div class="subh">Ponto de partida da prova de conceito</div>
+      </div>
+      <div class="klist">
+        <div class="krow" data-reveal>
+          <div class="k">Cliente</div>
+          <div class="v"><span class="have">Vivo</span></div>
+        </div>
+        <div class="krow" data-reveal>
+          <div class="k">Motivação</div>
+          <div class="v"><span class="have">Provar o valor da IA da ServiceNow (Now Assist): retorno operacional e financeiro.</span></div>
+        </div>
+        <div class="krow" data-reveal>
+          <div class="k">Situação atual</div>
+          <div class="v"><span class="chip-tbd">A levantar no assessment</span> &nbsp;Como o atendimento e o suporte de TI são feitos hoje: processos, ferramentas e volumes.</div>
+        </div>
+        <div class="krow" data-reveal>
+          <div class="k">Patrocinador e decisor</div>
+          <div class="v"><span class="chip-tbd">A definir</span> &nbsp;Quem aprova e avalia o resultado da PoC.</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
+  </section>
+
   <!-- 3 · PRE-REQUISITOS -->
   <section class="slide" data-title="Pré-requisitos">
     <div class="slide-inner">
@@ -346,6 +397,95 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
     <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg">4</span></div>
   </section>
 
+  <!-- CASO DE USO (placeholder) -->
+  <section class="slide" data-title="Caso de uso">
+    <div class="slide-inner">
+      <div class="chead" data-reveal>
+        <h2 class="w">Caso de uso da PoC</h2>
+        <div class="subh">Um caso de uso, definido no discovery</div>
+      </div>
+      <div class="klist">
+        <div class="krow" data-reveal>
+          <div class="k">Caso de uso</div>
+          <div class="v"><span class="chip-tbd">A definir no discovery</span> &nbsp;Levantamento com Vivo+ e CAT para escolher o cenário de maior aderência da IA.</div>
+        </div>
+        <div class="krow" data-reveal>
+          <div class="k">Processo alvo</div>
+          <div class="v"><span class="chip-tbd">A levantar</span></div>
+        </div>
+        <div class="krow" data-reveal>
+          <div class="k">Volumes e sistemas</div>
+          <div class="v"><span class="chip-tbd">A levantar</span></div>
+        </div>
+        <div class="krow" data-reveal>
+          <div class="k">Fora do escopo</div>
+          <div class="v"><span class="have">Qualquer cenário não previsto ou não formalizado.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
+  </section>
+
+  <!-- CRITERIOS DE SUCESSO (placeholder) -->
+  <section class="slide" data-title="Critérios">
+    <div class="slide-inner">
+      <div class="chead" data-reveal>
+        <h2 class="w">Critérios de sucesso</h2>
+        <div class="subh">Como vamos medir o resultado da PoC</div>
+      </div>
+      <table class="tbl" data-reveal>
+        <thead><tr><th>Métrica</th><th>Baseline atual</th><th>Meta da PoC</th></tr></thead>
+        <tbody>
+          <tr><td class="m">MTTR (tempo de resolução)</td><td><span class="chip-tbd">A levantar</span></td><td><span class="chip-tbd">A definir</span></td></tr>
+          <tr><td class="m">Atingimento de SLA</td><td><span class="chip-tbd">A levantar</span></td><td><span class="chip-tbd">A definir</span></td></tr>
+          <tr><td class="m">% de chamados automatizados (N1)</td><td><span class="chip-tbd">A levantar</span></td><td><span class="chip-tbd">A definir</span></td></tr>
+          <tr><td class="m">Qualidade do preenchimento de registros</td><td><span class="chip-tbd">A levantar</span></td><td><span class="chip-tbd">A definir</span></td></tr>
+        </tbody>
+      </table>
+      <p class="note" data-reveal><span class="ast">*</span> Baseline e metas serão fechados após o assessment e a definição do caso de uso.</p>
+    </div>
+    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
+  </section>
+
+  <!-- TIMES E RESPONSABILIDADES -->
+  <section class="slide" data-title="Times">
+    <div class="slide-inner">
+      <div class="chead" data-reveal>
+        <h2 class="w">Times e responsabilidades</h2>
+        <div class="subh">Papéis na prova de conceito</div>
+      </div>
+      <div class="cols3">
+        <div class="col" data-reveal>
+          <h4>Alpar</h4>
+          <ul>
+            <li>Levantamento do caso de uso</li>
+            <li>Desenvolvimento</li>
+            <li>Gerenciamento</li>
+          </ul>
+        </div>
+        <div class="col" data-reveal>
+          <h4>Vivo</h4>
+          <ul>
+            <li>Acessos e informações</li>
+            <li>Validações</li>
+            <li>Remoção de bloqueios</li>
+          </ul>
+        </div>
+        <div class="col" data-reveal>
+          <h4>ServiceNow</h4>
+          <ul>
+            <li>Apoio técnico</li>
+            <li>Validação da arquitetura</li>
+            <li>Provedor de instâncias</li>
+            <li>Acompanhamento</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pf" data-reveal><span class="chip-tbd">A definir</span> Pontos focais (nomes) de cada time.</div>
+    </div>
+    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
+  </section>
+
   <!-- 5 · PLANEJAMENTO -->
   <section class="slide divider" data-title="Planejamento">
     <div class="slide-inner">
@@ -380,6 +520,66 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
       </div>
     </div>
     <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg">6</span></div>
+  </section>
+
+  <!-- RISCOS E PREMISSAS (placeholder) -->
+  <section class="slide" data-title="Riscos">
+    <div class="slide-inner">
+      <div class="chead" data-reveal>
+        <h2 class="w">Riscos e premissas</h2>
+        <div class="subh">Condições para a PoC acontecer</div>
+      </div>
+      <div class="cols2">
+        <div class="col" data-reveal>
+          <h4>Premissas</h4>
+          <ul>
+            <li>Ambiente de PoC em Sandbox liberado</li>
+            <li>Clone de produção autorizado</li>
+            <li>Acessos internos Vivo concedidos no prazo</li>
+            <li>Disponibilidade do time Vivo para validações</li>
+          </ul>
+        </div>
+        <div class="col" data-reveal>
+          <h4>Riscos</h4>
+          <div class="pf" style="margin-top:0"><span class="chip-tbd">A mapear</span> Exemplos a validar:</div>
+          <ul style="margin-top:12px">
+            <li>Atraso na liberação de acessos ou do ambiente</li>
+            <li>Dependências de times ou sistemas externos</li>
+            <li>Indisponibilidade de dados para o caso de uso</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
+  </section>
+
+  <!-- PROXIMOS PASSOS (placeholder) -->
+  <section class="slide" data-title="Próximos passos">
+    <div class="slide-inner">
+      <div class="chead" data-reveal>
+        <h2 class="w">Próximos passos e governança</h2>
+        <div class="subh">Depois do kickoff</div>
+      </div>
+      <div class="klist">
+        <div class="krow" data-reveal>
+          <div class="k">Governança</div>
+          <div class="v"><span class="have">Checkpoints ao longo do cronograma e apresentação de resultados ao final.</span></div>
+        </div>
+        <div class="krow" data-reveal>
+          <div class="k">Decisão de continuidade</div>
+          <div class="v"><span class="chip-tbd">A definir</span> &nbsp;Critérios para decidir a continuidade após a PoC.</div>
+        </div>
+        <div class="krow" data-reveal>
+          <div class="k">Proposta de projeto</div>
+          <div class="v"><span class="chip-tbd">A definir</span> &nbsp;Roadmap de expansão caso a PoC seja aprovada.</div>
+        </div>
+        <div class="krow" data-reveal>
+          <div class="k">Datas e responsáveis</div>
+          <div class="v"><span class="chip-tbd">A definir</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
   </section>
 
   <!-- 7 · ENCERRAMENTO -->
@@ -424,9 +624,10 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
   var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
   var N=slides.length, cur=0;
 
-  /* reveal delays */
-  slides.forEach(function(s){
+  /* reveal delays + automatic page numbers */
+  slides.forEach(function(s,idx){
     s.querySelectorAll('[data-reveal]').forEach(function(el,i){el.style.transitionDelay=(0.06+i*0.07)+'s';});
+    var pg=s.querySelector('.pg'); if(pg) pg.textContent=String(idx+1);
   });
 
   /* dots */
