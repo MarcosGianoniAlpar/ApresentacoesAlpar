@@ -153,20 +153,14 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
 .closing{align-items:center;justify-content:center}
 .closing .sn-logo{font-size:clamp(44px,7.6vw,116px)}
 
-/* ---------- ServiceNow wordmark ---------- */
-.sn-logo{display:inline-flex;align-items:center;font-weight:800;color:#fff;letter-spacing:-.035em;line-height:1;white-space:nowrap}
-.sn-logo .sn-mark{width:.92em;height:.92em;margin:0 -.11em;display:block}
-.sn-logo .sn-mark path{fill:var(--green)}
-.sn-logo .sn-r{font-size:.26em;font-weight:600;align-self:flex-start;margin-top:.12em;margin-left:.05em;color:var(--ink-2)}
-
-/* ---------- Vivo wordmark (monochrome white on dark) ---------- */
-.vivo-pill{display:inline-flex;align-items:center;line-height:1}
-.vivo-word{color:#fff;font-weight:800;letter-spacing:-.02em;font-size:1em}
-.vivo-mark{height:1.24em;width:auto;display:block;margin-left:.22em}
-.vivo-mark circle{fill:#fff}
-.vivo-mark path{stroke:#fff;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;fill:none}
-
-/* ---------- Alpar logo (monochrome white on dark) ---------- */
+/* ---------- Brand logos (real uploaded files) ---------- */
+/* ServiceNow: real file, wordmark recolored white + official green mark */
+.sn-logo{display:inline-flex;align-items:center;line-height:0}
+.sn-logo img{height:1em;width:auto;display:block}
+/* Vivo: real purple file rendered white for the dark background */
+.vivo-pill{display:inline-flex;align-items:center;line-height:0}
+.vivo-pill img{height:1.16em;width:auto;display:block;filter:brightness(0) invert(1)}
+/* Alpar: real file rendered white for the dark background */
 .alpar-logo{height:1em;width:auto;display:block;filter:brightness(0) invert(1);opacity:.96}
 
 /* ---------- Per-slide footer chrome ---------- */
@@ -422,8 +416,8 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
   "use strict";
 
   /* ---- inject brand marks ---- */
-  var SN='servicen<svg class="sn-mark" viewBox="0 0 100 100" aria-hidden="true"><path fill-rule="evenodd" d="M16 50a34 34 0 1 0 68 0a34 34 0 1 0 -68 0Z M34 50a16 16 0 1 0 32 0a16 16 0 1 0 -32 0Z"/></svg>w<sup class="sn-r">&reg;</sup>';
-  var VIVO='<span class="vivo-word">vivo</span><svg class="vivo-mark" viewBox="0 0 100 110" aria-hidden="true"><circle cx="50" cy="17" r="16"/><path d="M50 34 L50 62"/><path d="M50 42 L16 28"/><path d="M50 42 L84 28"/><path d="M50 62 L20 98"/><path d="M50 62 L80 98"/></svg>';
+  var SN='<img src="assets/servicenow-logo.png" alt="ServiceNow">';
+  var VIVO='<img src="assets/vivo-logo.png" alt="Vivo">';
   document.querySelectorAll('[data-sn]').forEach(function(e){e.innerHTML=SN;});
   document.querySelectorAll('[data-vivo]').forEach(function(e){e.innerHTML=VIVO;});
 
