@@ -94,6 +94,12 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
 .divider h1 span{display:block}
 .divider .sub{margin-top:26px;font-size:clamp(16px,1.6vw,23px);font-weight:500;color:var(--ink-2);
   line-height:1.5;max-width:44ch}
+.obj-callout{margin-top:clamp(28px,4.5vh,52px);max-width:62ch;border-left:3px solid var(--green);
+  background:linear-gradient(90deg,rgba(95,211,90,.12),rgba(95,211,90,0));
+  border-radius:0 14px 14px 0;padding:clamp(16px,2.4vh,26px) clamp(20px,2vw,30px)}
+.obj-callout .lab-g{display:block;color:var(--green);font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  font-size:clamp(12.5px,1.1vw,15px);margin-bottom:10px}
+.obj-callout p{color:var(--ink);font-weight:600;font-size:clamp(18px,1.8vw,26px);line-height:1.42}
 
 /* Content header */
 .chead{margin-bottom:clamp(24px,4.6vh,54px)}
@@ -167,10 +173,11 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
 .gantt-title{margin-bottom:14px}
 .gantt-title h2{font-size:clamp(28px,3.7vw,50px)}
 .gantt{width:100%;font-size:clamp(10.5px,.95vw,13px)}
-.g-row{display:grid;grid-template-columns:clamp(180px,18vw,250px) clamp(124px,12.5vw,156px) 1fr;align-items:stretch}
+.g-row{display:grid;grid-template-columns:clamp(250px,25vw,342px) clamp(124px,12.5vw,156px) 1fr;align-items:stretch}
 .g-head .glab{}
 .g-lab{padding:5px 14px 5px 0;color:var(--ink);font-weight:600;line-height:1.24;display:flex;align-items:center;
-  font-size:clamp(10.5px,.95vw,13px)}
+  white-space:nowrap;font-size:clamp(10px,.9vw,12.5px)}
+.gantt-note{margin-top:clamp(12px,2vh,22px)}
 .g-head .g-lab{color:var(--ink-3);font-weight:700}
 .weeks{position:relative;display:grid;grid-template-columns:repeat(15,1fr);align-items:center;
   border-left:1px solid var(--line-2);
@@ -328,37 +335,12 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
     <div class="slide-inner">
       <h1 data-reveal><span class="g">Objetivos</span><span class="w">para a PoC</span></h1>
       <p class="sub" data-reveal>Mapeamento de desafios, metas e resultados esperados com uso de IA Generativa nos fluxos de TI</p>
+      <div class="obj-callout" data-reveal>
+        <span class="lab-g">Objetivo da PoC</span>
+        <p>Comprovar, de forma mensurável, os ganhos de produtividade e qualidade gerados pela IA Generativa nos casos de uso Vivo+ e CAT.</p>
+      </div>
     </div>
     <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg">2</span></div>
-  </section>
-
-  <!-- CONTEXTO (placeholder) -->
-  <section class="slide" data-title="Contexto">
-    <div class="slide-inner">
-      <div class="chead" data-reveal>
-        <h2 class="w">Contexto e situação atual</h2>
-        <div class="subh">Ponto de partida da prova de conceito</div>
-      </div>
-      <div class="klist">
-        <div class="krow" data-reveal>
-          <div class="k">Cliente</div>
-          <div class="v"><span class="have">Vivo</span></div>
-        </div>
-        <div class="krow" data-reveal>
-          <div class="k">Motivação</div>
-          <div class="v"><span class="have">Provar o valor da IA da ServiceNow (Now Assist): retorno operacional e financeiro.</span></div>
-        </div>
-        <div class="krow" data-reveal>
-          <div class="k">Situação atual</div>
-          <div class="v"><span class="chip-tbd">A levantar no assessment</span> &nbsp;Como o atendimento e o suporte de TI são feitos hoje: processos, ferramentas e volumes.</div>
-        </div>
-        <div class="krow" data-reveal>
-          <div class="k">Patrocinador e decisor</div>
-          <div class="v"><span class="chip-tbd">A definir</span> &nbsp;Quem aprova e avalia o resultado da PoC.</div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
   </section>
 
   <!-- 3 · PRE-REQUISITOS -->
@@ -369,9 +351,10 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
         <div class="subh">Requisitos para condução da prova de conceito</div>
       </div>
       <ul class="preq">
-        <li data-reveal>Assessment do contexto atual de processos, configurações e dados para identificar os cenários de maior aderência da IA para resolução</li>
+        <li data-reveal>Assessment do contexto atual de processos e dados</li>
+        <li data-reveal>Identificação dos cenários de maior aderência da IA</li>
         <li data-reveal>Definição de objetivos, métricas e KPIs</li>
-        <li data-reveal>Definição dos casos de uso de teste</li>
+        <li data-reveal>Definição dos casos de uso e teste</li>
         <li data-reveal>Deploy da instância de PoC</li>
         <li data-reveal>Ativação dos conectores e plugins</li>
         <li data-reveal>Configuração dos casos de uso para PoC</li>
@@ -379,7 +362,6 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
         <li data-reveal>Acessos internos do ambiente Vivo para os cenários de PoC</li>
         <li data-reveal>Permissão para realização do escopo de PoC com dados do ambiente Vivo (clone de produção)</li>
       </ul>
-      <p class="note" data-reveal><span class="ast">*</span> As datas do plano de execução podem ser alteradas dependendo da conclusão dos pré-requisitos e do escopo do caso de uso escolhido para a PoC.</p>
     </div>
     <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg">3</span></div>
   </section>
@@ -429,35 +411,6 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
     <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg">4</span></div>
   </section>
 
-  <!-- CASO DE USO (placeholder) -->
-  <section class="slide" data-title="Caso de uso">
-    <div class="slide-inner">
-      <div class="chead" data-reveal>
-        <h2 class="w">Caso de uso da PoC</h2>
-        <div class="subh">Um caso de uso, definido no discovery</div>
-      </div>
-      <div class="klist">
-        <div class="krow" data-reveal>
-          <div class="k">Caso de uso</div>
-          <div class="v"><span class="chip-tbd">A definir no discovery</span> &nbsp;Levantamento com Vivo+ e CAT para escolher o cenário de maior aderência da IA.</div>
-        </div>
-        <div class="krow" data-reveal>
-          <div class="k">Processo alvo</div>
-          <div class="v"><span class="chip-tbd">A levantar</span></div>
-        </div>
-        <div class="krow" data-reveal>
-          <div class="k">Volumes e sistemas</div>
-          <div class="v"><span class="chip-tbd">A levantar</span></div>
-        </div>
-        <div class="krow" data-reveal>
-          <div class="k">Fora do escopo</div>
-          <div class="v"><span class="have">Qualquer cenário não previsto ou não formalizado.</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
-  </section>
-
   <!-- CRITERIOS DE SUCESSO (placeholder) -->
   <section class="slide" data-title="Critérios">
     <div class="slide-inner">
@@ -475,39 +428,6 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
         </tbody>
       </table>
       <p class="note" data-reveal><span class="ast">*</span> Baseline e metas serão fechados após o assessment e a definição do caso de uso.</p>
-    </div>
-    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
-  </section>
-
-  <!-- TIMES E RESPONSABILIDADES -->
-  <section class="slide" data-title="Times">
-    <div class="slide-inner">
-      <div class="chead" data-reveal>
-        <h2 class="w">Times e responsabilidades</h2>
-        <div class="subh">Matriz RACI: responsabilidades por atividade</div>
-      </div>
-      <table class="raci" data-reveal>
-        <thead>
-          <tr><th class="act">Atividade</th><th>Alpar</th><th>Vivo</th><th>ServiceNow</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="act">Assessment de processos, dados e configurações</td><td><span class="cell"><span class="rc a">A</span><span class="rc r">R</span></span></td><td><span class="rc c">C</span></td><td><span class="rc c">C</span></td></tr>
-          <tr><td class="act">Definição do caso de uso</td><td><span class="rc r">R</span></td><td><span class="rc a">A</span></td><td><span class="rc c">C</span></td></tr>
-          <tr><td class="act">Definição de métricas e KPIs</td><td><span class="rc r">R</span></td><td><span class="rc a">A</span></td><td><span class="rc c">C</span></td></tr>
-          <tr><td class="act">Deploy da instância de PoC</td><td><span class="rc r">R</span></td><td><span class="rc i">I</span></td><td><span class="rc a">A</span></td></tr>
-          <tr><td class="act">Configuração e ativação de componentes</td><td><span class="cell"><span class="rc a">A</span><span class="rc r">R</span></span></td><td><span class="rc i">I</span></td><td><span class="rc c">C</span></td></tr>
-          <tr><td class="act">Liberação de acessos (ambiente Vivo)</td><td><span class="rc c">C</span></td><td><span class="cell"><span class="rc a">A</span><span class="rc r">R</span></span></td><td><span class="rc i">I</span></td></tr>
-          <tr><td class="act">Execução e validação dos testes</td><td><span class="rc r">R</span></td><td><span class="rc a">A</span></td><td><span class="rc i">I</span></td></tr>
-          <tr><td class="act">Apresentação de resultados</td><td><span class="cell"><span class="rc a">A</span><span class="rc r">R</span></span></td><td><span class="rc c">C</span></td><td><span class="rc i">I</span></td></tr>
-        </tbody>
-      </table>
-      <div class="raci-legend" data-reveal>
-        <span class="lg"><span class="rc r">R</span> Responsável</span>
-        <span class="lg"><span class="rc a">A</span> Aprovador</span>
-        <span class="lg"><span class="rc c">C</span> Consultado</span>
-        <span class="lg"><span class="rc i">I</span> Informado</span>
-        <span class="chip-tbd">A validar</span>
-      </div>
     </div>
     <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
   </section>
@@ -533,21 +453,55 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
           </div>
         </div>
         <div class="g-row g-body"><div class="g-lab">Liberação ambiente de PoC</div><div class="g-status"><span class="st st-done">Concluído</span></div><div class="weeks"><span class="gbar" style="grid-column:1/2"></span></div></div>
-        <div class="g-row g-body"><div class="g-lab">Clone da instância</div><div class="g-status"><span class="st st-prog">Em andamento</span></div><div class="weeks"><span class="gbar" style="grid-column:2/3"></span></div></div>
-        <div class="g-row g-body"><div class="g-lab">Assessment dados e configurações</div><div class="g-status"><span class="st st-prog">Em andamento</span></div><div class="weeks"><span class="gbar" style="grid-column:3/5"></span></div></div>
-        <div class="g-row g-body"><div class="g-lab">Discovery de casos de uso com Vivo+ e CAT</div><div class="g-status"><span class="st st-prog">Em andamento</span></div><div class="weeks"><span class="gbar" style="grid-column:1/2"></span></div></div>
+        <div class="g-row g-body"><div class="g-lab">Clone da instância</div><div class="g-status"><span class="st st-done">Concluído</span></div><div class="weeks"><span class="gbar" style="grid-column:2/3"></span></div></div>
+        <div class="g-row g-body"><div class="g-lab">Assessment dados e configurações</div><div class="g-status"><span class="st st-prog">Em andamento</span></div><div class="weeks"><span class="gbar" style="grid-column:1/5"></span></div></div>
+        <div class="g-row g-body"><div class="g-lab">Discovery de casos de uso com Vivo+ e CAT</div><div class="g-status"><span class="st st-prog">Em andamento</span></div><div class="weeks"><span class="gbar" style="grid-column:1/4"></span></div></div>
         <div class="g-row g-body"><div class="g-lab">Definição e aprovação do caso de uso</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:4/5"></span></div></div>
-        <div class="g-row g-body"><div class="g-lab">Definição de métricas</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:1/2"></span></div></div>
+        <div class="g-row g-body"><div class="g-lab">Definição de métricas</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:1/4"></span></div></div>
         <div class="g-row g-body"><div class="g-lab">Configuração da instância de PoC</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:2/4"></span></div></div>
         <div class="g-row g-body"><div class="g-lab">Liberação de acessos</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:5/7"></span></div></div>
         <div class="g-row g-body"><div class="g-lab">Configuração dos casos de uso (1 dia)</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:7/8"></span></div></div>
-        <div class="g-row g-body"><div class="g-lab">Revisão e teste</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:8/9"></span><span class="gbar" style="grid-column:9/10"></span><span class="gbar" style="grid-column:10/11"></span></div></div>
+        <div class="g-row g-body"><div class="g-lab">Revisão e teste</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:8/11"></span></div></div>
         <div class="g-row g-body"><div class="g-lab">Verificação do caderno de testes</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:10/13"></span></div></div>
         <div class="g-row g-body"><div class="g-lab">Checkpoint semanal</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar" style="grid-column:4/5"></span><span class="gbar" style="grid-column:7/8"></span><span class="gbar" style="grid-column:10/11"></span></div></div>
         <div class="g-row g-body final-row"><div class="g-lab">Apresentação de resultados</div><div class="g-status"><span class="st st-todo">A iniciar</span></div><div class="weeks"><span class="gbar final" style="grid-column:13/14"></span></div></div>
       </div>
+      <p class="note gantt-note" data-reveal><span class="ast">*</span> As datas do plano de execução podem ser alteradas dependendo da conclusão dos pré-requisitos e do escopo do caso de uso escolhido para a PoC.</p>
     </div>
     <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg">6</span></div>
+  </section>
+
+  <!-- MATRIZ RACI (logo após a Timeline) -->
+  <section class="slide" data-title="Matriz RACI">
+    <div class="slide-inner">
+      <div class="chead" data-reveal>
+        <h2 class="w">Times e responsabilidades</h2>
+        <div class="subh">Matriz RACI: responsabilidades por atividade</div>
+      </div>
+      <table class="raci" data-reveal>
+        <thead>
+          <tr><th class="act">Atividade</th><th>Alpar</th><th>Vivo</th><th>ServiceNow</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="act">Assessment de processos, dados e configurações</td><td><span class="rc r">R</span></td><td><span class="cell"><span class="rc c">C</span><span class="rc a">A</span></span></td><td><span class="cell"><span class="rc c">C</span><span class="rc a">A</span></span></td></tr>
+          <tr><td class="act">Definição do caso de uso</td><td><span class="rc r">R</span></td><td><span class="rc a">A</span></td><td><span class="rc r">R</span></td></tr>
+          <tr><td class="act">Definição de métricas e KPIs</td><td><span class="rc r">R</span></td><td><span class="rc a">A</span></td><td><span class="rc c">C</span></td></tr>
+          <tr><td class="act">Deploy da instância de PoC</td><td><span class="rc c">C</span></td><td><span class="rc r">R</span></td><td><span class="rc r">R</span></td></tr>
+          <tr><td class="act">Configuração e ativação de componentes</td><td><span class="rc c">C</span></td><td><span class="rc i">I</span></td><td><span class="rc r">R</span></td></tr>
+          <tr><td class="act">Liberação de acessos (ambiente Vivo)</td><td><span class="rc c">C</span></td><td><span class="cell"><span class="rc a">A</span><span class="rc r">R</span></span></td><td><span class="rc c">C</span></td></tr>
+          <tr><td class="act">Execução e validação dos testes</td><td><span class="rc r">R</span></td><td><span class="rc a">A</span></td><td><span class="rc a">A</span></td></tr>
+          <tr><td class="act">Apresentação de resultados</td><td><span class="rc r">R</span></td><td><span class="cell"><span class="rc a">A</span><span class="rc r">R</span></span></td><td><span class="rc c">C</span></td></tr>
+        </tbody>
+      </table>
+      <div class="raci-legend" data-reveal>
+        <span class="lg"><span class="rc r">R</span> Responsável</span>
+        <span class="lg"><span class="rc a">A</span> Aprovador</span>
+        <span class="lg"><span class="rc c">C</span> Consultado</span>
+        <span class="lg"><span class="rc i">I</span> Informado</span>
+        <span class="chip-tbd">A validar</span>
+      </div>
+    </div>
+    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
   </section>
 
   <!-- RISCOS E PREMISSAS (placeholder) -->
@@ -565,45 +519,19 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.022em;line-height:1.03}
             <li>Clone de produção autorizado</li>
             <li>Acessos internos Vivo concedidos no prazo</li>
             <li>Disponibilidade do time Vivo para validações</li>
+            <li>Integrações necessárias existentes e documentadas</li>
+            <li>Liberação de informações de acesso às integrações</li>
+            <li>Time de suporte às integrações disponíveis</li>
           </ul>
         </div>
         <div class="col" data-reveal>
           <h4>Riscos</h4>
-          <div class="pf" style="margin-top:0"><span class="chip-tbd">A mapear</span> Exemplos a validar:</div>
-          <ul style="margin-top:12px">
+          <ul>
             <li>Atraso na liberação de acessos ou do ambiente</li>
             <li>Dependências de times ou sistemas externos</li>
             <li>Indisponibilidade de dados para o caso de uso</li>
+            <li>Integrações indisponíveis para os casos de uso</li>
           </ul>
-        </div>
-      </div>
-    </div>
-    <div class="slide-foot"><div class="foot-brands"><img class="alpar-logo" src="assets/alpar-logo.png" alt="Alpar" /><span class="foot-div"></span><span class="sn-logo" data-sn></span></div><span class="pg"></span></div>
-  </section>
-
-  <!-- PROXIMOS PASSOS (placeholder) -->
-  <section class="slide" data-title="Próximos passos">
-    <div class="slide-inner">
-      <div class="chead" data-reveal>
-        <h2 class="w">Próximos passos e governança</h2>
-        <div class="subh">Depois do kickoff</div>
-      </div>
-      <div class="klist">
-        <div class="krow" data-reveal>
-          <div class="k">Governança</div>
-          <div class="v"><span class="have">Checkpoints ao longo do cronograma e apresentação de resultados ao final.</span></div>
-        </div>
-        <div class="krow" data-reveal>
-          <div class="k">Decisão de continuidade</div>
-          <div class="v"><span class="chip-tbd">A definir</span> &nbsp;Critérios para decidir a continuidade após a PoC.</div>
-        </div>
-        <div class="krow" data-reveal>
-          <div class="k">Proposta de projeto</div>
-          <div class="v"><span class="chip-tbd">A definir</span> &nbsp;Roadmap de expansão caso a PoC seja aprovada.</div>
-        </div>
-        <div class="krow" data-reveal>
-          <div class="k">Datas e responsáveis</div>
-          <div class="v"><span class="chip-tbd">A definir</span></div>
         </div>
       </div>
     </div>
